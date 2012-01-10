@@ -1,5 +1,7 @@
 package ice.node;
 
+import android.view.MotionEvent;
+
 import javax.microedition.khronos.opengles.GL11;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,11 +71,11 @@ public class DrawableParent<T extends Drawable> extends Drawable {
 
 
     @Override
-    public boolean onTouchEvent(TouchEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
         float originalX = event.getX();
         float originalY = event.getY();
 
-        event.setPos(originalX - posX, originalY - posY);
+        event.setLocation(originalX - posX, originalY - posY);
 
         try {
             for (Drawable child : children) {
@@ -85,7 +87,7 @@ public class DrawableParent<T extends Drawable> extends Drawable {
             }
         }
         finally {
-            event.setPos(originalX, originalY);
+            event.setLocation(originalX, originalY);
         }
 
         return super.onTouchEvent(event);

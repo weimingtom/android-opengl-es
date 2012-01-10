@@ -1,10 +1,9 @@
 package ice.node.widget;
 
 import android.graphics.Bitmap;
-import ice.node.TouchEvent;
+import android.view.MotionEvent;
 
-import static ice.node.TouchEvent.ACTION_CANCEL;
-import static ice.node.TouchEvent.ACTION_UP;
+import static android.view.MotionEvent.*;
 
 /**
  * User: ice
@@ -25,7 +24,7 @@ public class ButtonTile extends TextureTile {
     }
 
     @Override
-    public boolean onTouchEvent(TouchEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
         if (!visible || disabled) return false;
 
         int action = event.getAction();

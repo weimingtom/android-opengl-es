@@ -2,6 +2,7 @@ package ice.engine;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.view.MotionEvent;
 import ice.node.DrawableParent;
 
 /**
@@ -43,6 +44,20 @@ public class GameView extends GLSurfaceView implements AppView {
 
         root.addChild(newScene);
         root.remove(oldScene);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if (renderer != null) {
+            DrawableParent<Scene> drawDispatcher = renderer.getDrawDispatcher();
+            Scene topScene = drawDispatcher.top();
+
+            if (topScene != null)
+                topScene.onTouchEvent(event);
+
+        }
+        return true;
     }
 
     private GlRenderer renderer;
