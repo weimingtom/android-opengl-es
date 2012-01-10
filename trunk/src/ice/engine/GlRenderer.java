@@ -61,7 +61,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         App app = EngineContext.getInstance().getApp();
 
-        gl.glTranslatef(-(app.getWidth() >> 1), -(app.getHeight() >> 1), 0.01f - app.getZFar());
+        gl.glTranslatef(-(app.getWidth() >> 1), -(app.getHeight() >> 1), 0);
 
         drawDispatcher.draw(gl);
 
@@ -96,9 +96,11 @@ public class GlRenderer implements GLSurfaceView.Renderer {
             Log.i(TAG, "FPS: " + frames);
             frames = 0;
             lastTime = currentTime;
+
         }
 
     }
+
 
     private int frames;
     private long lastTime;
