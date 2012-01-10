@@ -72,8 +72,9 @@ public abstract class Drawable {
     }
 
     protected void ensureSelfPos(GL11 gl) {
+
         if (posX != 0 || posY != 0 || posZ != 0)
-            gl.glTranslatef(posX, -posY, posZ);
+            gl.glTranslatef(posX, posY, posZ);
     }
 
     protected abstract void onDraw(GL11 gl);
