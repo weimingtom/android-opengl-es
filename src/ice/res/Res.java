@@ -1,11 +1,14 @@
 package ice.res;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import ice.util.BitmapUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,7 +88,24 @@ public class Res {
         return array;
     }
 
+
+    public static InputStream openAssets(String fileName) {
+
+        AssetManager assets = context.getAssets();
+
+        try {
+            return assets.open(fileName);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static Context getContext() {
         return context;
     }
+
+
 }
