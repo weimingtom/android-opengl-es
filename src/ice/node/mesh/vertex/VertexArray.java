@@ -1,11 +1,15 @@
 package ice.node.mesh.vertex;
 
+import android.util.Log;
+
 import javax.microedition.khronos.opengles.GL11;
 
 import static javax.microedition.khronos.opengles.GL11.*;
 
 
 public class VertexArray extends VertexData {
+
+    private static final String TAG = VertexArray.class.getSimpleName();
 
     public VertexArray(int verticesCount, VertexAttributes attributes) {
         super(verticesCount, attributes);
@@ -41,7 +45,7 @@ public class VertexArray extends VertexData {
                     break;
 
                 case TextureCoordinates:
-                    //gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+                    gl.glEnableClientState(GL_TEXTURE_COORD_ARRAY);
                     //gl.glClientActiveTexture(GL.GL_TEXTURE0 + textureUnit++);
                     srcData.position(offset);
                     gl.glTexCoordPointer(dimension, GL_FLOAT, attributes.vertexSize, srcData);

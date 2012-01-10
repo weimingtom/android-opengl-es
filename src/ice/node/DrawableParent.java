@@ -34,15 +34,19 @@ public class DrawableParent<T extends Drawable> extends Drawable {
 
         for (Drawable drawable : children) {
 
-            if (drawable.isRemovable())
+            if (drawable.isRemovable()) {
                 children.remove(drawable);
-
-            drawable.draw(gl);
+            }
+            else {
+                drawable.draw(gl);
+            }
         }
     }
 
     public void addChild(T child) {
+
         if (child == null) throw new NullPointerException();
+
         children.add(child);
     }
 
@@ -101,5 +105,4 @@ public class DrawableParent<T extends Drawable> extends Drawable {
     }
 
     protected List<T> children;
-
 }

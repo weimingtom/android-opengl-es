@@ -19,6 +19,8 @@ import static javax.microedition.khronos.opengles.GL11.*;
  */
 public class Mesh extends Drawable {
 
+    private static final String TAG = Mesh.class.getSimpleName();
+
     public Mesh(VertexData vertexData) {
         this(vertexData, null);
     }
@@ -50,7 +52,6 @@ public class Mesh extends Drawable {
         gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
         gl.glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-        // gl.glDisableClientState(GL_INDEX_ARRAY);
         gl.glDisableClientState(GL_VERTEX_ARRAY);
 
         if (cullBack) {
