@@ -1,6 +1,7 @@
 package ice.node;
 
 
+import android.view.MotionEvent;
 import ice.animation.Animation;
 import ice.graphic.Camera;
 
@@ -113,7 +114,7 @@ public abstract class Drawable {
         this.removable = removable;
     }
 
-    public boolean onTouchEvent(TouchEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
         return false;
     }
 

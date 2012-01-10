@@ -102,6 +102,8 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     }
 
 
+
+
     private int frames;
     private long lastTime;
     private Projection projection;
