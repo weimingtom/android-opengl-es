@@ -40,6 +40,7 @@ public class Texture implements GlRes {
 
     public Texture(Bitmap bitmap) {
         this.bitmap = bitmap;
+        params = Params.DEFAULT;
     }
 
     @Override
@@ -69,8 +70,8 @@ public class Texture implements GlRes {
         buffer = new int[1];
         gl.glGenTextures(buffer.length, buffer, 0);
         gl.glBindTexture(GL_TEXTURE_2D, buffer[0]);
-        bindTextureParams(gl, Params.DEFAULT);
-        GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap.hasAlpha() ? GL_RGBA : GL_RGB, bitmap, GL_UNSIGNED_BYTE, 0);
+        bindTextureParams(gl, params);
+        GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
         loaded = true;
     }
 
@@ -115,4 +116,5 @@ public class Texture implements GlRes {
     private boolean loaded;
     private Bitmap bitmap;
     private Bitmap subProvider;
+    private Params params;
 }

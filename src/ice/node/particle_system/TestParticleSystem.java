@@ -7,7 +7,7 @@ import ice.graphic.Texture;
  * Date: 11-11-25
  * Time: 上午11:55
  */
-public class TestParticleSystem extends ParticleSystem {
+public class TestParticleSystem extends PointParticleSystem {
 
     private class TestParticle extends Particle {
         public float speed;
