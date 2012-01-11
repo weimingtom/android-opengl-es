@@ -2,6 +2,8 @@ package ice.node.particle_system;
 
 import ice.graphic.Texture;
 
+import java.util.Random;
+
 /**
  * User: ice
  * Date: 11-11-25
@@ -32,16 +34,18 @@ public class TestParticleSystem extends PointParticleSystem {
     private long lastUpdateTime;
 
     public TestParticleSystem(int maxParticleNum, Texture texture) {
-        super(maxParticleNum, texture);
+        super(maxParticleNum, texture, false);
     }
 
     @Override
     protected Particle[] onSetupParticles(int maxParticleNum) {
         TestParticle[] particles = new TestParticle[maxParticleNum];
 
+        Random random = new Random();
+
         for (int i = 0; i < maxParticleNum; i++) {
             TestParticle particle = new TestParticle(0, 0);
-            particle.size = 50;//(float) (50 * Math.random());
+            particle.size = 50 + random.nextInt(50);
             particle.alive = true;
             particle.speed = (i + 20) * 120 / (float) maxParticleNum;
             particle.speedAngle = (i + 10) * 10;

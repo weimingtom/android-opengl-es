@@ -70,7 +70,9 @@ public class Texture implements GlRes {
     @Override
     public void unattach(GL11 gl) {
         gl.glDisable(GL_TEXTURE_2D);
-        gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+        if (!coordSupliedBySystem)
+            gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     }
 
     private synchronized void loadAndBind(GL11 gl) {
