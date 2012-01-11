@@ -23,7 +23,8 @@ public class VertexBufferObject extends VertexData {
     public void attach(GL11 gl) {
         if (!upload) {
             upload(gl);
-        } else {
+        }
+        else {
             gl.glBindBuffer(GL_ARRAY_BUFFER, vboBuffer[0]);
             if (subData != null) {
                 gl.glBufferSubData(GL_ARRAY_BUFFER, subDataOffset, subDataSize, subData);
@@ -68,6 +69,11 @@ public class VertexBufferObject extends VertexData {
                     // throw new GdxRuntimeException("unkown vertex attribute type: " + attribute.usage);
             }
         }
+    }
+
+    @Override
+    public void unattach(GL11 gl) {
+        gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
     public void postSubData(int offset, int size, Buffer subData) {

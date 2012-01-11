@@ -33,6 +33,7 @@ public final class VertexAttributes {
 
         for (VertexAttribute attribute : attributes) {
             attribute.setOffset(count);
+
             count += SIZE_OF_FLOAT * attribute.getDimension();
         }
 
