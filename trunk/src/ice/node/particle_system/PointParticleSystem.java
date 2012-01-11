@@ -25,7 +25,10 @@ public abstract class PointParticleSystem extends Drawable {
     public PointParticleSystem(int maxParticleNum, Texture texture) {
         this.maxParticleNum = maxParticleNum;
         this.texture = texture;
-        //blend = true;
+        if (texture != null)
+            texture.setCoordSupliedBySystem(true);
+
+        blend = true;
 
         ByteBuffer vfb = ByteBuffer.allocateDirect(SIZE_OF_FLOAT * 2 * maxParticleNum);
         vfb.order(ByteOrder.nativeOrder());
@@ -34,9 +37,11 @@ public abstract class PointParticleSystem extends Drawable {
         vfb = ByteBuffer.allocateDirect(SIZE_OF_FLOAT * 4 * maxParticleNum);
         vfb.order(ByteOrder.nativeOrder());
         colorBuffer = vfb.asFloatBuffer();
+
+        init();
     }
 
-    public void init() {
+    private void init() {
         if (inited) {
             System.out.println("already inited !");
             return;
@@ -76,8 +81,9 @@ public abstract class PointParticleSystem extends Drawable {
     }
 
     private void drawActiveParticles(GL11 gl, int liveCount) {
+
         gl.glEnable(GL_POINT_SPRITE_OES);
-//        gl.glEnableClientState(GL_POINT_SIZE_ARRAY_OES);
+        //gl.glEnableClientState(GL_POINT_SIZE_ARRAY_OES);
         gl.glEnableClientState(GL_VERTEX_ARRAY);
         gl.glEnableClientState(GL_COLOR_ARRAY);
 
@@ -88,10 +94,11 @@ public abstract class PointParticleSystem extends Drawable {
             gl.glDisable(GL_DEPTH_TEST);
         }
 
+        texture.attach(gl);
 
-        // texture.attach(gl);
-//        gl.glEnable(GL_TEXTURE_2D);
-//        GLUtils.texImage2D(GL_TEXTURE_2D, 0, texture.getBitmap(), 0);
+        //An advantage of representing particles with point sprites is that texture coordinate generation can be handled by the system
+        gl.glTexEnvi(GL_POINT_SPRITE_OES, GL_COORD_REPLACE_OES, GL_TRUE);
+
 
         vertexBuffer.position(0);
         colorBuffer.position(0);
@@ -102,23 +109,12 @@ public abstract class PointParticleSystem extends Drawable {
         gl.glColorPointer(4, GL_FLOAT, 0, colorBuffer);
         //todo  gl.glPointSizePointerOES(GL_FLOAT, 0, vertexBuffer);
 
-        gl.glPointSize(20);
-
-//        gl.glEnable(GL_TEXTURE_2D);
-//        int[] buffer = new int[1];
-//        gl.glGenTextures(buffer.length, buffer, 0);
-//        gl.glBindTexture(GL_TEXTURE_2D, buffer[0]);
-//        GLUtils.texImage2D(GL_TEXTURE_2D, 0, texture.getBitmap(), 0);
-
-        texture.attach(gl);
-
-        gl.glTexEnvi(GL_POINT_SPRITE_OES, GL_COORD_REPLACE_OES, GL_TRUE);
+        gl.glPointSize(50);
 
 
         gl.glDrawArrays(GL_POINTS, 0, liveCount / 2);
 
-        gl.glDisable(GL_TEXTURE_2D);
-        //texture.unattach(gl);
+        texture.unattach(gl);
 
         gl.glDisableClientState(GL_VERTEX_ARRAY);
         gl.glDisableClientState(GL_COLOR_ARRAY);
@@ -127,8 +123,6 @@ public abstract class PointParticleSystem extends Drawable {
 
         if (blendState) {
             gl.glDisable(GL_BLEND);
-            gl.glEnable(GL_DEPTH_TEST);
-            gl.glDisableClientState(GL_COLOR_ARRAY);
         }
     }
 
