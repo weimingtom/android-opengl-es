@@ -9,6 +9,7 @@ public class Constants {
     /**
      * float 字节数
      */
-    public static final int SIZE_OF_FLOAT = 4;
+    public static final int BYTE_OF_FLOAT = 4;
 
+    public static final int SIZE_OF_FLOAT = Float.SIZE;
 }

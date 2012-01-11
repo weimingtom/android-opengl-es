@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import static ice.model.Constants.SIZE_OF_FLOAT;
+import static ice.model.Constants.BYTE_OF_FLOAT;
 import static javax.microedition.khronos.opengles.GL11.*;
 
 /**
@@ -23,11 +23,11 @@ public abstract class ParticleSystem extends Drawable {
         this.texture = texture;
         blend = true;
 
-        ByteBuffer vfb = ByteBuffer.allocateDirect(SIZE_OF_FLOAT * 4 * (2 + 2) * maxParticleNum);
+        ByteBuffer vfb = ByteBuffer.allocateDirect(BYTE_OF_FLOAT * 4 * (2 + 2) * maxParticleNum);
         vfb.order(ByteOrder.nativeOrder());
         vertexBuffer = vfb.asFloatBuffer();
 
-        vfb = ByteBuffer.allocateDirect(SIZE_OF_FLOAT * 3 * maxParticleNum);
+        vfb = ByteBuffer.allocateDirect(BYTE_OF_FLOAT * 3 * maxParticleNum);
         vfb.order(ByteOrder.nativeOrder());
         colorBuffer = vfb.asFloatBuffer();
     }
@@ -85,15 +85,15 @@ public abstract class ParticleSystem extends Drawable {
         texture.attach(gl);
 
         vertexBuffer.position(0);
-        gl.glVertexPointer(2, GL_FLOAT, SIZE_OF_FLOAT * (2 + 2), vertexBuffer);
+        gl.glVertexPointer(2, GL_FLOAT, BYTE_OF_FLOAT * (2 + 2), vertexBuffer);
 
         vertexBuffer.position(2);
-        gl.glTexCoordPointer(2, GL_FLOAT, SIZE_OF_FLOAT * (2 + 2), vertexBuffer);
+        gl.glTexCoordPointer(2, GL_FLOAT, BYTE_OF_FLOAT * (2 + 2), vertexBuffer);
 
         colorBuffer.position(0);
         gl.glColorPointer(3, GL_FLOAT, 0, colorBuffer);
 
-        // gl.glDrawArrays(GL10.GL_POLYGON, 0, changedSize / (2 + 2));        //todo
+        //gl.glDrawArrays(GL_POLYGON, 0, changedSize / (2 + 2));        //todo
 
         gl.glDisableClientState(GL_VERTEX_ARRAY);
         gl.glDisable(GL_TEXTURE_2D);
