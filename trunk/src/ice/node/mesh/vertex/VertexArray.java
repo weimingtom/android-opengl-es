@@ -56,6 +56,11 @@ public class VertexArray extends VertexData {
     }
 
     @Override
+    public void unattach(GL11 gl) {
+        gl.glDisableClientState(GL_VERTEX_ARRAY);
+    }
+
+    @Override
     public void release(GL11 gl) { //TODO 名副其实？
         int numAttributes = attributes.size();
 

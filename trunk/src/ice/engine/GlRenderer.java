@@ -87,21 +87,23 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
     private void log(GL11 gl) {
         for (int errorCode = gl.glGetError(); errorCode != GL_NO_ERROR; errorCode = gl.glGetError()) {
-            Log.e(TAG, GLU.gluErrorString(errorCode));
+
+            throw new IllegalStateException(
+                    GLU.gluErrorString(errorCode)
+            );
+
         }
 
         frames++;
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastTime > 1000) {
-            Log.i(TAG, "FPS: " + frames);
+            System.out.println("fps  " + frames);
             frames = 0;
             lastTime = currentTime;
 
         }
 
     }
-
-
 
 
     private int frames;

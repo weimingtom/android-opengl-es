@@ -4,6 +4,7 @@ import android.util.Log;
 import ice.graphic.Primitives;
 import ice.graphic.Texture;
 import ice.node.Drawable;
+import ice.node.mesh.vertex.VertexBufferObject;
 import ice.node.mesh.vertex.VertexData;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -33,35 +34,29 @@ public class Mesh extends Drawable {
 
     @Override
     protected void onDraw(GL11 gl) {
-        vertexData.attach(gl);
-
-        Texture theTexture = texture;
-        boolean useTexture = (theTexture != null);
-        if (useTexture)
-            theTexture.attach(gl);
 
         boolean cullBack = callFace;
+
         if (cullBack) {
             gl.glFrontFace(GL_CCW);
             gl.glEnable(GL_CULL_FACE);
             gl.glCullFace(GL_BACK);
         }
 
+        Texture theTexture = texture;
+        boolean useTexture = (theTexture != null);
+
+        if (useTexture) theTexture.attach(gl);
+
+        vertexData.attach(gl);
+
         gl.glDrawArrays(GL_TRIANGLES, 0, vertexData.getVerticesCount());
 
-        gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
-        gl.glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        vertexData.unattach(gl);
 
-        gl.glDisableClientState(GL_VERTEX_ARRAY);
+        if (useTexture) theTexture.unattach(gl);
 
-        if (cullBack) {
-            gl.glDisable(GL_CULL_FACE);
-        }
-
-        if (useTexture) {
-            gl.glDisable(GL_TEXTURE_2D);
-            gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        }
+        if (cullBack) gl.glDisable(GL_CULL_FACE);
     }
 
     public void bindTexture(Texture texture) {

@@ -6,6 +6,9 @@ package ice.model;
  * Time: 下午12:30
  */
 public class Constants {
-    public static final int SIZE_OF_FLOAT = Float.SIZE;
+    /**
+     * float 字节数
+     */
+    public static final int SIZE_OF_FLOAT = 4;
 
 }
