@@ -7,6 +7,7 @@ import ice.node.Drawable;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -21,10 +22,11 @@ import static ice.model.Constants.*;
  */
 public abstract class PointParticleSystem extends Drawable {
 
-
-    public PointParticleSystem(int maxParticleNum, Texture texture) {
+    public PointParticleSystem(int maxParticleNum, Texture texture, boolean sameSize) {
         this.maxParticleNum = maxParticleNum;
         this.texture = texture;
+        this.sameSize = sameSize;
+
         if (texture != null)
             texture.setCoordSupliedBySystem(true);
 
@@ -34,9 +36,16 @@ public abstract class PointParticleSystem extends Drawable {
         vfb.order(ByteOrder.nativeOrder());
         vertexBuffer = vfb.asFloatBuffer();
 
+        if (!sameSize) {
+            vfb = ByteBuffer.allocateDirect(SIZE_OF_FLOAT * 1 * maxParticleNum);
+            vfb.order(ByteOrder.nativeOrder());
+            sizeBuffer = vfb.asFloatBuffer();
+        }
+
         vfb = ByteBuffer.allocateDirect(SIZE_OF_FLOAT * 4 * maxParticleNum);
         vfb.order(ByteOrder.nativeOrder());
         colorBuffer = vfb.asFloatBuffer();
+
 
         init();
     }
@@ -83,7 +92,6 @@ public abstract class PointParticleSystem extends Drawable {
     private void drawActiveParticles(GL11 gl, int liveCount) {
 
         gl.glEnable(GL_POINT_SPRITE_OES);
-        //gl.glEnableClientState(GL_POINT_SIZE_ARRAY_OES);
         gl.glEnableClientState(GL_VERTEX_ARRAY);
         gl.glEnableClientState(GL_COLOR_ARRAY);
 
@@ -107,9 +115,17 @@ public abstract class PointParticleSystem extends Drawable {
 
         gl.glVertexPointer(2, GL_FLOAT, 0, vertexBuffer);
         gl.glColorPointer(4, GL_FLOAT, 0, colorBuffer);
-        //todo  gl.glPointSizePointerOES(GL_FLOAT, 0, vertexBuffer);
 
-        gl.glPointSize(50);
+        if (sameSize) {
+            gl.glPointSize(particles[0].size);
+        }
+        else {
+            gl.glEnableClientState(GL_POINT_SIZE_ARRAY_OES);
+
+            sizeBuffer.position(0);
+            sizeBuffer.limit(1 * liveCount);
+            gl.glPointSizePointerOES(GL_FLOAT, 0, sizeBuffer);
+        }
 
 
         gl.glDrawArrays(GL_POINTS, 0, liveCount / 2);
@@ -118,7 +134,10 @@ public abstract class PointParticleSystem extends Drawable {
 
         gl.glDisableClientState(GL_VERTEX_ARRAY);
         gl.glDisableClientState(GL_COLOR_ARRAY);
-//        gl.glDisableClientState(GL11.GL_POINT_SIZE_ARRAY_OES);
+
+        if (!sameSize)
+            gl.glDisableClientState(GL11.GL_POINT_SIZE_ARRAY_OES);
+
         gl.glDisable(GL11.GL_POINT_SPRITE_OES);
 
         if (blendState) {
@@ -127,8 +146,11 @@ public abstract class PointParticleSystem extends Drawable {
     }
 
     private int fillActive() {
+
         vertexBuffer.position(0);
+        if (!sameSize) sizeBuffer.position(0);
         colorBuffer.position(0);
+
 
         int liveCount = 0;
 
@@ -141,9 +163,12 @@ public abstract class PointParticleSystem extends Drawable {
                         new float[]{particle.posX, particle.posY}
                 );
 
+                if (!sameSize) sizeBuffer.put(particle.size);
+
                 colorBuffer.put(
                         new float[]{particle.colorR, particle.colorG, particle.colorB, particle.colorA}
                 );
+
 
                 liveCount++;
             }
@@ -153,11 +178,13 @@ public abstract class PointParticleSystem extends Drawable {
         return liveCount;
     }
 
+    private boolean sameSize;
     private boolean blend;
     private Texture texture;
     private int maxParticleNum;
     private boolean inited;
     protected Particle particles[];
     private FloatBuffer vertexBuffer;
+    private FloatBuffer sizeBuffer;
     private FloatBuffer colorBuffer;
 }
