@@ -46,7 +46,14 @@ public class Texture implements GlRes {
     @Override
     public void attach(GL11 gl) {
         gl.glEnable(GL_TEXTURE_2D);
-        gl.glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+        if (!coordSupliedBySystem) {
+            gl.glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+            //An advantage of representing particles with point sprites is that texture coordinate generation can be handled by the system
+            //gl.glTexEnvi(GL_POINT_SPRITE_OES, GL_COORD_REPLACE_OES, GL_TRUE);
+        }
+
 
         if (!loaded) {
             loadAndBind(gl);
@@ -111,6 +118,11 @@ public class Texture implements GlRes {
         buffer = new int[1];
     }
 
+    public void setCoordSupliedBySystem(boolean coordSupliedBySystem) {
+        this.coordSupliedBySystem = coordSupliedBySystem;
+    }
+
+    private boolean coordSupliedBySystem;
     private int xOffset, yOffset;
     private int[] buffer;
     private boolean loaded;
