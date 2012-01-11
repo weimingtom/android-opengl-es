@@ -34,7 +34,7 @@ public abstract class Animation {
         if (currentTime < startTime) return;
 
         if (currentTime - startTime > duration) {
-            if (loopEnabled) {
+            if (loop) {
                 startTime = currentTime;
             }
             else {
@@ -80,12 +80,12 @@ public abstract class Animation {
         this.interpolator = interpolator;
     }
 
-    public boolean isLoopEnabled() {
-        return loopEnabled;
+    public boolean isLoop() {
+        return loop;
     }
 
-    public void enableLoop(boolean loopEnabled) {
-        this.loopEnabled = loopEnabled;
+    public void setLoop(boolean loopEnabled) {
+        this.loop = loopEnabled;
     }
 
 
@@ -98,7 +98,7 @@ public abstract class Animation {
     protected long duration;
 
     protected boolean completed;
-    protected boolean loopEnabled;
+    protected boolean loop;
 
 
     private boolean cancel;

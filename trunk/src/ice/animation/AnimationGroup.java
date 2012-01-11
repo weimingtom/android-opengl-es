@@ -35,10 +35,10 @@ public class AnimationGroup extends Animation {
     }
 
     @Override
-    public void enableLoop(boolean loopEnabled) {
-        super.enableLoop(loopEnabled);
+    public void setLoop(boolean loopEnabled) {
+        super.setLoop(loopEnabled);
         for (Animation child : children) {
-            child.enableLoop(loopEnabled);
+            child.setLoop(loopEnabled);
         }
     }
 
