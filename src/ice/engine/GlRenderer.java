@@ -1,9 +1,12 @@
 package ice.engine;
 
+import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
-import android.util.Log;
+import ice.graphic.Primitives;
+import ice.graphic.projection.PerspectiveProjection;
 import ice.graphic.projection.Projection;
+import ice.node.Drawable;
 import ice.node.DrawableParent;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -20,6 +23,7 @@ import static javax.microedition.khronos.opengles.GL10.*;
 public class GlRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = GlRenderer.class.getSimpleName();
+    private Drawable coordinate;
 
     public GlRenderer(Projection projection) {
         this.projection = projection;
@@ -49,6 +53,8 @@ public class GlRenderer implements GLSurfaceView.Renderer {
         GL11 gl = (GL11) gl10;
 
         projection.setUp(gl, width, height);
+
+        coordinate = coordinate(width, height);
     }
 
     @Override
@@ -61,7 +67,11 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         App app = EngineContext.getInstance().getApp();
 
-        gl.glTranslatef(-(app.getWidth() >> 1), -(app.getHeight() >> 1), 0);
+        float z = projection instanceof PerspectiveProjection ? 0.01f - app.getZFar() : 0;
+
+        gl.glTranslatef(-(app.getWidth() >> 1), -(app.getHeight() >> 1), z);
+
+        coordinate.draw(gl);
 
         drawDispatcher.draw(gl);
 
@@ -99,6 +109,28 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         }
 
+    }
+
+    private Drawable coordinate(final int width, final int height) {
+        Drawable drawable = new Drawable() {
+
+            @Override
+            protected void onDraw(GL11 gl) {
+                gl.glEnable(GL_POINT_SMOOTH);
+
+                RectF rect = new RectF(0, 0, width, height);
+                rect.inset(12, 9);
+                Primitives.drawRect(gl, rect);
+
+                Primitives.drawCircle(gl, 100, 100, 100, 0, 50, true);
+
+                gl.glPointSize(10);
+                Primitives.drawPoint(gl, 12, 9);
+                gl.glPointSize(1);
+            }
+        };
+
+        return drawable;
     }
 
     private boolean debugMode = true;
