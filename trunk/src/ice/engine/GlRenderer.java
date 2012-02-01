@@ -59,7 +59,17 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl10) {
+
         GL11 gl = (GL11) gl10;
+
+        onFrame(gl);
+
+        drawDispatcher.draw(gl);
+
+        log(gl);
+    }
+
+    protected void onFrame(GL11 gl) {
 
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         gl.glMatrixMode(GL_MODELVIEW);
@@ -72,10 +82,6 @@ public class GlRenderer implements GLSurfaceView.Renderer {
         gl.glTranslatef(-(app.getWidth() >> 1), -(app.getHeight() >> 1), z);
 
         coordinate.draw(gl);
-
-        drawDispatcher.draw(gl);
-
-        log(gl);
     }
 
 
