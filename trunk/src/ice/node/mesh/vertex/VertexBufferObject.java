@@ -72,7 +72,7 @@ public class VertexBufferObject extends VertexData {
     }
 
     @Override
-    public void unattach(GL11 gl) {
+    public void detach(GL11 gl) {
         gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 

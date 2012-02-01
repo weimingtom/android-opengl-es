@@ -28,9 +28,16 @@ public class AnimationGroup extends Animation {
 
 
     @Override
-    protected void onApply(GL11 gl, float interpolatedTime) {
+    protected void onAttach(GL11 gl, float interpolatedTime) {
         for (Animation animation : children) {
-            animation.onApply(gl, interpolatedTime);
+            animation.onAttach(gl, interpolatedTime);
+        }
+    }
+
+    @Override
+    protected void onDetach(GL11 gl) {
+        for (Animation animation : children) {
+            animation.onDetach(gl);
         }
     }
 

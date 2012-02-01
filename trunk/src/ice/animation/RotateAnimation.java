@@ -19,7 +19,7 @@ public class RotateAnimation extends Animation {
     }
 
     @Override
-    protected void onApply(GL11 gl, float interpolatedTime) {
+    protected void onAttach(GL11 gl, float interpolatedTime) {
         float angle = fromAngle + ((toAngle - fromAngle) * interpolatedTime);
         gl.glRotatef(angle, rotateX, rotateY, rotateZ);
     }

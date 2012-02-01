@@ -56,7 +56,7 @@ public class VertexArray extends VertexData {
     }
 
     @Override
-    public void unattach(GL11 gl) {
+    public void detach(GL11 gl) {
         gl.glDisableClientState(GL_VERTEX_ARRAY);
     }
 

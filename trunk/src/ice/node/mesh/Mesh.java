@@ -1,16 +1,11 @@
 package ice.node.mesh;
 
-import android.util.Log;
-import ice.graphic.Primitives;
 import ice.graphic.Texture;
 import ice.node.Drawable;
-import ice.node.mesh.vertex.VertexBufferObject;
 import ice.node.mesh.vertex.VertexData;
 
-import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import static javax.microedition.khronos.opengles.GL11.GL_TEXTURE_COORD_ARRAY;
 import static javax.microedition.khronos.opengles.GL11.*;
 
 /**
@@ -52,9 +47,9 @@ public class Mesh extends Drawable {
 
         gl.glDrawArrays(GL_TRIANGLES, 0, vertexData.getVerticesCount());
 
-        vertexData.unattach(gl);
+        vertexData.detach(gl);
 
-        if (useTexture) theTexture.unattach(gl);
+        if (useTexture) theTexture.detach(gl);
 
         if (cullBack) gl.glDisable(GL_CULL_FACE);
     }

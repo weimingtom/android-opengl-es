@@ -10,6 +10,7 @@ public abstract class Animation {
 
 
     public interface AnimationListener {
+
         void onAnimationEnd(Drawable drawable);
     }
 
@@ -29,7 +30,7 @@ public abstract class Animation {
         cancel = true;
     }
 
-    public void apply(GL11 gl, long currentTime) {
+    public void attach(GL11 gl, long currentTime) {
 
         if (currentTime < startTime) return;
 
@@ -53,11 +54,33 @@ public abstract class Animation {
         //根据归一化时间调整时间插值
         float interpolatedTime = interpolator.getInterpolation(normalizedTime);
 
-        onApply(gl, interpolatedTime);
+        onAttach(gl, interpolatedTime);
     }
 
-    protected abstract void onApply(GL11 gl, float interpolatedTime);
+    public void detach(GL11 gl) {
+        onDetach(gl);
+    }
 
+
+    public void onComplete(final Drawable drawable, GL11 gl) {
+        new Thread() {
+
+            @Override
+            public void run() {
+
+                if (listener != null)
+                    listener.onAnimationEnd(drawable);
+
+            }
+
+        }.start();
+    }
+
+    protected abstract void onAttach(GL11 gl, float interpolatedTime);
+
+    protected void onDetach(GL11 gl) {
+
+    }
 
     public long getDuration() {
         return duration;
@@ -99,7 +122,6 @@ public abstract class Animation {
 
     protected boolean completed;
     protected boolean loop;
-
 
     private boolean cancel;
 

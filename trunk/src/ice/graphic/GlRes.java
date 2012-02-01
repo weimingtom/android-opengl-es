@@ -12,7 +12,7 @@ public interface GlRes {
 
     void attach(GL11 gl);
 
-    void unattach(GL11 gl);
+    void detach(GL11 gl);
 
     void release(GL11 gl);
 
