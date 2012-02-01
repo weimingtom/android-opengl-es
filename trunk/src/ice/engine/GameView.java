@@ -30,7 +30,7 @@ public class GameView extends GLSurfaceView implements AppView {
     @Override
     public void showScene(Scene scene) {
 
-        DrawableParent drawableRoot = renderer.getDrawDispatcher();
+        DrawableParent<Scene> drawableRoot = renderer.getDrawDispatcher();
 
         drawableRoot.addChild(scene);
     }

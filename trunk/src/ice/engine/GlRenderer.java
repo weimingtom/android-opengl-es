@@ -22,9 +22,6 @@ import static javax.microedition.khronos.opengles.GL10.*;
  */
 public class GlRenderer implements GLSurfaceView.Renderer {
 
-    private static final String TAG = GlRenderer.class.getSimpleName();
-    private Drawable coordinate;
-
     public GlRenderer(Projection projection) {
         this.projection = projection;
 
@@ -96,19 +93,21 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
     private void log(GL11 gl) {
         if (debugMode) {
-            for (int errorCode = gl.glGetError(); errorCode != GL_NO_ERROR; errorCode = gl.glGetError()) {
 
+            int errorCode = gl.glGetError();
+
+            if (errorCode != GL_NO_ERROR)
                 throw new IllegalStateException(
                         GLU.gluErrorString(errorCode)
                 );
 
-            }
         }
-
 
         frames++;
         long currentTime = System.currentTimeMillis();
-        if (currentTime - lastTime > 1000) {
+        if (currentTime - lastTime > 1000)
+
+        {
             System.out.println("fps  " + frames);
             frames = 0;
             lastTime = currentTime;
@@ -118,7 +117,8 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     }
 
     private Drawable coordinate(final int width, final int height) {
-        Drawable drawable = new Drawable() {
+
+        return new Drawable() {
 
             @Override
             protected void onDraw(GL11 gl) {
@@ -135,10 +135,9 @@ public class GlRenderer implements GLSurfaceView.Renderer {
                 gl.glPointSize(1);
             }
         };
-
-        return drawable;
     }
 
+    private Drawable coordinate;
     private boolean debugMode = true;
     private int frames;
     private long lastTime;
