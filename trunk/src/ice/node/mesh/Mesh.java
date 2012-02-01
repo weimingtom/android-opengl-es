@@ -1,8 +1,8 @@
 package ice.node.mesh;
 
 import ice.graphic.Texture;
+import ice.model.vertex.VertexData;
 import ice.node.Drawable;
-import ice.node.mesh.vertex.VertexData;
 
 import javax.microedition.khronos.opengles.GL11;
 
