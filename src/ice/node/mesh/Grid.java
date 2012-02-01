@@ -1,6 +1,6 @@
 package ice.node.mesh;
 
-import ice.node.mesh.vertex.*;
+import ice.model.vertex.*;
 
 /**
  * User: ice
