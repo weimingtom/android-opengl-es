@@ -1,13 +1,10 @@
 package ice.node.particle_system;
 
-import android.opengl.GLUtils;
 import android.view.animation.AnimationUtils;
 import ice.graphic.Texture;
 import ice.node.Drawable;
 
-import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -30,8 +27,6 @@ public abstract class PointParticleSystem extends Drawable {
         if (texture != null)
             texture.setCoordSupliedBySystem(true);
 
-        blend = true;
-
         ByteBuffer vfb = ByteBuffer.allocateDirect(SIZE_OF_FLOAT * 2 * maxParticleNum);
         vfb.order(ByteOrder.nativeOrder());
         vertexBuffer = vfb.asFloatBuffer();
@@ -51,27 +46,20 @@ public abstract class PointParticleSystem extends Drawable {
     }
 
     private void init() {
-        if (inited) {
-            System.out.println("already inited !");
-            return;
-        }
 
         Particle[] particles = onSetupParticles(maxParticleNum);
         if (particles.length > maxParticleNum)
-            throw new IllegalStateException("first generated particles size shoud smaller than " + maxParticleNum);
+            throw new IllegalStateException("first generated particles size should smaller than " + maxParticleNum);
 
         this.particles = particles;
-        inited = true;
-    }
 
-    public void reset() {
-        inited = false;
+        blend = true;
     }
-
 
     public void step() {
-        if (!inited) throw new IllegalStateException("particles not setup yet !");
+
         onUpdateParticles(particles, AnimationUtils.currentAnimationTimeMillis());
+
     }
 
     protected abstract Particle[] onSetupParticles(int maxParticleNum);
@@ -98,7 +86,9 @@ public abstract class PointParticleSystem extends Drawable {
         boolean blendState = blend;
         if (blendState) {
             gl.glEnable(GL_BLEND);
-            gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            //gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            gl.glBlendFunc(GL_ONE, GL_ONE);
+
             gl.glDisable(GL_DEPTH_TEST);
         }
 
@@ -123,7 +113,7 @@ public abstract class PointParticleSystem extends Drawable {
             gl.glEnableClientState(GL_POINT_SIZE_ARRAY_OES);
 
             sizeBuffer.position(0);
-            sizeBuffer.limit(1 * liveCount);
+            sizeBuffer.limit(liveCount);
             gl.glPointSizePointerOES(GL_FLOAT, 0, sizeBuffer);
         }
 
@@ -182,7 +172,6 @@ public abstract class PointParticleSystem extends Drawable {
     private boolean blend;
     private Texture texture;
     private int maxParticleNum;
-    private boolean inited;
     protected Particle particles[];
     private FloatBuffer vertexBuffer;
     private FloatBuffer sizeBuffer;

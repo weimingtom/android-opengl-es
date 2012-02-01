@@ -17,6 +17,7 @@ public abstract class Drawable {
 
     public synchronized static long requestId() {
         maxId++;
+
         if (maxId == Long.MAX_VALUE) {
             throw new IllegalStateException("ID reuse !");
         }
@@ -91,11 +92,20 @@ public abstract class Drawable {
     }
 
     private void onAnimationComplete() {
-        Animation temp = animation;
+        final Animation temp = animation;
 
         if (temp != null) {
-            Animation.AnimationListener listener = temp.getListener();
-            if (listener != null) listener.onAnimationEnd(this);
+
+            new Thread() {
+
+                @Override
+                public void run() {
+                    Animation.AnimationListener listener = temp.getListener();
+                    if (listener != null) listener.onAnimationEnd(Drawable.this);
+                }
+
+            }.start();
+
         }
     }
 

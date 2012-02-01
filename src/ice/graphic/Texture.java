@@ -37,6 +37,8 @@ public class Texture implements GlRes {
         private Map<Integer, Integer> paramMap;
     }
 
+    private static boolean attachStatues;
+
 
     public Texture(Bitmap bitmap) {
         this.bitmap = bitmap;
@@ -45,11 +47,14 @@ public class Texture implements GlRes {
 
     @Override
     public void attach(GL11 gl) {
+
+        if (attachStatues)
+            throw new IllegalStateException("Texture resource should be unattached before !");
+
         gl.glEnable(GL_TEXTURE_2D);
 
         if (!coordSupliedBySystem) {
             gl.glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
             //An advantage of representing particles with point sprites is that texture coordinate generation can be handled by the system
             //gl.glTexEnvi(GL_POINT_SPRITE_OES, GL_COORD_REPLACE_OES, GL_TRUE);
         }
@@ -65,17 +70,24 @@ public class Texture implements GlRes {
                 subProvider = null;
             }
         }
+
+        attachStatues = true;
     }
 
     @Override
     public void unattach(GL11 gl) {
+        if (!attachStatues)
+            throw new IllegalStateException("Texture resource not attached before !");
+
         gl.glDisable(GL_TEXTURE_2D);
 
         if (!coordSupliedBySystem)
             gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+        attachStatues = false;
     }
 
-    private synchronized void loadAndBind(GL11 gl) {
+    private void loadAndBind(GL11 gl) {
         buffer = new int[1];
         gl.glGenTextures(buffer.length, buffer, 0);
         gl.glBindTexture(GL_TEXTURE_2D, buffer[0]);
