@@ -73,35 +73,6 @@ public abstract class Drawable {
         gl.glPopMatrix();
     }
 
-    private void detachAnimation(GL11 gl, Animation theAnimation) {
-        if (theAnimation == null) return;
-
-        theAnimation.detach(gl);
-
-        if (theAnimation.isCanceled()) {
-            animation = null;
-        }
-        else {
-            if (theAnimation.isCompleted()) {
-                theAnimation.onComplete(this, gl);
-                animation = null;
-            }
-        }
-    }
-
-    private void attachAnimation(GL11 gl, Animation theAnimation) {
-
-        if (theAnimation != null)
-            theAnimation.attach(gl, System.currentTimeMillis());
-
-    }
-
-    protected void ensureSelfPos(GL11 gl) {
-
-        if (posX != 0 || posY != 0 || posZ != 0)
-            gl.glTranslatef(posX, posY, posZ);
-    }
-
     protected abstract void onDraw(GL11 gl);
 
     public synchronized void startAnimation(Animation animation) {
@@ -115,21 +86,30 @@ public abstract class Drawable {
         animation = null;
     }
 
+    public void enableBlend(int sFactor, int dFactor) {
+        blendFactor_S = sFactor;
+        blendFactor_D = dFactor;
+        blend = true;
+    }
 
-    public boolean isVisible() {
-        return visible;
+    public void disableBlend() {
+        blend = false;
     }
 
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
 
-    public boolean isRemovable() {
-        return removable;
+    public boolean isVisible() {
+        return visible;
     }
 
     public void setRemovable(boolean removable) {
         this.removable = removable;
+    }
+
+    public boolean isRemovable() {
+        return removable;
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -171,14 +151,33 @@ public abstract class Drawable {
         return (int) (id ^ (id >>> 32));
     }
 
-    public void enableBlend(int sFactor, int dFactor) {
-        blendFactor_S = sFactor;
-        blendFactor_D = dFactor;
-        blend = true;
+    private void attachAnimation(GL11 gl, Animation theAnimation) {
+
+        if (theAnimation != null)
+            theAnimation.attach(gl, System.currentTimeMillis());
+
     }
 
-    public void disableBlend() {
-        blend = false;
+    private void detachAnimation(GL11 gl, Animation theAnimation) {
+        if (theAnimation == null) return;
+
+        theAnimation.detach(gl);
+
+        if (theAnimation.isCanceled()) {
+            animation = null;
+        }
+        else {
+            if (theAnimation.isCompleted()) {
+                theAnimation.onComplete(this, gl);
+                animation = null;
+            }
+        }
+    }
+
+    private void ensureSelfPos(GL11 gl) {
+
+        if (posX != 0 || posY != 0 || posZ != 0)
+            gl.glTranslatef(posX, posY, posZ);
     }
 
     private int blendFactor_S, blendFactor_D;
