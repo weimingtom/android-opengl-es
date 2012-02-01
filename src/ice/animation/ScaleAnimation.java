@@ -18,7 +18,7 @@ public class ScaleAnimation extends Animation {
     }
 
     @Override
-    protected void onApply(GL11 gl, float interpolatedTime) {
+    protected void onAttach(GL11 gl, float interpolatedTime) {
 
         scaleX = scaleY = 1.0f;
 

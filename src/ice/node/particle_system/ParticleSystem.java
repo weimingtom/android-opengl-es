@@ -21,7 +21,6 @@ public abstract class ParticleSystem extends Drawable {
     public ParticleSystem(int maxParticleNum, Texture texture) {
         this.maxParticleNum = maxParticleNum;
         this.texture = texture;
-        blend = true;
 
         ByteBuffer vfb = ByteBuffer.allocateDirect(BYTE_OF_FLOAT * 4 * (2 + 2) * maxParticleNum);
         vfb.order(ByteOrder.nativeOrder());
@@ -74,13 +73,6 @@ public abstract class ParticleSystem extends Drawable {
     private void drawActiveParticles(GL11 gl, int changedSize) {
         gl.glEnableClientState(GL_VERTEX_ARRAY);
         gl.glEnableClientState(GL_COLOR_ARRAY);
-        boolean blendState = blend;
-        if (blendState) {
-            gl.glEnable(GL_BLEND);
-            gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-            gl.glDisable(GL_DEPTH_TEST);
-        }
-
 
         texture.attach(gl);
 
@@ -98,12 +90,6 @@ public abstract class ParticleSystem extends Drawable {
         gl.glDisableClientState(GL_VERTEX_ARRAY);
         gl.glDisable(GL_TEXTURE_2D);
         gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-        if (blendState) {
-            gl.glDisable(GL_BLEND);
-            gl.glEnable(GL_DEPTH_TEST);
-            gl.glDisableClientState(GL_COLOR_ARRAY);
-        }
     }
 
     private int fillActive() {
@@ -162,7 +148,6 @@ public abstract class ParticleSystem extends Drawable {
         squarePoints[15] = 0;
     }
 
-    private boolean blend;
     private Texture texture;
     private int maxParticleNum;
     private boolean inited;

@@ -2,10 +2,15 @@ package ice.node;
 
 
 import android.view.MotionEvent;
+import android.view.animation.AnimationUtils;
 import ice.animation.Animation;
 import ice.graphic.Camera;
 
 import javax.microedition.khronos.opengles.GL11;
+
+import static javax.microedition.khronos.opengles.GL10.GL_BLEND;
+import static javax.microedition.khronos.opengles.GL10.GL_DEPTH_TEST;
+import static javax.microedition.khronos.opengles.GL10.GL_ONE;
 
 /**
  * User: ice
@@ -13,6 +18,7 @@ import javax.microedition.khronos.opengles.GL11;
  * Time: 上午10:40
  */
 public abstract class Drawable {
+
     private static long maxId;
 
     public synchronized static long requestId() {
@@ -44,32 +50,50 @@ public abstract class Drawable {
 
         gl.glPushMatrix();
 
+        boolean blendState = blend;
+
+        if (blendState) {
+            gl.glEnable(GL_BLEND);
+            gl.glBlendFunc(blendFactor_S, blendFactor_D);
+            //gl.glDisable(GL_DEPTH_TEST);
+        }
+
         ensureSelfPos(gl);
 
-        applyAnimation(gl);
+        Animation theAnimation = animation;
+
+        attachAnimation(gl, theAnimation);
 
         onDraw(gl);
+
+        detachAnimation(gl, theAnimation);
+
+        if (blendState) gl.glDisable(GL_BLEND);
 
         gl.glPopMatrix();
     }
 
-    private void applyAnimation(GL11 gl) {
-        Animation theAnimation = animation;
+    private void detachAnimation(GL11 gl, Animation theAnimation) {
+        if (theAnimation == null) return;
 
-        if (theAnimation != null) {
-            theAnimation.apply(gl, System.currentTimeMillis());
+        theAnimation.detach(gl);
 
-            if (theAnimation.isCanceled()) {
+        if (theAnimation.isCanceled()) {
+            animation = null;
+        }
+        else {
+            if (theAnimation.isCompleted()) {
+                theAnimation.onComplete(this, gl);
                 animation = null;
             }
-            else {
-                if (theAnimation.isCompleted()) {
-                    onAnimationComplete();
-                    animation = null;
-                }
-            }
-
         }
+    }
+
+    private void attachAnimation(GL11 gl, Animation theAnimation) {
+
+        if (theAnimation != null)
+            theAnimation.attach(gl, System.currentTimeMillis());
+
     }
 
     protected void ensureSelfPos(GL11 gl) {
@@ -80,34 +104,17 @@ public abstract class Drawable {
 
     protected abstract void onDraw(GL11 gl);
 
-    public void startAnimation(Animation animation) {
+    public synchronized void startAnimation(Animation animation) {
         if (animation == null) throw new IllegalArgumentException("animation null !");
 
         this.animation = animation;
         this.animation.start();
     }
 
-    public void cancelAnimation() {
-
+    public synchronized void cancelAnimation() {
+        animation = null;
     }
 
-    private void onAnimationComplete() {
-        final Animation temp = animation;
-
-        if (temp != null) {
-
-            new Thread() {
-
-                @Override
-                public void run() {
-                    Animation.AnimationListener listener = temp.getListener();
-                    if (listener != null) listener.onAnimationEnd(Drawable.this);
-                }
-
-            }.start();
-
-        }
-    }
 
     public boolean isVisible() {
         return visible;
@@ -163,6 +170,19 @@ public abstract class Drawable {
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
     }
+
+    public void enableBlend(int sFactor, int dFactor) {
+        blendFactor_S = sFactor;
+        blendFactor_D = dFactor;
+        blend = true;
+    }
+
+    public void disableBlend() {
+        blend = false;
+    }
+
+    private int blendFactor_S, blendFactor_D;
+    private boolean blend;
 
     private Camera camera;   //TODO
     protected float posX, posY, posZ;

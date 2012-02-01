@@ -52,8 +52,6 @@ public abstract class PointParticleSystem extends Drawable {
             throw new IllegalStateException("first generated particles size should smaller than " + maxParticleNum);
 
         this.particles = particles;
-
-        blend = true;
     }
 
     public void step() {
@@ -83,15 +81,6 @@ public abstract class PointParticleSystem extends Drawable {
         gl.glEnableClientState(GL_VERTEX_ARRAY);
         gl.glEnableClientState(GL_COLOR_ARRAY);
 
-        boolean blendState = blend;
-        if (blendState) {
-            gl.glEnable(GL_BLEND);
-            //gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            gl.glBlendFunc(GL_ONE, GL_ONE);
-
-            gl.glDisable(GL_DEPTH_TEST);
-        }
-
         texture.attach(gl);
 
         //An advantage of representing particles with point sprites is that texture coordinate generation can be handled by the system
@@ -120,7 +109,7 @@ public abstract class PointParticleSystem extends Drawable {
 
         gl.glDrawArrays(GL_POINTS, 0, liveCount / 2);
 
-        texture.unattach(gl);
+        texture.detach(gl);
 
         gl.glDisableClientState(GL_VERTEX_ARRAY);
         gl.glDisableClientState(GL_COLOR_ARRAY);
@@ -129,10 +118,6 @@ public abstract class PointParticleSystem extends Drawable {
             gl.glDisableClientState(GL11.GL_POINT_SIZE_ARRAY_OES);
 
         gl.glDisable(GL11.GL_POINT_SPRITE_OES);
-
-        if (blendState) {
-            gl.glDisable(GL_BLEND);
-        }
     }
 
     private int fillActive() {
@@ -169,7 +154,6 @@ public abstract class PointParticleSystem extends Drawable {
     }
 
     private boolean sameSize;
-    private boolean blend;
     private Texture texture;
     private int maxParticleNum;
     protected Particle particles[];

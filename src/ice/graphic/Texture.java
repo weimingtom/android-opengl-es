@@ -2,6 +2,7 @@ package ice.graphic;
 
 import android.graphics.Bitmap;
 import android.opengl.GLUtils;
+import ice.res.Res;
 
 import javax.microedition.khronos.opengles.GL11;
 import java.util.HashMap;
@@ -45,6 +46,10 @@ public class Texture implements GlRes {
         params = Params.DEFAULT;
     }
 
+    public Texture(int bitmapId) {
+        this(Res.getBitmap(bitmapId));
+    }
+
     @Override
     public void attach(GL11 gl) {
 
@@ -71,15 +76,27 @@ public class Texture implements GlRes {
             }
         }
 
+
+        blend = bitmap.hasAlpha();
+
+        if (blend) {
+            gl.glEnable(GL_BLEND);
+            gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            //gl.glBlendFunc(GL_ONE, GL_ONE);
+        }
+
         attachStatues = true;
     }
 
     @Override
-    public void unattach(GL11 gl) {
+    public void detach(GL11 gl) {
         if (!attachStatues)
             throw new IllegalStateException("Texture resource not attached before !");
 
         gl.glDisable(GL_TEXTURE_2D);
+
+        if (blend)
+            gl.glDisable(GL_BLEND);
 
         if (!coordSupliedBySystem)
             gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -135,6 +152,8 @@ public class Texture implements GlRes {
     public void setCoordSupliedBySystem(boolean coordSupliedBySystem) {
         this.coordSupliedBySystem = coordSupliedBySystem;
     }
+
+    private boolean blend;
 
     private boolean coordSupliedBySystem;
     private int xOffset, yOffset;
