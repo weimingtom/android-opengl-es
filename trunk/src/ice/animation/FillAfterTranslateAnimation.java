@@ -2,11 +2,6 @@ package ice.animation;
 
 import ice.node.Drawable;
 
-/**
- * User: Mike.Hu
- * Date: 11-11-30
- * Time: 上午10:50
- */
 public class FillAfterTranslateAnimation extends TranslateAnimation {
 
 
