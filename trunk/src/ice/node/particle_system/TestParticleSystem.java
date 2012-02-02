@@ -35,6 +35,7 @@ public class TestParticleSystem extends PointParticleSystem {
 
     public TestParticleSystem(int maxParticleNum, Texture texture) {
         super(maxParticleNum, texture, false);
+        enableDepthTestSwitch(false);
     }
 
     @Override

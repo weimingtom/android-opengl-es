@@ -8,9 +8,13 @@ import ice.graphic.Camera;
 
 import javax.microedition.khronos.opengles.GL11;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
+
+import static ice.model.Constants.SIZE_OF_FLOAT;
 import static javax.microedition.khronos.opengles.GL10.GL_BLEND;
 import static javax.microedition.khronos.opengles.GL10.GL_DEPTH_TEST;
-import static javax.microedition.khronos.opengles.GL10.GL_ONE;
 
 /**
  * User: ice
@@ -50,12 +54,18 @@ public abstract class Drawable {
 
         gl.glPushMatrix();
 
+        boolean switchDepthTest = switchDepthTestStates;
+        boolean depthTestStates = depthTest;
+        boolean storedDepthTest = false;
+
+        if (switchDepthTest)
+            storedDepthTest = ensureDepthTestSwitch(gl, depthTestStates);
+
         boolean blendState = blend;
 
         if (blendState) {
             gl.glEnable(GL_BLEND);
             gl.glBlendFunc(blendFactor_S, blendFactor_D);
-            //gl.glDisable(GL_DEPTH_TEST);
         }
 
         ensureSelfPos(gl);
@@ -70,7 +80,36 @@ public abstract class Drawable {
 
         if (blendState) gl.glDisable(GL_BLEND);
 
+        if (switchDepthTest && (depthTestStates != storedDepthTest))
+            restoreDepthTest(gl, storedDepthTest);
+
         gl.glPopMatrix();
+    }
+
+    private boolean ensureDepthTestSwitch(GL11 gl, boolean depthTestStates) {
+        ByteBuffer vfb = ByteBuffer.allocateDirect(SIZE_OF_FLOAT);
+        vfb.order(ByteOrder.nativeOrder());
+        IntBuffer currentDepthTest = vfb.asIntBuffer();
+
+        gl.glGetBooleanv(GL_DEPTH_TEST, currentDepthTest);
+
+        if (depthTestStates) {
+            gl.glEnable(GL_DEPTH_TEST);
+        }
+        else {
+            gl.glDisable(GL_DEPTH_TEST);
+        }
+
+        return currentDepthTest.get(0) != 0;
+    }
+
+    private void restoreDepthTest(GL11 gl, boolean storedDepthTest) {
+        if (storedDepthTest) {
+            gl.glEnable(GL_DEPTH_TEST);
+        }
+        else {
+            gl.glDisable(GL_DEPTH_TEST);
+        }
     }
 
     protected abstract void onDraw(GL11 gl);
@@ -177,6 +216,18 @@ public abstract class Drawable {
         if (posX != 0 || posY != 0 || posZ != 0)
             gl.glTranslatef(posX, posY, posZ);
     }
+
+    public void enableDepthTestSwitch(boolean depthTest) {
+        this.depthTest = depthTest;
+        switchDepthTestStates = true;
+    }
+
+    public void disableDepthTestSwitch() {
+        switchDepthTestStates = false;
+    }
+
+    private boolean depthTest;
+    private boolean switchDepthTestStates;
 
     private int blendFactor_S, blendFactor_D;
     private boolean blend;
