@@ -104,5 +104,5 @@ public class DrawableParent<T extends Drawable> extends Drawable {
         return children.get(children.size() - 1);
     }
 
-    protected List<T> children;
+    private List<T> children;
 }
