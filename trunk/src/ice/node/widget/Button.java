@@ -10,14 +10,14 @@ import static android.view.MotionEvent.*;
  * Date: 11-12-2
  * Time: 下午12:09
  */
-public class ButtonTile extends TextureTile {
+public class Button extends TextureGrid {
 
     public interface OnClickListener {
-        void onClick(ButtonTile btn);
+        void onClick(Button btn);
     }
 
 
-    public ButtonTile(Bitmap tileNormal, Bitmap tilePressed) {
+    public Button(Bitmap tileNormal, Bitmap tilePressed) {
         super(tileNormal);
         this.iconNormal = tileNormal;
         this.iconPressed = tilePressed;
