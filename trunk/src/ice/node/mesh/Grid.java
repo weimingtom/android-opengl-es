@@ -3,6 +3,7 @@ package ice.node.mesh;
 import ice.model.vertex.*;
 
 /**
+ * 中心在左上点.
  * User: ice
  * Date: 11-11-22
  * Time: 下午6:22
