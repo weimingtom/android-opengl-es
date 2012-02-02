@@ -12,10 +12,6 @@ public interface App {
 
     int getHeight();
 
-    float getZNear();
-
-    float getZFar();
-
     void exit();
 
     void intent(Class<? extends SceneProvider> to);

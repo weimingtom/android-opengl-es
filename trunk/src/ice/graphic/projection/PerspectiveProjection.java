@@ -1,13 +1,27 @@
 package ice.graphic.projection;
 
 import android.opengl.GLU;
+import ice.engine.EngineContext;
 
+import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import static javax.microedition.khronos.opengles.GL11.GL_MODELVIEW;
 import static javax.microedition.khronos.opengles.GL11.GL_PROJECTION;
 
 /**
+ * gl.glFrustumf(-width / 2, width / 2, -height / 2, height / 2, zNear, zFar);
+ * 与
+ * glu.gluPerspective(
+ * gl,
+ * fovy,
+ * (float) width / (float) height,
+ * zNear,
+ * zFar
+ * );
+ * 等价.
+ * <p/>
+ * <p/>
  * User: Jason
  * Date: 11-12-3
  * Time: 下午5:43
@@ -38,6 +52,31 @@ public class PerspectiveProjection implements Projection {
 
         gl.glMatrixMode(GL_MODELVIEW);
         gl.glLoadIdentity();
+
+        //double halfFovy = Math.toRadians(fovy / 2.0f);
+        // float zEye = (float) (height / (2 * Math.tan(halfFovy)));
+//        GLU.gluLookAt(
+//                gl,
+//
+//                width / 2,
+//                height / 2,
+//                near,
+//
+//                width / 2,
+//                height / 2,
+//                zFar,
+//
+//                0.0f,
+//                1.0f,
+//                0.0f
+//        );
+    }
+
+    public float getZFarOfWindow() {
+        double halfFovy = Math.toRadians(fovy / 2.0f);
+        int height = EngineContext.getInstance().getApp().getHeight();
+
+        return (float) (height / (2 * Math.tan(halfFovy)));
     }
 
 

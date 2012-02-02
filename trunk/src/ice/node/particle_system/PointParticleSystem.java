@@ -66,6 +66,7 @@ public abstract class PointParticleSystem extends Drawable {
 
     @Override
     protected void onDraw(GL11 gl) {
+
         int liveCount = fillActive();
 
         if (liveCount > 0) {

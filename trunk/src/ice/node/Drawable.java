@@ -76,8 +76,6 @@ public abstract class Drawable {
     protected abstract void onDraw(GL11 gl);
 
     public synchronized void startAnimation(Animation animation) {
-        if (animation == null) throw new IllegalArgumentException("animation null !");
-
         this.animation = animation;
         this.animation.start();
     }

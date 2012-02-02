@@ -3,6 +3,7 @@ package ice.engine;
 import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
+import android.util.Log;
 import ice.graphic.Primitives;
 import ice.graphic.projection.PerspectiveProjection;
 import ice.graphic.projection.Projection;
@@ -61,6 +62,8 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         onFrame(gl);
 
+        coordinate.draw(gl);
+
         drawDispatcher.draw(gl);
 
         log(gl);
@@ -74,11 +77,14 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         App app = EngineContext.getInstance().getApp();
 
-        float z = projection instanceof PerspectiveProjection ? 0.01f - app.getZFar() : 0;
+        float z = 0;
 
-        gl.glTranslatef(-(app.getWidth() >> 1), -(app.getHeight() >> 1), z);
+        if (projection instanceof PerspectiveProjection) { //移动z到窗口
+            PerspectiveProjection perspectiveProjection = (PerspectiveProjection) projection;
+            z = -0.1f - perspectiveProjection.getZFarOfWindow();
+        }
 
-        coordinate.draw(gl);
+        gl.glTranslatef(-(app.getWidth() / 2.0f), -(app.getHeight() / 2.0f), z);
     }
 
 
@@ -125,13 +131,12 @@ public class GlRenderer implements GLSurfaceView.Renderer {
                 gl.glEnable(GL_POINT_SMOOTH);
 
                 RectF rect = new RectF(0, 0, width, height);
-                rect.inset(12, 9);
                 Primitives.drawRect(gl, rect);
 
-                Primitives.drawCircle(gl, 100, 100, 100, 0, 50, true);
+                Primitives.drawCircle(gl, 0, 0, height / 2, 0, 50, true);
 
                 gl.glPointSize(10);
-                Primitives.drawPoint(gl, 12, 9);
+                Primitives.drawPoint(gl, 0, 0);
                 gl.glPointSize(1);
             }
         };
