@@ -1,23 +1,27 @@
 package ice.node.widget;
 
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.graphics.PointF;
 import ice.graphic.Texture;
 import ice.node.mesh.Grid;
+import ice.res.Res;
 
 /**
  * User: ice
  * Date: 11-11-30
  * Time: 下午12:31
  */
-public class TextureTile extends Grid {
+public class TextureGrid extends Grid {
 
-    public TextureTile(Bitmap bitmap) {
+    public TextureGrid(int bitmapId) {
+        this(Res.getBitmap(bitmapId));
+    }
+
+    public TextureGrid(Bitmap bitmap) {
         this(bitmap, new PointF());
     }
 
-    public TextureTile(Bitmap bitmap, PointF pos) {
+    public TextureGrid(Bitmap bitmap, PointF pos) {
         super(bitmap.getWidth(), bitmap.getHeight());
 
         setPos(pos.x, pos.y, 0);

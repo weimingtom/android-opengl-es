@@ -9,6 +9,7 @@ public class RotateAnimation extends Animation {
         super(duration);
         this.fromAngle = fromAngle;
         this.toAngle = toAngle;
+        rotateZ = 1;
     }
 
 

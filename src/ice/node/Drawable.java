@@ -153,6 +153,11 @@ public abstract class Drawable {
         return false;
     }
 
+    public void setPos(float posX, float posY) {
+        this.posX = posX;
+        this.posY = posY;
+    }
+
     public void setPos(float posX, float posY, float posZ) {
         this.posX = posX;
         this.posY = posY;
