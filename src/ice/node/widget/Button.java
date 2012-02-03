@@ -2,6 +2,7 @@ package ice.node.widget;
 
 import android.graphics.Bitmap;
 import android.view.MotionEvent;
+import ice.res.Res;
 
 import static android.view.MotionEvent.*;
 
@@ -21,6 +22,12 @@ public class Button extends TextureGrid {
         super(tileNormal);
         this.iconNormal = tileNormal;
         this.iconPressed = tilePressed;
+    }
+
+    public Button(int tileNormalId, int tilePressedId) {
+        super(tileNormalId);
+        this.iconNormal = Res.getBitmap(tileNormalId);
+        this.iconPressed = Res.getBitmap(tilePressedId);
     }
 
     @Override

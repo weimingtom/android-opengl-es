@@ -33,8 +33,8 @@ public class TextureGrid extends Grid {
     public boolean hitTest(int x, int y) {
         return x >= posX
                 && x <= posX + width
-                && y >= posY
-                && y <= posY + height;
+                && y <= posY
+                && y >= posY - height;
     }
 
 }
