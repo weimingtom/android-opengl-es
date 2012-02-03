@@ -1,6 +1,7 @@
 package ice.node;
 
 import android.view.MotionEvent;
+import ice.engine.EngineContext;
 
 import javax.microedition.khronos.opengles.GL11;
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class DrawableParent<T extends Drawable> extends Drawable {
         float originalX = event.getX();
         float originalY = event.getY();
 
-        event.setLocation(originalX - posX, originalY - posY);
+        event.setLocation(originalX - posX, EngineContext.getAppHeight() - originalY - posY);
 
         try {
             for (Drawable child : children) {
