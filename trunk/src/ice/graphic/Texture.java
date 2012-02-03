@@ -10,6 +10,9 @@ import java.util.Map;
 
 import static javax.microedition.khronos.opengles.GL11.*;
 
+/**
+ * 在GL2.0以下版本如果硬件支持GL_APPLE_texture_2D_limited_npot，就无需考虑纹理宽高 POT的问题.
+ */
 public class Texture implements GlRes {
 
     public static class Params {
