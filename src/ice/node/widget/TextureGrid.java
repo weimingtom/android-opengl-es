@@ -28,13 +28,4 @@ public class TextureGrid extends Grid {
 
         bindTexture(new Texture(bitmap));
     }
-
-
-    public boolean hitTest(int x, int y) {
-        return x >= posX
-                && x <= posX + width
-                && y <= posY
-                && y >= posY - height;
-    }
-
 }

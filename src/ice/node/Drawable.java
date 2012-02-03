@@ -2,12 +2,11 @@ package ice.node;
 
 
 import android.view.MotionEvent;
-import android.view.animation.AnimationUtils;
 import ice.animation.Animation;
+import ice.engine.EngineContext;
 import ice.graphic.Camera;
 
 import javax.microedition.khronos.opengles.GL11;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -22,6 +21,10 @@ import static javax.microedition.khronos.opengles.GL10.GL_DEPTH_TEST;
  * Time: 上午10:40
  */
 public abstract class Drawable {
+
+    public interface OnTouchListener {
+        boolean onTouch(Drawable drawable, MotionEvent event);
+    }
 
     private static long maxId;
 
@@ -86,6 +89,15 @@ public abstract class Drawable {
         gl.glPopMatrix();
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+
     private boolean ensureDepthTestSwitch(GL11 gl, boolean depthTestStates) {
         ByteBuffer vfb = ByteBuffer.allocateDirect(SIZE_OF_FLOAT);
         vfb.order(ByteOrder.nativeOrder());
@@ -149,8 +161,34 @@ public abstract class Drawable {
         return removable;
     }
 
-    public boolean onTouchEvent(MotionEvent event) {
-        return false;
+    public boolean hitTest(int x, int y) {
+        return x >= posX
+                && x <= posX + width
+                && y <= posY
+                && y >= posY - height;
+    }
+
+    public final boolean onTouchEvent(MotionEvent event) {
+        float originalX = event.getX();
+        float originalY = event.getY();
+
+        boolean handled = false;
+
+        event.setLocation(originalX - posX, EngineContext.getAppHeight() - originalY - posY);
+        try {
+            handled = onTouch(event);
+        }
+        finally {
+            event.setLocation(originalX, originalY);
+        }
+
+        return handled;
+    }
+
+    protected boolean onTouch(MotionEvent event) {
+        return onTouchListener == null
+                ? false
+                : onTouchListener.onTouch(this, event);
     }
 
     public void setPos(float posX, float posY) {
@@ -231,17 +269,25 @@ public abstract class Drawable {
         switchDepthTestStates = false;
     }
 
+    public void setOnTouchListener(OnTouchListener onTouchListener) {
+        this.onTouchListener = onTouchListener;
+    }
+
     private boolean depthTest;
     private boolean switchDepthTestStates;
 
     private int blendFactor_S, blendFactor_D;
     private boolean blend;
 
+    private OnTouchListener onTouchListener;
+
     private Camera camera;   //TODO
     protected float posX, posY, posZ;
     //private int width, height;
     protected boolean visible;
     protected boolean removable;
+    protected int width, height;
+
     //private DrawableParent parent;
     private Animation animation;
 

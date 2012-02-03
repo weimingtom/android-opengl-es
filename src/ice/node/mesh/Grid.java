@@ -23,14 +23,6 @@ public class Grid extends Mesh {
         this.stepY = stepY;
     }
 
-    public int getHeight() {
-        return height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
     private static VertexData createVertexData(int width, int height, int stepX, int stepY, boolean vboMode) {
 
         VertexAttribute[] attributesArray = new VertexAttribute[]{
@@ -148,6 +140,5 @@ public class Grid extends Mesh {
         return vertexData;
     }
 
-    protected int width, height;
     private int stepX, stepY;
 }
