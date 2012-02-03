@@ -1,7 +1,6 @@
 package ice.node;
 
 import android.view.MotionEvent;
-import ice.engine.EngineContext;
 
 import javax.microedition.khronos.opengles.GL11;
 import java.util.ArrayList;
@@ -28,6 +27,8 @@ public class DrawableParent<T extends Drawable> extends Drawable {
         else {
             children = new CopyOnWriteArrayList<T>();
         }
+
+        setupTouchDispatcher();
     }
 
     @Override
@@ -51,10 +52,10 @@ public class DrawableParent<T extends Drawable> extends Drawable {
         children.add(child);
     }
 
-
     public void addChildren(T... children) {
         addChildren(Arrays.asList(children));
     }
+
 
     public void addChildren(Collection<? extends T> children) {
 
@@ -65,37 +66,13 @@ public class DrawableParent<T extends Drawable> extends Drawable {
         this.children.addAll(children);
     }
 
-
     public boolean containsChild(Drawable child) {
         return children.contains(child);
     }
 
+
     public void remove(T child) {
         children.remove(child);
-    }
-
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        float originalX = event.getX();
-        float originalY = event.getY();
-
-        event.setLocation(originalX - posX, EngineContext.getAppHeight() - originalY - posY);
-
-        try {
-            for (Drawable child : children) {
-
-                if (child.onTouchEvent(event)) {
-                    return true;
-                }
-
-            }
-        }
-        finally {
-            event.setLocation(originalX, originalY);
-        }
-
-        return super.onTouchEvent(event);
     }
 
     public T top() {
@@ -103,6 +80,21 @@ public class DrawableParent<T extends Drawable> extends Drawable {
             return null;
 
         return children.get(children.size() - 1);
+    }
+
+    private void setupTouchDispatcher() {
+        OnTouchListener TouchEventDispatcher = new OnTouchListener() {
+            @Override
+            public boolean onTouch(Drawable drawable, MotionEvent event) {
+
+                for (Drawable child : children) {
+                    if (child.onTouch(event)) return true;
+                }
+
+                return false;
+            }
+        };
+        setOnTouchListener(TouchEventDispatcher);
     }
 
     private List<T> children;
