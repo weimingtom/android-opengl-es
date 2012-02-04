@@ -24,12 +24,18 @@ public class Button extends TextureGrid {
     }
 
     public Button(Bitmap tileNormal, Bitmap tilePressed) {
+        this(tileNormal, tilePressed, null);
+    }
+
+    public Button(Bitmap tileNormal, Bitmap tilePressed, Bitmap locked) {
         super(tileNormal);
         this.iconNormal = tileNormal;
         this.iconPressed = tilePressed;
+        this.locked = locked;
 
         setupOnClickHandler();
     }
+
 
     protected void onClick() {
         if (onClickListener != null) {
@@ -111,7 +117,7 @@ public class Button extends TextureGrid {
     private boolean focusing;
     private boolean disabled;
     private OnClickListener onClickListener;
-    private Bitmap iconNormal, iconPressed;
+    private Bitmap iconNormal, iconPressed, locked;
 
 
 }
