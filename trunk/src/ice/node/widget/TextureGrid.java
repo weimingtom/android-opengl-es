@@ -27,12 +27,35 @@ public class TextureGrid extends Grid {
         setPos(pos.x, pos.y, 0);
     }
 
-    public TextureGrid(int width, int height, int bitmapId) {
-        this(width, height, Res.getBitmap(bitmapId));
+    public TextureGrid(float width, float height) {
+        this(width, height, 0);
     }
 
-    public TextureGrid(int width, int height, Bitmap bitmap) {
+    public TextureGrid(float width, float height, int bitmapId) {
+        this(
+                width,
+                height,
+                bitmapId == 0 ? null : Res.getBitmap(bitmapId)
+        );
+    }
+
+    public TextureGrid(float width, float height, Bitmap bitmap) {
         super(width, height);
-        bindTexture(new Texture(bitmap));
+
+        if (bitmap != null)
+            setBitmap(bitmap);
+    }
+
+    public void setBitmap(int bitmap) {
+        setBitmap(Res.getBitmap(bitmap));
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        if (texture != null) {
+            texture.setBitmap(bitmap);
+        }
+        else {
+            bindTexture(new Texture(bitmap));
+        }
     }
 }

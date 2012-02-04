@@ -10,11 +10,11 @@ import ice.model.vertex.*;
  */
 public class Grid extends Mesh {
 
-    public Grid(int width, int height) {
+    public Grid(float width, float height) {
         this(width, height, 1, 1, false);
     }
 
-    public Grid(int width, int height, int stepX, int stepY, boolean vboMode) {
+    public Grid(float width, float height, int stepX, int stepY, boolean vboMode) {
         super(createVertexData(width, height, stepX, stepY, vboMode));
 
         this.width = width;
@@ -23,7 +23,7 @@ public class Grid extends Mesh {
         this.stepY = stepY;
     }
 
-    private static VertexData createVertexData(int width, int height, int stepX, int stepY, boolean vboMode) {
+    private static VertexData createVertexData(float width, float height, int stepX, int stepY, boolean vboMode) {
 
         VertexAttribute[] attributesArray = new VertexAttribute[]{
                 new VertexAttribute(

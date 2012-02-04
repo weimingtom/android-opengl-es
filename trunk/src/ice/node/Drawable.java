@@ -89,11 +89,11 @@ public abstract class Drawable {
         gl.glPopMatrix();
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
@@ -286,7 +286,7 @@ public abstract class Drawable {
     //private int width, height;
     protected boolean visible;
     protected boolean removable;
-    protected int width, height;
+    protected float width, height;
 
     //private DrawableParent parent;
     private Animation animation;
