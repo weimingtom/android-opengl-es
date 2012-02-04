@@ -20,22 +20,39 @@ public class Button extends TextureGrid {
     }
 
     public Button(int tileNormalId, int tilePressedId) {
-        this(Res.getBitmap(tileNormalId), Res.getBitmap(tilePressedId));
+        this(tileNormalId, tilePressedId, 0);
+    }
+
+    public Button(int tileNormalId, int tilePressedId, int lockedId) {
+        this(
+                Res.getBitmap(tileNormalId),
+                Res.getBitmap(tilePressedId),
+                lockedId == 0 ? null : Res.getBitmap(lockedId)
+        );
     }
 
     public Button(Bitmap tileNormal, Bitmap tilePressed) {
         this(tileNormal, tilePressed, null);
     }
 
-    public Button(Bitmap tileNormal, Bitmap tilePressed, Bitmap locked) {
-        super(tileNormal);
-        this.iconNormal = tileNormal;
-        this.iconPressed = tilePressed;
-        this.locked = locked;
-
-        setupOnClickHandler();
+    public Button(float width, float height) {
+        super(width, height);
     }
 
+    public Button(Bitmap tileNormal, Bitmap tilePressed, Bitmap locked) {
+        super(tileNormal);
+
+        setBitmaps(tileNormal, tilePressed, locked);
+        setOnTouchListener(new ClickHandler());
+    }
+
+    public void setBitmaps(Bitmap iconNormal, Bitmap iconPressed, Bitmap locked) {
+        this.iconNormal = iconNormal;
+        this.iconPressed = iconPressed;
+        this.locked = locked;
+
+        setBitmap(iconNormal);
+    }
 
     protected void onClick() {
         if (onClickListener != null) {
@@ -56,68 +73,83 @@ public class Button extends TextureGrid {
         this.disabled = disabled;
     }
 
+    protected void onGetTouchFocus() {
+        setBitmap(iconPressed);
+    }
 
-    private void setupOnClickHandler() {
-        OnTouchListener onTouchListener = new OnTouchListener() {
+    protected void onLostTouchFocus() {
+        setBitmap(lock ? locked : iconNormal);
+    }
 
-            private boolean hitTest;
+    public boolean isLock() {
+        return lock;
+    }
 
-            @Override
-            public boolean onTouch(Drawable drawable, MotionEvent event) {
-                if (!visible || disabled) return false;
+    public void setLock(boolean lock) {
 
-                int action = event.getAction();
-
-                int x = (int) event.getX();
-                int y = (int) event.getY();
-
-                boolean hitTest = hitTest(x, y);
-
-                if (hitTest) {
-                    this.hitTest = true;
-                }
-                else {
-                    if (this.hitTest) {
-                        action = ACTION_CANCEL;
-                        this.hitTest = false;
-                    }
-                    else {
-                        this.hitTest = false;
-                        return false;
-                    }
-                }
-
-                if (action == ACTION_UP) {
-                    if (focusing) {
-                        focusing = false;
-                        texture.setBitmap(iconNormal);
-                        onClick();
-                        return true;
-                    }
-                }
-                else if (action == ACTION_CANCEL) {
-                    if (focusing) {
-                        focusing = false;
-                        texture.setBitmap(iconNormal);
-                    }
-                }
-                else {
-                    if (!focusing) {
-                        focusing = true;
-                        texture.setBitmap(iconPressed);
-                    }
-                }
-
-                return false;
-            }
-        };
-        setOnTouchListener(onTouchListener);
+        if (this.lock != lock) {
+            this.lock = lock;
+            texture.setBitmap(lock ? locked : iconNormal);
+        }
     }
 
     private boolean focusing;
     private boolean disabled;
+    protected boolean lock;
     private OnClickListener onClickListener;
-    private Bitmap iconNormal, iconPressed, locked;
+    protected Bitmap iconNormal, iconPressed, locked;
 
+    public class ClickHandler implements OnTouchListener {
 
+        @Override
+        public boolean onTouch(Drawable drawable, MotionEvent event) {
+            if (!isVisible() || disabled) return false;
+
+            int action = event.getAction();
+
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+
+            boolean hitTest = hitTest(x, y);
+
+            if (hitTest) {
+                this.hitTest = true;
+            }
+            else {
+                if (this.hitTest) {
+                    action = MotionEvent.ACTION_CANCEL;
+                    this.hitTest = false;
+                }
+                else {
+                    this.hitTest = false;
+                    return false;
+                }
+            }
+
+            if (action == MotionEvent.ACTION_UP) {
+                if (focusing) {
+                    focusing = false;
+                    onLostTouchFocus();
+                    onClick();
+                    return true;
+                }
+            }
+            else if (action == MotionEvent.ACTION_CANCEL) {
+                if (focusing) {
+                    focusing = false;
+                    onLostTouchFocus();
+                }
+            }
+            else {
+                if (!focusing) {
+                    focusing = true;
+                    onGetTouchFocus();
+                }
+            }
+
+            return false;
+        }
+
+        private boolean hitTest;
+    }
 }
