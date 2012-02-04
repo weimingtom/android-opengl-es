@@ -3,7 +3,6 @@ package ice.engine;
 import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
-import android.util.Log;
 import ice.graphic.Primitives;
 import ice.graphic.projection.PerspectiveProjection;
 import ice.graphic.projection.Projection;
@@ -52,7 +51,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         projection.setUp(gl, width, height);
 
-        coordinate = coordinate(width, height);
+        coordinate = coordinate();
     }
 
     @Override
@@ -122,7 +121,8 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
     }
 
-    private Drawable coordinate(final int width, final int height) {
+
+    private Drawable coordinate() {
 
         return new Drawable() {
 
