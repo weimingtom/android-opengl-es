@@ -1,5 +1,6 @@
 package ice.node.particle_system;
 
+import android.view.animation.AnimationUtils;
 import ice.graphic.Texture;
 import ice.node.Drawable;
 
@@ -52,7 +53,7 @@ public abstract class ParticleSystem extends Drawable {
 
     public void step() {
         if (!inited) throw new IllegalStateException("particles not setup yet !");
-        onUpdateParticles(particles, System.currentTimeMillis());
+        onUpdateParticles(particles, AnimationUtils.currentAnimationTimeMillis());
     }
 
     protected abstract Particle[] onSetupParticles(int maxParticleNum);

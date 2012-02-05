@@ -2,6 +2,7 @@ package ice.node;
 
 
 import android.view.MotionEvent;
+import android.view.animation.AnimationUtils;
 import ice.animation.Animation;
 import ice.engine.EngineContext;
 import ice.graphic.Camera;
@@ -129,6 +130,7 @@ public abstract class Drawable {
     public synchronized void startAnimation(Animation animation) {
         this.animation = animation;
         this.animation.start();
+        setVisible(true);
     }
 
     public synchronized void cancelAnimation() {
@@ -234,7 +236,7 @@ public abstract class Drawable {
     private void attachAnimation(GL11 gl, Animation theAnimation) {
 
         if (theAnimation != null)
-            theAnimation.attach(gl, System.currentTimeMillis());
+            theAnimation.attach(gl, AnimationUtils.currentAnimationTimeMillis());
 
     }
 
