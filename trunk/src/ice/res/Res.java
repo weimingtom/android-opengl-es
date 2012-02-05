@@ -108,4 +108,7 @@ public class Res {
     }
 
 
+    public static String getText(int id) {
+        return context.getText(id).toString();
+    }
 }

@@ -37,6 +37,7 @@ public class Button extends TextureGrid {
 
     public Button(float width, float height) {
         super(width, height);
+        setOnTouchListener(new ClickHandler());
     }
 
     public Button(Bitmap tileNormal, Bitmap tilePressed, Bitmap locked) {
@@ -44,6 +45,14 @@ public class Button extends TextureGrid {
 
         setBitmaps(tileNormal, tilePressed, locked);
         setOnTouchListener(new ClickHandler());
+    }
+
+    public void setBitmaps(int iconNormal, int iconPressed, int locked) {
+        setBitmaps(
+                Res.getBitmap(iconNormal),
+                Res.getBitmap(iconPressed),
+                locked == 0 ? null : Res.getBitmap(locked)
+        );
     }
 
     public void setBitmaps(Bitmap iconNormal, Bitmap iconPressed, Bitmap locked) {

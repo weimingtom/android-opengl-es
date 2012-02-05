@@ -1,6 +1,9 @@
 package ice.node.widget;
 
+import android.graphics.Color;
 import ice.node.mesh.Grid;
+
+import javax.microedition.khronos.opengles.GL11;
 
 /**
  * User: Jason
@@ -9,11 +12,25 @@ import ice.node.mesh.Grid;
  */
 public class ColorBlock extends Grid {
 
-    public ColorBlock(int width, int height, int i) {
+    public ColorBlock(int color, float width, float height) {
         super(width, height);
+        this.color = color;
     }
 
-    public ColorBlock(int red, float width, float height) {
-        super(width, height);    //To change body of overridden methods use File | Settings | File Templates.
+    @Override
+    protected void onDraw(GL11 gl) {
+
+        gl.glColor4f(
+                Color.red(color) / 255f,
+                Color.green(color) / 255f,
+                Color.blue(color) / 255f,
+                1
+        );
+
+        super.onDraw(gl);
+
+        gl.glColor4f(1, 1, 1, 1);
     }
+
+    private int color;
 }

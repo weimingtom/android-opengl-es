@@ -11,6 +11,8 @@ import ice.node.DrawableParent;
  */
 public class Scene extends DrawableParent<Drawable> {
 
+
+
     @Override
     public float getWidth() {
         return EngineContext.getAppWidth();

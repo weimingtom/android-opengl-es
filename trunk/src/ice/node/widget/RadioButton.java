@@ -13,6 +13,10 @@ public class RadioButton extends Button {
         void onToggled(RadioButton radioButton);
     }
 
+    public RadioButton(float width, float height) {
+        super(width, height);
+    }
+
     public RadioButton(int tileNormalId, int tilePressedId, int lockedId) {
         super(tileNormalId, tilePressedId, lockedId);
     }

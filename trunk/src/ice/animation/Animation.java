@@ -1,5 +1,6 @@
 package ice.animation;
 
+import android.view.animation.AnimationUtils;
 import ice.animation.Interpolator.AccelerateDecelerateInterpolator;
 import ice.animation.Interpolator.Interpolator;
 import ice.node.Drawable;
@@ -23,7 +24,7 @@ public abstract class Animation {
     }
 
     public void start() {
-        startTime = System.currentTimeMillis();
+        startTime = AnimationUtils.currentAnimationTimeMillis();
     }
 
     public void cancel() {
