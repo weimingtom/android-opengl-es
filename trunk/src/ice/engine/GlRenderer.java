@@ -61,9 +61,9 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         onFrame(gl);
 
-        coordinate.draw(gl);
-
         drawDispatcher.draw(gl);
+
+        coordinate.draw(gl);
 
         log(gl);
     }
@@ -128,12 +128,15 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
             @Override
             protected void onDraw(GL11 gl) {
+                int appWidth = EngineContext.getAppWidth();
+                int appHeight = EngineContext.getAppHeight();
+
                 gl.glEnable(GL_POINT_SMOOTH);
 
-                RectF rect = new RectF(0, 0, width, height);
+                RectF rect = new RectF(0, 0, appWidth, appHeight);
                 Primitives.drawRect(gl, rect);
 
-                Primitives.drawCircle(gl, 0, 0, height / 2, 0, 50, true);
+                Primitives.drawCircle(gl, 0, 0, appHeight / 2, 0, 50, true);
 
                 gl.glPointSize(10);
                 Primitives.drawPoint(gl, 0, 0);
