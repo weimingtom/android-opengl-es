@@ -3,6 +3,7 @@ package ice.node.widget;
 import android.view.animation.AnimationUtils;
 import ice.animation.Interpolator.AccelerateDecelerateInterpolator;
 import ice.animation.Interpolator.Interpolator;
+import ice.model.Point3F;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -32,25 +33,32 @@ public class ComesMoreText extends TextGrid {
 
         long sub = current - startStamp;
 
-        boolean clip = sub < during;
+        finished = sub > during;
 
-        if (clip) {
+        if (!finished) {
             gl.glEnable(GL_SCISSOR_TEST);
 
             float interpolatedTime = interpolator.getInterpolation(sub / (float) during);
 
             currentScissor = (int) (getRealWidth() * interpolatedTime) + 1;
 
-            gl.glScissor(0, (int) (getAbsolutePos().y - height), currentScissor, (int) height);
+            Point3F absolutePos = getAbsolutePos();
+
+            gl.glScissor((int) absolutePos.x, (int) (absolutePos.y - height), currentScissor, (int) height);
         }
 
         super.onDraw(gl);
 
-        if (clip)
+        if (!finished)
             gl.glDisable(GL_SCISSOR_TEST);
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 
     private long during;
     private long startStamp;
+    private boolean finished;
     private int currentScissor;
 }

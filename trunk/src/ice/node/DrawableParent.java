@@ -95,5 +95,5 @@ public class DrawableParent<T extends Drawable> extends Drawable {
         setOnTouchListener(TouchEventDispatcher);
     }
 
-    private List<T> children;
+    protected List<T> children;
 }

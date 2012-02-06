@@ -20,6 +20,9 @@ public class TextGrid extends TextureGrid {
         setText(text, Color.WHITE, height);
     }
 
+    public void setText(String text) {
+        setText(text, Color.WHITE, (int) height);
+    }
 
     public void setText(String text, int color, int size) {
         this.text = text;
