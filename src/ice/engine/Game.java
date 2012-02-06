@@ -39,9 +39,7 @@ public abstract class Game extends Activity implements App {
         Class<? extends SceneProvider> entryProvider = getEntry();//启动时，保证是主界面的入口
         providerStack.push(entryProvider);
 
-        Class<? extends SceneProvider> providerClass = providerStack.peek();
-
-        topProvider = buildInstance(providerClass);
+        topProvider = buildInstance(entryProvider);
         topProvider.onCreate();
     }
 
