@@ -46,11 +46,15 @@ public class TextGrid extends TextureGrid {
 
         Rect region = new Rect(0, 0, (int) width, size);
 
-        TextDrawer.drawTextInLine(canvas, painter, text, region, alignCenter);
+        realWidth = TextDrawer.drawTextInLine(canvas, painter, text, region, alignCenter);
         return textTexture;
     }
 
-//    @Override
+    public float getRealWidth() {
+        return realWidth;
+    }
+
+    //    @Override
 //    protected void onDraw(GL11 gl) {
 //        gl.glEnable(GL_SCISSOR_TEST);
 //
@@ -62,5 +66,6 @@ public class TextGrid extends TextureGrid {
 //    }
 
     private String text;
+    private float realWidth;
     private boolean alignCenter;
 }
