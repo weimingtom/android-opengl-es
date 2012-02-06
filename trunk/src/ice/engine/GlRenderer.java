@@ -124,7 +124,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
     private Drawable coordinate() {
 
-        return new Drawable() {
+        Drawable coordinate = new Drawable() {
 
             @Override
             protected void onDraw(GL11 gl) {
@@ -143,6 +143,8 @@ public class GlRenderer implements GLSurfaceView.Renderer {
                 gl.glPointSize(1);
             }
         };
+
+        return coordinate;
     }
 
     private Drawable coordinate;

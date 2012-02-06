@@ -6,6 +6,7 @@ import android.view.animation.AnimationUtils;
 import ice.animation.Animation;
 import ice.engine.EngineContext;
 import ice.graphic.Camera;
+import ice.model.Point3F;
 
 import javax.microedition.khronos.opengles.GL11;
 import java.nio.ByteBuffer;
@@ -275,6 +276,22 @@ public abstract class Drawable {
         this.onTouchListener = onTouchListener;
     }
 
+    public Point3F getAbsolutePos() {
+        Point3F absolute = new Point3F(posX, posY, posZ);
+
+        if (parent != null) {
+            absolute.x += parent.posX;
+            absolute.y += parent.posY;
+            absolute.z += parent.posZ;
+        }
+
+        return absolute;
+    }
+
+    protected void setParent(DrawableParent parent) {
+        this.parent = parent;
+    }
+
     private boolean depthTest;
     private boolean switchDepthTestStates;
 
@@ -290,7 +307,11 @@ public abstract class Drawable {
     protected boolean removable;
     protected float width, height;
 
-    //private DrawableParent parent;
+    /**
+     * 用于获取绝对位置
+     */
+    private DrawableParent parent;
+
     private Animation animation;
 
     private long id;
