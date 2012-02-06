@@ -280,9 +280,10 @@ public abstract class Drawable {
         Point3F absolute = new Point3F(posX, posY, posZ);
 
         if (parent != null) {
-            absolute.x += parent.posX;
-            absolute.y += parent.posY;
-            absolute.z += parent.posZ;
+            Point3F parentAbsolutePos = parent.getAbsolutePos();
+            absolute.x += parentAbsolutePos.x;
+            absolute.y += parentAbsolutePos.y;
+            absolute.z += parentAbsolutePos.z;
         }
 
         return absolute;
