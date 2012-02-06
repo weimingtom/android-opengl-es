@@ -46,10 +46,7 @@ public class DrawableParent<T extends Drawable> extends Drawable {
     }
 
     public void addChild(T child) {
-
-        if (child == null) throw new NullPointerException();
-
-        children.add(child);
+        addChildren(child);
     }
 
     public void addChildren(T... children) {
@@ -61,6 +58,7 @@ public class DrawableParent<T extends Drawable> extends Drawable {
 
         for (Drawable child : children) {
             if (child == null) throw new NullPointerException();
+            child.setParent(this);
         }
 
         this.children.addAll(children);
