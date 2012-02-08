@@ -57,17 +57,6 @@ public class TextGrid extends TextureGrid {
         return realWidth;
     }
 
-    //    @Override
-//    protected void onDraw(GL11 gl) {
-//        gl.glEnable(GL_SCISSOR_TEST);
-//
-//        gl.glScissor(0, (int) (getAbsolutePos().y - height), (int) width, (int) height);
-//
-//        super.onDraw(gl);
-//
-//        gl.glDisable(GL_SCISSOR_TEST);
-//    }
-
     private String text;
     private float realWidth;
     private boolean alignCenter;

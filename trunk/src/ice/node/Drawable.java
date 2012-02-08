@@ -7,13 +7,10 @@ import ice.animation.Animation;
 import ice.engine.EngineContext;
 import ice.graphic.Camera;
 import ice.model.Point3F;
+import ice.util.GlUtil;
 
 import javax.microedition.khronos.opengles.GL11;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
 
-import static ice.model.Constants.SIZE_OF_FLOAT;
 import static javax.microedition.khronos.opengles.GL10.GL_BLEND;
 import static javax.microedition.khronos.opengles.GL10.GL_DEPTH_TEST;
 
@@ -101,11 +98,8 @@ public abstract class Drawable {
 
 
     private boolean ensureDepthTestSwitch(GL11 gl, boolean depthTestStates) {
-        ByteBuffer vfb = ByteBuffer.allocateDirect(SIZE_OF_FLOAT);
-        vfb.order(ByteOrder.nativeOrder());
-        IntBuffer currentDepthTest = vfb.asIntBuffer();
 
-        gl.glGetBooleanv(GL_DEPTH_TEST, currentDepthTest);
+        boolean storedDepthTest = GlUtil.query(gl, GL_DEPTH_TEST);
 
         if (depthTestStates) {
             gl.glEnable(GL_DEPTH_TEST);
@@ -114,7 +108,7 @@ public abstract class Drawable {
             gl.glDisable(GL_DEPTH_TEST);
         }
 
-        return currentDepthTest.get(0) != 0;
+        return storedDepthTest;
     }
 
     private void restoreDepthTest(GL11 gl, boolean storedDepthTest) {
