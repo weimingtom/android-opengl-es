@@ -4,10 +4,12 @@ import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import ice.graphic.Primitives;
+import ice.graphic.Texture;
 import ice.graphic.projection.PerspectiveProjection;
 import ice.graphic.projection.Projection;
 import ice.node.Drawable;
 import ice.node.DrawableParent;
+import ice.util.GlUtil;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -36,6 +38,10 @@ public class GlRenderer implements GLSurfaceView.Renderer {
         gl.glClearColor(0, 0, 0, 1.0f);
         gl.glShadeModel(GL_SMOOTH);
         gl.glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
+        boolean textureP_O_W = GlUtil.queryExtension(gl, "GL_APPLE_texture_2D_limited_npot");
+
+        Texture.init(textureP_O_W);
 
         onInit(gl);
 
