@@ -26,15 +26,15 @@ public class TextGrid extends TextureGrid {
 
     public void setText(String text, int color, int size) {
         this.text = text;
-        setTextParams(color, size, false);
+        setTextTexture(color, size, false);
     }
 
     public void setText(String text, int color, int size, boolean alignCenter) {
         this.text = text;
-        setTextParams(color, size, alignCenter);
+        setTextTexture(color, size, alignCenter);
     }
 
-    public void setTextParams(int color, int size, boolean alignCenter) {
+    public void setTextTexture(int color, int size, boolean alignCenter) {
         this.alignCenter = alignCenter;
         setBitmap(createTextTexture(color, size));
     }
