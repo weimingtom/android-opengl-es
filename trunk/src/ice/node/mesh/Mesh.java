@@ -17,6 +17,10 @@ public class Mesh extends Drawable {
 
     private static final String TAG = Mesh.class.getSimpleName();
 
+    public Mesh() {
+        this(null);
+    }
+
     public Mesh(VertexData vertexData) {
         this(vertexData, null);
     }
@@ -70,6 +74,10 @@ public class Mesh extends Drawable {
         return vertexData;
     }
 
+    public void setVertexData(VertexData vertexData) {
+        this.vertexData = vertexData;
+    }
+
     public void setTexture(Texture texture) {
         this.texture = texture;
     }
@@ -81,5 +89,5 @@ public class Mesh extends Drawable {
     private boolean callFace;
     protected Texture texture;
 
-    private VertexData vertexData;
+    protected VertexData vertexData;
 }

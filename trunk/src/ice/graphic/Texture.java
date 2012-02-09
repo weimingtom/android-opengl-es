@@ -1,6 +1,8 @@
 package ice.graphic;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.opengl.GLUtils;
 import ice.res.Res;
 
@@ -14,10 +16,15 @@ import static javax.microedition.khronos.opengles.GL11.*;
  * 在GL2.0以下版本如果硬件支持GL_APPLE_texture_2D_limited_npot，就无需考虑纹理宽高 POT的问题.
  */
 public class Texture implements GlRes {
-    private static boolean powerOfTwoTextureSupported;
+    private static boolean p_o_tSupported;
+    private int MAX_TEXTURE_SIZE = 1024;
 
-    public static void init(boolean powerOfTwoTextureSupported) {
-        Texture.powerOfTwoTextureSupported = powerOfTwoTextureSupported;
+    public static void init(boolean p_o_tSupported) {
+        Texture.p_o_tSupported = p_o_tSupported;
+    }
+
+    public static boolean isP_o_tSupported() {
+        return p_o_tSupported;
     }
 
     public static class Params {
@@ -49,13 +56,15 @@ public class Texture implements GlRes {
     private static boolean attachStatues;
 
 
-    public Texture(Bitmap bitmap) {
-        setBitmap(bitmap);
-        params = Params.DEFAULT;
-    }
-
     public Texture(int bitmapId) {
         this(Res.getBitmap(bitmapId));
+    }
+
+    public Texture(Bitmap bitmap) {
+        maxU = 1;
+        maxV = 1;
+        setBitmap(bitmap);
+        params = Params.DEFAULT;
     }
 
     @Override
@@ -152,6 +161,10 @@ public class Texture implements GlRes {
     }
 
     public synchronized void setBitmap(Bitmap bitmap) {
+
+        if (!p_o_tSupported)
+            bitmap = generateAdjustedBitmap(bitmap);
+
         this.bitmap = bitmap;
         loaded = false;
         buffer = new int[1];
@@ -160,6 +173,61 @@ public class Texture implements GlRes {
     public void setCoordSupliedBySystem(boolean coordSupliedBySystem) {
         this.coordSupliedBySystem = coordSupliedBySystem;
     }
+
+    private Bitmap generateAdjustedBitmap(Bitmap bitmap) {
+
+        int originalWidth = bitmap.getWidth();
+        int originalHeight = bitmap.getHeight();
+
+        int widthToFit = originalWidth;
+        int heightToFit = originalHeight;
+
+        if ((widthToFit != 1) && (widthToFit & (widthToFit - 1)) != 0) {
+            int i = 1;
+            while (i < widthToFit)
+                i *= 2;
+            widthToFit = i;
+        }
+
+        if ((heightToFit != 1) && (heightToFit & (heightToFit - 1)) != 0) {
+            int i = 1;
+            while (i < heightToFit)
+                i *= 2;
+            heightToFit = i;
+        }
+
+        float scale = 1;
+        while (widthToFit > MAX_TEXTURE_SIZE || heightToFit > MAX_TEXTURE_SIZE) {
+            widthToFit /= 2;
+            heightToFit /= 2;
+            scale /= 2.0f;
+        }
+
+        if (widthToFit != originalWidth || heightToFit != originalHeight) {
+            Bitmap adjustedBitmap = Bitmap.createBitmap(widthToFit, heightToFit, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(adjustedBitmap);
+            if (scale != 1)
+                canvas.scale(scale, scale);
+
+            canvas.drawBitmap(bitmap, 0, 0, new Paint());
+
+            maxU = (float) widthToFit / (originalWidth * scale);
+            maxV = (float) heightToFit / (originalHeight * scale);
+            return adjustedBitmap;
+        }
+
+        return bitmap;
+    }
+
+    public float getMaxU() {
+        return maxU;
+    }
+
+    public float getMaxV() {
+        return maxV;
+    }
+
+    private float maxU, maxV;
 
     private boolean blend;
 

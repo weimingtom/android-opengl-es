@@ -10,20 +10,7 @@ import ice.model.vertex.*;
  */
 public class Grid extends Mesh {
 
-    public Grid(float width, float height) {
-        this(width, height, 1, 1, false);
-    }
-
-    public Grid(float width, float height, int stepX, int stepY, boolean vboMode) {
-        super(createVertexData(width, height, stepX, stepY, vboMode));
-
-        this.width = width;
-        this.height = height;
-        this.stepX = stepX;
-        this.stepY = stepY;
-    }
-
-    private static VertexData createVertexData(float width, float height, int stepX, int stepY, boolean vboMode) {
+    public static VertexData createVertexData(float width, float height, int stepX, int stepY, float maxU, float maxV, boolean vboMode) {
 
         VertexAttribute[] attributesArray = new VertexAttribute[]{
                 new VertexAttribute(
@@ -88,8 +75,8 @@ public class Grid extends Mesh {
                             0,
                             1,
 
-                            (float) currentStepX / (float) stepX,
-                            (float) (stepY - currentStepY) / (float) stepY
+                            maxU * currentStepX / (float) stepX,
+                            maxV * (stepY - currentStepY) / (float) stepY
                     },
                     {
                             buttomLeftX + (currentStepX + 1) * eachSquareWidth,
@@ -97,8 +84,8 @@ public class Grid extends Mesh {
                             0,
                             0,
                             1,
-                            (float) (currentStepX + 1) / (float) stepX,
-                            (float) (stepY - currentStepY) / (float) stepY
+                            maxU * (currentStepX + 1) / (float) stepX,
+                            maxV * (stepY - currentStepY) / (float) stepY
                     },
                     {
                             buttomLeftX + (currentStepX + 1) * eachSquareWidth,
@@ -106,8 +93,8 @@ public class Grid extends Mesh {
                             0,
                             0,
                             1,
-                            (float) (currentStepX + 1) / (float) stepX,
-                            (float) (stepY - currentStepY - 1) / (float) stepY
+                            maxU * (currentStepX + 1) / (float) stepX,
+                            maxV * (stepY - currentStepY - 1) / (float) stepY
                     },
                     {
                             buttomLeftX + currentStepX * eachSquareWidth,
@@ -115,8 +102,8 @@ public class Grid extends Mesh {
                             0,
                             0,
                             1,
-                            (float) currentStepX / (float) stepX,
-                            (float) (stepY - currentStepY - 1) / (float) stepY
+                            maxU * currentStepX / (float) stepX,
+                            maxV * (stepY - currentStepY - 1) / (float) stepY
                     }
 
             };
@@ -138,6 +125,50 @@ public class Grid extends Mesh {
 
         vertexData.setVertices(vertices);
         return vertexData;
+    }
+
+    public Grid(float width, float height) {
+        this(width, height, true);
+    }
+
+    public Grid(float width, float height, boolean initVertex) {
+        this.width = width;
+        this.height = height;
+
+        if (initVertex)
+            setUpVertex();
+    }
+
+    public void setUpVertex() {
+        setUpVertex(1, 1);
+    }
+
+    public void setUpVertex(float maxU, float maxV) {
+        setUpVertex(maxU, maxV, true);
+    }
+
+
+    public void setUpVertex(float maxU, float maxV, boolean vboMode) {
+        setUpVertex(1, 1, maxU, maxV, true);
+    }
+
+
+    public void setUpVertex(int stepX, int stepY, float maxU, float maxV, boolean vboMode) {
+
+        this.stepX = stepX;
+        this.stepY = stepY;
+
+        VertexData vertexData = createVertexData(width, height, stepX, stepY, maxU, maxV, vboMode);
+
+        setVertexData(vertexData);
+    }
+
+    public int getStepX() {
+        return stepX;
+    }
+
+    public int getStepY() {
+        return stepY;
     }
 
     private int stepX, stepY;

@@ -40,10 +40,11 @@ public class TextureGrid extends Grid {
     }
 
     public TextureGrid(float width, float height, Bitmap bitmap) {
-        super(width, height);
+        super(width, height, false);
 
-        if (bitmap != null)
+        if (bitmap != null) {
             setBitmap(bitmap);
+        }
     }
 
     public void setBitmap(int bitmap) {
@@ -56,6 +57,10 @@ public class TextureGrid extends Grid {
         }
         else {
             bindTexture(new Texture(bitmap));
+        }
+
+        if (vertexData == null) {
+            setUpVertex(texture.getMaxU(), texture.getMaxV());
         }
     }
 }

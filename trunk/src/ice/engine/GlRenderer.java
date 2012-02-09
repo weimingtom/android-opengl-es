@@ -3,6 +3,7 @@ package ice.engine;
 import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
+import android.util.Log;
 import ice.graphic.Primitives;
 import ice.graphic.Texture;
 import ice.graphic.projection.PerspectiveProjection;
@@ -24,6 +25,8 @@ import static javax.microedition.khronos.opengles.GL10.*;
  */
 public class GlRenderer implements GLSurfaceView.Renderer {
 
+    private static final String TAG = "GlRenderer";
+
     public GlRenderer(Projection projection) {
         this.projection = projection;
 
@@ -39,9 +42,12 @@ public class GlRenderer implements GLSurfaceView.Renderer {
         gl.glShadeModel(GL_SMOOTH);
         gl.glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-        boolean textureP_O_W = GlUtil.queryExtension(gl, "GL_APPLE_texture_2D_limited_npot");
+        boolean textureP_O_T = GlUtil.queryExtension(gl, "GL_APPLE_texture_2D_limited_npot");
 
-        Texture.init(textureP_O_W);
+        Texture.init(textureP_O_T);
+
+        if (!textureP_O_T)
+            Log.w(TAG, "P_O_T not supported !");
 
         onInit(gl);
 
