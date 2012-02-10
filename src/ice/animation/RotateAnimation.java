@@ -1,5 +1,7 @@
 package ice.animation;
 
+import ice.node.Drawable;
+
 import javax.microedition.khronos.opengles.GL11;
 
 public class RotateAnimation extends Animation {
@@ -9,20 +11,25 @@ public class RotateAnimation extends Animation {
         super(duration);
         this.fromAngle = fromAngle;
         this.toAngle = toAngle;
-        rotateZ = 1;
+        axleZ = 1;
     }
 
 
     public void setRotateVector(float rotateX, float rotateY, float rotateZ) {
-        this.rotateX = rotateX;
-        this.rotateY = rotateY;
-        this.rotateZ = rotateZ;
+        this.axleX = rotateX;
+        this.axleY = rotateY;
+        this.axleZ = rotateZ;
     }
 
     public void setCenterOffset(float translateX, float translateY, float translateZ) {
         this.translateX = translateX;
         this.translateY = translateY;
         this.translateZ = translateZ;
+    }
+
+    @Override
+    protected void applyFillAfter(Drawable drawable) {
+        drawable.setRotate(toAngle, axleX, axleY, axleZ);
     }
 
     @Override
@@ -34,7 +41,7 @@ public class RotateAnimation extends Animation {
             gl.glTranslatef(translateX, translateY, translateZ);
 
         float angle = fromAngle + ((toAngle - fromAngle) * interpolatedTime);
-        gl.glRotatef(angle, rotateX, rotateY, rotateZ);
+        gl.glRotatef(angle, axleX, axleY, axleZ);
 
         if (offset)
             gl.glTranslatef(-translateX, -translateY, -translateZ);
@@ -43,6 +50,5 @@ public class RotateAnimation extends Animation {
     private float translateX, translateY, translateZ;
 
     private float fromAngle, toAngle;
-    private float rotateX, rotateY, rotateZ;
-
+    private float axleX, axleY, axleZ;
 }

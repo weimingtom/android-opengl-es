@@ -64,6 +64,10 @@ public abstract class Animation {
 
 
     public void onComplete(final Drawable drawable, GL11 gl) {
+
+        if (fillAfter)
+            applyFillAfter(drawable);
+
         new Thread() {
 
             @Override
@@ -76,6 +80,8 @@ public abstract class Animation {
 
         }.start();
     }
+
+    protected abstract void applyFillAfter(Drawable drawable);
 
     protected abstract void onAttach(GL11 gl, float interpolatedTime);
 
@@ -117,6 +123,11 @@ public abstract class Animation {
         return cancel;
     }
 
+    public void setFillAfter(boolean fillAfter) {
+        this.fillAfter = fillAfter;
+    }
+
+    private boolean fillAfter;
 
     protected long startTime;
     protected long duration;

@@ -1,15 +1,11 @@
 package ice.animation;
 
 import android.graphics.Point;
+import ice.node.Drawable;
 
 import javax.microedition.khronos.opengles.GL11;
 
 public class TranslateAnimation extends Animation {
-
-    private float fromXDelta;
-    private float toXDelta;
-    private float fromYDelta;
-    private float toYDelta;
 
     public TranslateAnimation(long duration, float fromXDelta, float toXDelta, float fromYDelta, float toYDelta) {
         super(duration);
@@ -23,6 +19,11 @@ public class TranslateAnimation extends Animation {
         super(duration);
         this.toXDelta = toAbsoluteX - currentPosition.x;
         this.toYDelta = toAbsoluteY - currentPosition.y;
+    }
+
+    @Override
+    protected void applyFillAfter(Drawable drawable) {
+        drawable.setPos(drawable.getPosX() + toXDelta, drawable.getPosY() + toYDelta);
     }
 
     @Override
@@ -40,5 +41,10 @@ public class TranslateAnimation extends Animation {
 
         gl.glTranslatef(translateX, -translateY, 0);
     }
+
+    private float fromXDelta;
+    private float toXDelta;
+    private float fromYDelta;
+    private float toYDelta;
 
 }
