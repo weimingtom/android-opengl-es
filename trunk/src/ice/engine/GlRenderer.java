@@ -10,6 +10,7 @@ import ice.graphic.projection.PerspectiveProjection;
 import ice.graphic.projection.Projection;
 import ice.node.Drawable;
 import ice.node.DrawableParent;
+import ice.practical.Fps;
 import ice.util.GlUtil;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -31,6 +32,8 @@ public class GlRenderer implements GLSurfaceView.Renderer {
         this.projection = projection;
 
         drawDispatcher = new DrawableParent<Scene>();
+
+        fps = new Fps();
     }
 
 
@@ -63,7 +66,8 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         projection.setUp(gl, width, height);
 
-        coordinate = coordinate();
+        coordinate_and_fps = coordinateAndFps();
+
     }
 
     @Override
@@ -75,7 +79,9 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         drawDispatcher.draw(gl);
 
-        coordinate.draw(gl);
+        coordinate_and_fps.draw(gl);
+
+        fps.draw(gl);
 
         log(gl);
     }
@@ -134,7 +140,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    private Drawable coordinate() {
+    private Drawable coordinateAndFps() {
 
         Drawable coordinate = new Drawable() {
 
@@ -159,7 +165,8 @@ public class GlRenderer implements GLSurfaceView.Renderer {
         return coordinate;
     }
 
-    private Drawable coordinate;
+    private Drawable fps;
+    private Drawable coordinate_and_fps;
     private boolean debugMode = true;
     private int frames;
     private long lastTime;

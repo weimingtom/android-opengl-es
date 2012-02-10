@@ -70,7 +70,7 @@ public abstract class Drawable {
             gl.glBlendFunc(blendFactor_S, blendFactor_D);
         }
 
-        ensureSelfPos(gl);
+        boolean colorChanged = ensureSelfStatus(gl);
 
         Animation theAnimation = animation;
 
@@ -85,7 +85,14 @@ public abstract class Drawable {
         if (switchDepthTest && (depthTestStates != storedDepthTest))
             restoreDepthTest(gl, storedDepthTest);
 
+        if (colorChanged)
+            restoreColor(gl);
+
         gl.glPopMatrix();
+    }
+
+    private void restoreColor(GL11 gl) {
+        gl.glColor4f(1, 1, 1, 1); //TODO 先这样吧
     }
 
     public float getHeight() {
@@ -251,10 +258,24 @@ public abstract class Drawable {
         }
     }
 
-    private void ensureSelfPos(GL11 gl) {
+    private boolean ensureSelfStatus(GL11 gl) {
 
         if (posX != 0 || posY != 0 || posZ != 0)
             gl.glTranslatef(posX, posY, posZ);
+
+        if (scaleX != 1 || scaleY != 1 || scaleZ != 1)
+            gl.glScalef(scaleX, scaleY, scaleZ);
+
+        if (rotate != 0)
+            gl.glRotatef(rotate, axleX, axleY, axleZ);
+
+
+        if (colors != null) {
+            gl.glColor4f(colors[0], colors[1], colors[2], colors[3]);
+            return true;
+        }
+
+        return false;
     }
 
     public void enableDepthTestSwitch(boolean depthTest) {
@@ -287,6 +308,23 @@ public abstract class Drawable {
         this.parent = parent;
     }
 
+    public void setScale(float scaleX, float scaleY, float scaleZ) {
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+        this.scaleZ = scaleZ;
+    }
+
+    public void setRotate(float rotate, float axleX, float axleY, float axleZ) {
+        this.rotate = rotate;
+        this.axleX = axleX;
+        this.axleY = axleY;
+        this.axleZ = axleZ;
+    }
+
+    public void setColors(float[] colors) {
+        this.colors = colors;
+    }
+
     private boolean depthTest;
     private boolean switchDepthTestStates;
 
@@ -296,7 +334,13 @@ public abstract class Drawable {
     private OnTouchListener onTouchListener;
 
     private Camera camera;   //TODO
+
     protected float posX, posY, posZ;
+    private float scaleX = 1, scaleY = 1, scaleZ = 1;
+    private float rotate;
+    private float axleX = 1, axleY = 1, axleZ = 1;
+    private float[] colors;
+
     //private int width, height;
     protected boolean visible;
     protected boolean removable;

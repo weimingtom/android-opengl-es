@@ -1,5 +1,7 @@
 package ice.animation;
 
+import ice.node.Drawable;
+
 import javax.microedition.khronos.opengles.GL11;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,11 @@ public class AnimationGroup extends Animation {
         duration = Math.max(duration, offsetTime + animation.duration);
     }
 
+
+    @Override
+    protected void applyFillAfter(Drawable drawable) {
+
+    }
 
     @Override
     protected void onAttach(GL11 gl, float interpolatedTime) {

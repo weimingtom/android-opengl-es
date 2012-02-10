@@ -1,5 +1,7 @@
 package ice.animation;
 
+import ice.node.Drawable;
+
 import javax.microedition.khronos.opengles.GL11;
 
 public class ScaleAnimation extends Animation {
@@ -15,6 +17,11 @@ public class ScaleAnimation extends Animation {
         this.mToX = mToX;
         this.mFromY = mFromY;
         this.mToY = mToY;
+    }
+
+    @Override
+    protected void applyFillAfter(Drawable drawable) {
+        drawable.setScale(scaleX, scaleY, scaleZ);
     }
 
     @Override
