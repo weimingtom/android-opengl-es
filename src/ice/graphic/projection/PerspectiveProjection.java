@@ -3,7 +3,6 @@ package ice.graphic.projection;
 import android.opengl.GLU;
 import ice.engine.EngineContext;
 
-import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import static javax.microedition.khronos.opengles.GL11.GL_MODELVIEW;
@@ -27,6 +26,13 @@ import static javax.microedition.khronos.opengles.GL11.GL_PROJECTION;
  * Time: 下午5:43
  */
 public class PerspectiveProjection implements Projection {
+    public static final float Z_NEAR = 0.1f, DEFAULT_DEPTH = 1000;
+
+
+    public PerspectiveProjection(GLU glu, float fovy) {
+        this(glu, fovy, Z_NEAR, getZFarOfWindow(fovy) + DEFAULT_DEPTH);
+    }
+
 
     public PerspectiveProjection(GLU glu, float fovy, float zNear, float zFar) {
         this.glu = glu;
@@ -72,11 +78,16 @@ public class PerspectiveProjection implements Projection {
 //        );
     }
 
-    public float getZFarOfWindow() {
+    public static float getZFarOfWindow(float fovy) {
         double halfFovy = Math.toRadians(fovy / 2.0f);
         int height = EngineContext.getInstance().getApp().getHeight();
 
         return (float) (height / (2 * Math.tan(halfFovy)));
+    }
+
+
+    public float getZFarOfWindow() {
+        return getZFarOfWindow(fovy);
     }
 
 
