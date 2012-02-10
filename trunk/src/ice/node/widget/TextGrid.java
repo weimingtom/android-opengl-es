@@ -52,7 +52,7 @@ public class TextGrid extends TextureGrid {
             Bitmap bitmap = texture.getBitmap();
 
             if (doubleBuffer == null) {
-                doubleBuffer = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                doubleBuffer = Bitmap.createBitmap(bitmap);
             }
 
             writeText(doubleBuffer, text, color, size);
