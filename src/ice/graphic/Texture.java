@@ -28,14 +28,22 @@ public class Texture implements GlRes {
     }
 
     public static class Params {
-        public static final Params DEFAULT;
+        public static final Params LINEAR_REPEAT;
+
+        public static final Params LINEAR_CLAMP_TO_EDGE;
 
         static {
-            DEFAULT = new Params();
-            DEFAULT.add(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            DEFAULT.add(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            DEFAULT.add(GL_TEXTURE_WRAP_S, GL_REPEAT);
-            DEFAULT.add(GL_TEXTURE_WRAP_T, GL_REPEAT);
+            LINEAR_REPEAT = new Params();
+            LINEAR_REPEAT.add(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            LINEAR_REPEAT.add(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            LINEAR_REPEAT.add(GL_TEXTURE_WRAP_S, GL_REPEAT);
+            LINEAR_REPEAT.add(GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+            LINEAR_CLAMP_TO_EDGE = new Params();
+            LINEAR_CLAMP_TO_EDGE.add(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            LINEAR_CLAMP_TO_EDGE.add(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            LINEAR_CLAMP_TO_EDGE.add(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            LINEAR_CLAMP_TO_EDGE.add(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         }
 
         public Params() {
@@ -64,7 +72,7 @@ public class Texture implements GlRes {
         maxU = 1;
         maxV = 1;
         setBitmap(bitmap);
-        params = Params.DEFAULT;
+        params = Params.LINEAR_CLAMP_TO_EDGE;
     }
 
     @Override
@@ -217,6 +225,10 @@ public class Texture implements GlRes {
         }
 
         return bitmap;
+    }
+
+    public void setParams(Params params) {
+        this.params = params;
     }
 
     public float getMaxU() {
