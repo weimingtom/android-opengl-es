@@ -14,12 +14,8 @@ public class TextGrid extends TextureGrid {
 
     public TextGrid(int width, int height) {
         super(width, height);
-    }
 
-    public TextGrid(int width, int height, String text) {
-        super(width, height);
-
-        setText(text, Color.WHITE, height);
+        painter = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     @Override
@@ -43,35 +39,61 @@ public class TextGrid extends TextureGrid {
     }
 
     public void setText(String text, int color, int size, boolean alignCenter) {
-        if (!text.equals(this.text)) {
-            setTextTexture(text, color, size, alignCenter);
-            this.text = text;
-        }
+        setTextTexture(text, color, size, alignCenter);
+        this.text = text;
     }
 
     public void setTextTexture(String text, int color, int size, boolean alignCenter) {
+        if (text.equals(this.text)) return;
+
         this.alignCenter = alignCenter;
-        setBitmap(createTextTexture(text, color, size));
+
+        if (texture != null) {
+            Bitmap bitmap = texture.getBitmap();
+
+            if (doubleBuffer == null) {
+                doubleBuffer = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+            }
+
+            writeText(doubleBuffer, text, color, size);
+
+            Bitmap temp = bitmap;
+            bitmap = doubleBuffer;
+            doubleBuffer = temp;
+
+            setBitmap(bitmap);
+        }
+        else {
+            setBitmap(createTextTexture(text, color, size));
+        }
     }
 
     private Bitmap createTextTexture(String text, int color, int size) {
         Bitmap textTexture = Bitmap.createBitmap((int) width, (int) height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(textTexture);
 
-        Paint painter = new Paint(Paint.ANTI_ALIAS_FLAG);
+        writeText(textTexture, text, color, size);
+
+        return textTexture;
+    }
+
+    private void writeText(Bitmap textTexture, String text, int color, int size) {
+        Canvas canvas = new Canvas(textTexture);
 
         painter.setColor(color);
 
         Rect region = new Rect(0, 0, (int) width, size);
 
+        canvas.drawColor(Color.BLACK);
+
         realWidth = TextDrawer.drawTextInLine(canvas, painter, text, region, alignCenter);
-        return textTexture;
     }
 
     public float getRealWidth() {
         return realWidth;
     }
 
+    private Bitmap doubleBuffer;
+    private Paint painter;
     private String text;
     private float realWidth;
     private boolean alignCenter;
