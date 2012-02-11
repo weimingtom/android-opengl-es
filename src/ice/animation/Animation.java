@@ -39,18 +39,14 @@ public abstract class Animation {
             if (loop) {
                 startTime = currentTime;
             }
-            else {
-                if (!completed) completed = true;
-                return;
-            }
+
+//            else {   //打开 fill after 会卡哦
+//                return;
+//            }
 
         }
 
-
-        float normalizedTime = 0;
-        if (duration != 0) {
-            normalizedTime = ((float) (currentTime - startTime)) / (float) duration;
-        }
+        float normalizedTime = ((float) (currentTime - startTime)) / (float) duration;
 
         //根据归一化时间调整时间插值
         float interpolatedTime = interpolator.getInterpolation(normalizedTime);
@@ -68,17 +64,17 @@ public abstract class Animation {
         if (fillAfter)
             applyFillAfter(drawable);
 
-        new Thread() {
+        if (listener != null) {
+            new Thread() {
 
-            @Override
-            public void run() {
-
-                if (listener != null)
+                @Override
+                public void run() {
                     listener.onAnimationEnd(drawable);
+                }
 
-            }
+            }.start();
+        }
 
-        }.start();
     }
 
     protected abstract void applyFillAfter(Drawable drawable);
@@ -94,7 +90,12 @@ public abstract class Animation {
     }
 
     public boolean isCompleted() {
-        return completed;
+
+        if (AnimationUtils.currentAnimationTimeMillis() - startTime > duration) {
+            return !loop;
+        }
+
+        return false;
     }
 
 
@@ -132,7 +133,6 @@ public abstract class Animation {
     protected long startTime;
     protected long duration;
 
-    protected boolean completed;
     protected boolean loop;
 
     private boolean cancel;

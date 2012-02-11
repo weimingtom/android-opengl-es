@@ -49,8 +49,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         Texture.init(textureP_O_T);
 
-        if (!textureP_O_T)
-            Log.w(TAG, "P_O_T not supported !");
+        Log.w(TAG, textureP_O_T ? "P_O_T supported !" : "P_O_T not supported !");
 
         onInit(gl);
 

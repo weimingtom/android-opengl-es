@@ -51,7 +51,7 @@ public class TextureGrid extends Grid {
         setBitmap(Res.getBitmap(bitmap));
     }
 
-    public void setBitmap(Bitmap bitmap) {
+    public Bitmap setBitmap(Bitmap bitmap) {
         if (texture != null) {
             texture.setBitmap(bitmap);
         }
@@ -62,5 +62,7 @@ public class TextureGrid extends Grid {
         if (vertexData == null) {
             setUpVertex(texture.getMaxU(), texture.getMaxV());
         }
+
+        return texture.getBitmap();
     }
 }
