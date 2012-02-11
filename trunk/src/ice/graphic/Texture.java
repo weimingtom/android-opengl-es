@@ -168,21 +168,21 @@ public class Texture implements GlRes {
         }
     }
 
-    public synchronized void setBitmap(Bitmap bitmap) {
+    public synchronized Bitmap setBitmap(Bitmap bitmap) {
 
-        if (!p_o_tSupported)
-            bitmap = generateAdjustedBitmap(bitmap);
-
-        this.bitmap = bitmap;
+        this.bitmap = tryAdjust(bitmap);
         loaded = false;
         buffer = new int[1];
+
+        return this.bitmap;
     }
 
     public void setCoordSupliedBySystem(boolean coordSupliedBySystem) {
         this.coordSupliedBySystem = coordSupliedBySystem;
     }
 
-    private Bitmap generateAdjustedBitmap(Bitmap bitmap) {
+    public Bitmap tryAdjust(Bitmap bitmap) {
+        if (p_o_tSupported) return bitmap;
 
         int originalWidth = bitmap.getWidth();
         int originalHeight = bitmap.getHeight();

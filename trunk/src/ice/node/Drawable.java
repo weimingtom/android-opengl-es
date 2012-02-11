@@ -129,13 +129,16 @@ public abstract class Drawable {
 
     protected abstract void onDraw(GL11 gl);
 
-    public synchronized void startAnimation(Animation animation) {
+    public void startAnimation(Animation animation) {
+        if (this.animation != null)
+            throw new IllegalStateException("Another animation not finished yet !");
+
         this.animation = animation;
         this.animation.start();
         setVisible(true);
     }
 
-    public synchronized void cancelAnimation() {
+    public void cancelAnimation() {
         animation = null;
     }
 
@@ -247,14 +250,14 @@ public abstract class Drawable {
 
         theAnimation.detach(gl);
 
+        if (theAnimation.isCompleted()) {
+            animation = null;
+            theAnimation.onComplete(this, gl);
+            return;
+        }
+
         if (theAnimation.isCanceled()) {
             animation = null;
-        }
-        else {
-            if (theAnimation.isCompleted()) {
-                theAnimation.onComplete(this, gl);
-                animation = null;
-            }
         }
     }
 
