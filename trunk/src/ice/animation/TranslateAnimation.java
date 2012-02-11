@@ -7,18 +7,21 @@ import javax.microedition.khronos.opengles.GL11;
 
 public class TranslateAnimation extends Animation {
 
+    public static TranslateAnimation createMoveBy(long duration, float toXDelta, float toYDelta) {
+
+        TranslateAnimation moveBy = new TranslateAnimation(duration, 0, toXDelta, 0, toYDelta);
+
+        moveBy.setFillAfter(true);
+
+        return moveBy;
+    }
+
     public TranslateAnimation(long duration, float fromXDelta, float toXDelta, float fromYDelta, float toYDelta) {
         super(duration);
         this.fromXDelta = fromXDelta;
         this.toXDelta = toXDelta;
         this.fromYDelta = fromYDelta;
         this.toYDelta = toYDelta;
-    }
-
-    public TranslateAnimation(long duration, Point currentPosition, float toAbsoluteX, float toAbsoluteY) {
-        super(duration);
-        this.toXDelta = toAbsoluteX - currentPosition.x;
-        this.toYDelta = toAbsoluteY - currentPosition.y;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class TranslateAnimation extends Animation {
             translateY = fromYDelta + ((toYDelta - fromYDelta) * interpolatedTime);
         }
 
-        gl.glTranslatef(translateX, -translateY, 0);
+        gl.glTranslatef(translateX, translateY, 0);
     }
 
     private float fromXDelta;
