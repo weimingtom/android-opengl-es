@@ -6,39 +6,58 @@ import javax.microedition.khronos.opengles.GL11;
 
 public class ScaleAnimation extends Animation {
 
-    private float mFromX;
-    private float mToX;
-    private float mFromY;
-    private float mToY;
+    public static ScaleAnimation createScaleTo(long duration, float toX, float toY) {
+        return createScaleTo(duration, toX, toY, 1);
+    }
 
-    public ScaleAnimation(long duration, float mFromX, float mToX, float mFromY, float mToY) {
+    public static ScaleAnimation createScaleTo(long duration, float toX, float toY, float toZ) {
+
+        ScaleAnimation scaleAnimation = new ScaleAnimation(duration, 1, toX, 1, toY, 1, toZ);
+
+        scaleAnimation.setFillAfter(true);
+
+        return scaleAnimation;
+    }
+
+    public ScaleAnimation(long duration, float fromX, float toX, float fromY, float toY) {
+        this(duration, fromX, toX, fromY, toY, 1, 1);
+    }
+
+    public ScaleAnimation(long duration, float fromX, float toX, float fromY, float toY, int fromZ, float toZ) {
         super(duration);
-        this.mFromX = mFromX;
-        this.mToX = mToX;
-        this.mFromY = mFromY;
-        this.mToY = mToY;
+        this.fromX = fromX;
+        this.toX = toX;
+        this.fromY = fromY;
+        this.toY = toY;
+        this.fromZ = fromZ;
+        this.toZ = toZ;
     }
 
     @Override
     protected void applyFillAfter(Drawable drawable) {
-        drawable.setScale(scaleX, scaleY, scaleZ);
+        drawable.setScale(toX, toY, toZ);
     }
 
     @Override
     protected void onAttach(GL11 gl, float interpolatedTime) {
 
-        scaleX = scaleY = 1.0f;
+        float scaleX = fromX;
+        float scaleY = fromY;
+        float scaleZ = fromZ;
 
-        if (mFromX != 1.0f || mToX != 1.0f) {
-            scaleX = mFromX + ((mToX - mFromX) * interpolatedTime);
-        }
+        if (fromX != toX)
+            scaleX = fromX + ((toX - fromX) * interpolatedTime);
 
-        if (mFromY != 1.0f || mToY != 1.0f) {
-            scaleY = mFromY + ((mToY - mFromY) * interpolatedTime);
-        }
+        if (fromY != toY)
+            scaleY = fromY + ((toY - fromY) * interpolatedTime);
 
-        gl.glScalef(scaleX, scaleY, scaleZ);
+        if (fromZ != toZ)
+            scaleY = fromZ + ((toZ - fromZ) * interpolatedTime);
+
+        if (scaleX != 1 || scaleY != 1 || scaleZ != 1)
+            gl.glScalef(scaleX, scaleY, scaleZ);
     }
 
-    private float scaleX, scaleY, scaleZ;
+    private float fromX = 1, fromY = 1, fromZ = 1;
+    private float toX = 1, toY = 1, toZ = 1;
 }
