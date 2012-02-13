@@ -6,6 +6,8 @@ import ice.util.TextDrawer;
 import javax.microedition.khronos.opengles.GL11;
 
 /**
+ * //TODO 效率或者可以优化一下
+ * <p/>
  * User: jason
  * Date: 12-2-6
  * Time: 上午10:19
