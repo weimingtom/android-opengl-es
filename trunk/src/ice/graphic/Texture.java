@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.opengl.GLUtils;
+import android.util.Log;
 import ice.res.Res;
 
 import javax.microedition.khronos.opengles.GL11;
@@ -18,9 +19,11 @@ import static javax.microedition.khronos.opengles.GL11.*;
 public class Texture implements GlRes {
     private static boolean p_o_tSupported;
     private int MAX_TEXTURE_SIZE = 1024;
+    private static final String TAG = Texture.class.getSimpleName();
 
     public static void init(boolean p_o_tSupported) {
         Texture.p_o_tSupported = p_o_tSupported;
+        Log.w(TAG, "init p_o_tSupported ? " + p_o_tSupported);
     }
 
     public static boolean isP_o_tSupported() {
