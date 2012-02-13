@@ -51,17 +51,11 @@ public class TextGrid extends TextureGrid {
         if (texture != null) {
             Bitmap bitmap = texture.getBitmap();
 
-            if (doubleBuffer == null) {
-                doubleBuffer = Bitmap.createBitmap(bitmap);
-            }
+            Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
 
-            writeText(doubleBuffer, text, color, size);
+            writeText(newBitmap, text, color, size);
 
-            Bitmap temp = bitmap;
-            bitmap = doubleBuffer;
-            doubleBuffer = temp;
-
-            setBitmap(bitmap);
+            setBitmap(newBitmap);
         }
         else {
             setBitmap(createTextTexture(text, color, size));
@@ -83,7 +77,7 @@ public class TextGrid extends TextureGrid {
 
         Rect region = new Rect(0, 0, (int) width, size);
 
-        canvas.drawColor(Color.BLACK);
+        canvas.drawColor(Color.argb(0, 0, 0, 0));
 
         realWidth = TextDrawer.drawTextInLine(canvas, painter, text, region, alignCenter);
     }
@@ -92,7 +86,6 @@ public class TextGrid extends TextureGrid {
         return realWidth;
     }
 
-    private Bitmap doubleBuffer;
     private Paint painter;
     private String text;
     private float realWidth;
