@@ -49,7 +49,7 @@ public abstract class Game extends Activity implements App {
             @Override
             public void run() {
 
-                gameView.getRenderer().waitUnitlInited();
+                gameView.getRenderer().waitUntilInited();
 
                 Class<? extends SceneProvider> topProviderClass = providerStack.peek();
 

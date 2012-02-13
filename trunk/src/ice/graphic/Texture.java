@@ -222,8 +222,9 @@ public class Texture implements GlRes {
 
             canvas.drawBitmap(bitmap, 0, 0, new Paint());
 
-            maxU = (float) widthToFit / (originalWidth * scale);
-            maxV = (float) heightToFit / (originalHeight * scale);
+            maxU = (originalWidth * scale) / widthToFit;
+            maxV = (originalHeight * scale) / heightToFit;
+
             return adjustedBitmap;
         }
 
