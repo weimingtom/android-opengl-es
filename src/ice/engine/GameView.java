@@ -21,6 +21,10 @@ public class GameView extends GLSurfaceView implements AppView {
         setRenderer(renderer);
     }
 
+    public GlRenderer getRenderer() {
+        return renderer;
+    }
+
     @Override
     public void setRenderer(Renderer renderer) {
         if (renderer instanceof GlRenderer)

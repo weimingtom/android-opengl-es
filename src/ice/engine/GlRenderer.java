@@ -28,6 +28,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = "GlRenderer";
 
+
     public GlRenderer(Projection projection) {
         this.projection = projection;
 
@@ -39,6 +40,9 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
+
+        Log.w(TAG, "onSurfaceCreated");
+
         GL11 gl = (GL11) gl10;
 
         gl.glClearColor(0, 0, 0, 1.0f);
@@ -49,9 +53,13 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         Texture.init(textureP_O_T);
 
-        Log.w(TAG, textureP_O_T ? "P_O_T supported !" : "P_O_T not supported !");
-
         onInit(gl);
+
+        inited = true;
+
+        synchronized (this) {
+            notify();
+        }
 
         System.out.println("GL_RENDERER = " + gl.glGetString(GL_RENDERER));
         System.out.println("GL_VENDOR = " + gl.glGetString(GL_VENDOR));
@@ -108,6 +116,19 @@ public class GlRenderer implements GLSurfaceView.Renderer {
         return drawDispatcher;
     }
 
+    public void waitUnitlInited() {
+        if (!inited) {
+            synchronized (this) {
+                try {
+                    wait();
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
 
     protected void onInit(GL11 gl) {
 
@@ -163,6 +184,8 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         return coordinate;
     }
+
+    private boolean inited;
 
     private Drawable fps;
     private Drawable coordinate_and_fps;

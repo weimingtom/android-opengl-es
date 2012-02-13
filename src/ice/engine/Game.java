@@ -5,8 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import ice.res.Res;
 import ice.node.Drawable;
+import ice.res.Res;
 
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
@@ -38,9 +38,6 @@ public abstract class Game extends Activity implements App {
 
         Class<? extends SceneProvider> entryProvider = getEntry();//启动时，保证是主界面的入口
         providerStack.push(entryProvider);
-
-        topProvider = buildInstance(entryProvider);
-        topProvider.onCreate();
     }
 
     @Override
@@ -48,17 +45,28 @@ public abstract class Game extends Activity implements App {
         super.onResume();
         Log.i(TAG, "onResume");
 
-        Class<? extends SceneProvider> topProviderClass = providerStack.peek();
+        new Thread() {
+            @Override
+            public void run() {
 
-        topProvider = findFromCache(topProviderClass);
+                gameView.getRenderer().waitUnitlInited();
 
-        if (topProvider == null) {
-            topProvider = buildInstance(topProviderClass);
-            topProvider.onCreate();
-        }
+                Class<? extends SceneProvider> topProviderClass = providerStack.peek();
 
-        topProvider.onResume();
-        gameView.showScene(topProvider.getScene());
+                topProvider = findFromCache(topProviderClass);
+
+                if (topProvider == null) {
+                    topProvider = buildInstance(topProviderClass);
+                    topProvider.onCreate();
+                }
+
+                topProvider.onResume();
+                gameView.showScene(topProvider.getScene());
+
+            }
+
+        }.start();
+
     }
 
     @Override
