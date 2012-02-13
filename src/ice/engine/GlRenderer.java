@@ -116,7 +116,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
         return drawDispatcher;
     }
 
-    public void waitUnitlInited() {
+    public void waitUntilInited() {
         if (!inited) {
             synchronized (this) {
                 try {
