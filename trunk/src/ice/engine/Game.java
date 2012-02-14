@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
+import ice.graphic.GlRenderer;
 import ice.graphic.projection.PerspectiveProjection;
 import ice.node.Drawable;
 import ice.res.Res;
