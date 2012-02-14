@@ -1,11 +1,12 @@
-package ice.engine;
+package ice.graphic;
 
 import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.util.Log;
-import ice.graphic.Primitives;
-import ice.graphic.Texture;
+import ice.engine.App;
+import ice.engine.EngineContext;
+import ice.engine.Scene;
 import ice.graphic.projection.PerspectiveProjection;
 import ice.graphic.projection.Projection;
 import ice.node.Drawable;

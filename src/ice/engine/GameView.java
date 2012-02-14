@@ -3,6 +3,7 @@ package ice.engine;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
+import ice.graphic.GlRenderer;
 import ice.node.DrawableParent;
 
 /**
