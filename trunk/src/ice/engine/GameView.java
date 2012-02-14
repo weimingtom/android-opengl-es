@@ -12,7 +12,6 @@ import ice.node.DrawableParent;
  */
 public class GameView extends GLSurfaceView implements AppView {
 
-
     public GameView(Context context, GlRenderer glRenderer) {
         super(context);
 

@@ -2,9 +2,12 @@ package ice.engine;
 
 import android.app.Activity;
 import android.content.Context;
+import android.opengl.GLU;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
+import ice.graphic.projection.PerspectiveProjection;
 import ice.node.Drawable;
 import ice.res.Res;
 
@@ -25,6 +28,10 @@ public abstract class Game extends Activity implements App {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate");
+
+        Display display = getWindowManager().getDefaultDisplay();
+        width = display.getWidth();
+        height = display.getHeight();
 
         EngineContext.build(this);
         Res.built(this);
@@ -142,7 +149,13 @@ public abstract class Game extends Activity implements App {
         finish();
     }
 
-    protected abstract GameView createRenderer();
+    protected GameView createRenderer() {
+        PerspectiveProjection projection = new PerspectiveProjection(new GLU(), 60);
+
+        GlRenderer glRenderer = new GlRenderer(projection);
+
+        return new GameView(this, glRenderer);
+    }
 
 
     private SceneProvider buildInstance(Class<? extends SceneProvider> providerClass) {
@@ -204,6 +217,18 @@ public abstract class Game extends Activity implements App {
         topProvider = nextProvider;
         switchToScene(nextProvider);
     }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    private int width, height;
 
     private GameView gameView;
 
