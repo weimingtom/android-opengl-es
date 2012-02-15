@@ -17,8 +17,11 @@ import static javax.microedition.khronos.opengles.GL11.*;
  * 在GL2.0以下版本如果硬件支持GL_APPLE_texture_2D_limited_npot，就无需考虑纹理宽高 POT的问题.
  */
 public class Texture implements GlRes {
+
+    private static final int MAX_TEXTURE_SIZE = 1024;
+
     private static boolean p_o_tSupported;
-    private int MAX_TEXTURE_SIZE = 1024;
+
     private static final String TAG = Texture.class.getSimpleName();
 
     public static void init(boolean p_o_tSupported) {
@@ -92,16 +95,16 @@ public class Texture implements GlRes {
             //gl.glTexEnvi(GL_POINT_SPRITE_OES, GL_COORD_REPLACE_OES, GL_TRUE);
         }
 
-
         if (!loaded) {
             loadAndBind(gl);
         }
         else {
             gl.glBindTexture(GL_TEXTURE_2D, buffer[0]);
-            if (subProvider != null) {
-                GLUtils.texSubImage2D(GL_TEXTURE_2D, 0, xOffset, yOffset, subProvider);
-                subProvider = null;
-            }
+        }
+
+        if (subProvider != null) {
+            GLUtils.texSubImage2D(GL_TEXTURE_2D, 0, xOffset, yOffset, subProvider);
+            subProvider = null;
         }
 
 
@@ -150,6 +153,7 @@ public class Texture implements GlRes {
 
     public void postSubData(int xoffset, int yoffset, Bitmap subPixel) {
         if (subPixel == bitmap) throw new IllegalArgumentException("subdata error !");
+
         if (this.subProvider != null) {
             System.out.println("Warning ! Texture subdata ignored !");
             return;
