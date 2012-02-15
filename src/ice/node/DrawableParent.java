@@ -49,6 +49,10 @@ public class DrawableParent<T extends Drawable> extends Drawable {
         addChildren(child);
     }
 
+    public void addChild(int index, T child) {
+        children.add(index, child);
+    }
+
     public void addChildren(T... children) {
         addChildren(Arrays.asList(children));
     }
@@ -68,6 +72,9 @@ public class DrawableParent<T extends Drawable> extends Drawable {
         return children.contains(child);
     }
 
+    public int indexOf(Drawable drawable) {
+        return children.indexOf(drawable);
+    }
 
     public void remove(T child) {
         children.remove(child);
@@ -86,13 +93,18 @@ public class DrawableParent<T extends Drawable> extends Drawable {
             public boolean onTouch(Drawable drawable, MotionEvent event) {
 
                 for (Drawable child : children) {
-                    if (child.onTouch(event)) return true;
+                    if (onDispatchTouch(child, event))
+                        return true;
                 }
 
                 return false;
             }
         };
         setOnTouchListener(TouchEventDispatcher);
+    }
+
+    protected boolean onDispatchTouch(Drawable child, MotionEvent event) {
+        return child.onTouch(event);
     }
 
     protected List<T> children;
