@@ -1,7 +1,7 @@
 package ice.practical;
 
 import android.view.MotionEvent;
-import ice.node.Drawable;
+import ice.node.Overlay;
 
 /**
  * 点击跟随
@@ -9,14 +9,14 @@ import ice.node.Drawable;
  * Date: 12-2-3
  * Time: 下午3:49
  */
-public class GoAfterTouchListener implements Drawable.OnTouchListener {
+public class GoAfterTouchListener implements Overlay.OnTouchListener {
 
     @Override
-    public boolean onTouch(Drawable drawable, MotionEvent event) {
+    public boolean onTouch(Overlay overlay, MotionEvent event) {
         int x = (int) event.getX();
         int y = (int) event.getY();
 
-        if (!drawable.hitTest(x, y))
+        if (!overlay.hitTest(x, y))
             return false;
 
         switch (event.getAction()) {
@@ -25,7 +25,7 @@ public class GoAfterTouchListener implements Drawable.OnTouchListener {
                 lastY = y;
                 break;
             case MotionEvent.ACTION_MOVE:
-                drawable.setPos(drawable.getPosX() + x - lastX, drawable.getPosY() + y - lastY);
+                overlay.setPos(overlay.getPosX() + x - lastX, overlay.getPosY() + y - lastY);
                 lastX = x;
                 lastY = y;
                 return true;

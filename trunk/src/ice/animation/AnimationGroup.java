@@ -1,6 +1,6 @@
 package ice.animation;
 
-import ice.node.Drawable;
+import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class AnimationGroup extends Animation {
 
 
     @Override
-    protected void applyFillAfter(Drawable drawable) {
+    protected void applyFillAfter(Overlay overlay) {
 
     }
 

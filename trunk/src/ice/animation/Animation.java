@@ -3,7 +3,7 @@ package ice.animation;
 import android.view.animation.AnimationUtils;
 import ice.animation.Interpolator.AccelerateDecelerateInterpolator;
 import ice.animation.Interpolator.Interpolator;
-import ice.node.Drawable;
+import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -12,7 +12,7 @@ public abstract class Animation {
 
     public interface Listener {
 
-        void onAnimationEnd(Drawable drawable);
+        void onAnimationEnd(Overlay overlay);
     }
 
     private static final long NOT_STARTED = 0;
@@ -59,17 +59,17 @@ public abstract class Animation {
     }
 
 
-    public void onComplete(final Drawable drawable, GL11 gl) {
+    public void onComplete(final Overlay overlay, GL11 gl) {
 
         if (fillAfter)
-            applyFillAfter(drawable);
+            applyFillAfter(overlay);
 
         if (listener != null) {
             new Thread() {
 
                 @Override
                 public void run() {
-                    listener.onAnimationEnd(drawable);
+                    listener.onAnimationEnd(overlay);
                 }
 
             }.start();
@@ -77,7 +77,7 @@ public abstract class Animation {
 
     }
 
-    protected abstract void applyFillAfter(Drawable drawable);
+    protected abstract void applyFillAfter(Overlay overlay);
 
     protected abstract void onAttach(GL11 gl, float interpolatedTime);
 

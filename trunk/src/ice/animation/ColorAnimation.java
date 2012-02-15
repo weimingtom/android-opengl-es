@@ -1,6 +1,6 @@
 package ice.animation;
 
-import ice.node.Drawable;
+import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -17,8 +17,8 @@ public class ColorAnimation extends Animation {
     }
 
     @Override
-    protected void applyFillAfter(Drawable drawable) {
-        drawable.setColors(toColor);
+    protected void applyFillAfter(Overlay overlay) {
+        overlay.setColors(toColor);
     }
 
     @Override

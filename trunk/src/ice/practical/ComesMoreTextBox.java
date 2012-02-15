@@ -1,6 +1,6 @@
 package ice.practical;
 
-import ice.node.DrawableParent;
+import ice.node.OverlayParent;
 import ice.node.widget.ComesMoreText;
 
 import javax.microedition.khronos.opengles.GL11;
@@ -10,7 +10,7 @@ import javax.microedition.khronos.opengles.GL11;
  * Date: 12-2-4
  * Time: 下午6:17
  */
-public class ComesMoreTextBox extends DrawableParent<ComesMoreText> {
+public class ComesMoreTextBox extends OverlayParent<ComesMoreText> {
 
     public ComesMoreTextBox(int maxWidth, int eachLineHeight, long lineDuring) {
         this.width = maxWidth;
