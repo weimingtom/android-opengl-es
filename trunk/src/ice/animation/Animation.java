@@ -10,7 +10,7 @@ import javax.microedition.khronos.opengles.GL11;
 public abstract class Animation {
 
 
-    public interface AnimationListener {
+    public interface Listener {
 
         void onAnimationEnd(Drawable drawable);
     }
@@ -99,11 +99,11 @@ public abstract class Animation {
     }
 
 
-    public AnimationListener getListener() {
+    public Listener getListener() {
         return listener;
     }
 
-    public void setListener(AnimationListener listener) {
+    public void setListener(Listener listener) {
         this.listener = listener;
     }
 
@@ -138,5 +138,5 @@ public abstract class Animation {
     private boolean cancel;
 
     protected Interpolator interpolator;
-    private AnimationListener listener;
+    private Listener listener;
 }

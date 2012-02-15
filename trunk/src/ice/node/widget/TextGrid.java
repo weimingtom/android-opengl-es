@@ -14,7 +14,7 @@ import javax.microedition.khronos.opengles.GL11;
  */
 public class TextGrid extends TextureGrid {
 
-    public TextGrid(int width, int height) {
+    public TextGrid(float width, float height) {
         super(width, height);
 
         painter = new Paint(Paint.ANTI_ALIAS_FLAG);

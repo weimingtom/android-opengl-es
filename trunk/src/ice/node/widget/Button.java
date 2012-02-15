@@ -5,9 +5,6 @@ import android.view.MotionEvent;
 import ice.node.Drawable;
 import ice.res.Res;
 
-import static android.view.MotionEvent.ACTION_CANCEL;
-import static android.view.MotionEvent.ACTION_UP;
-
 /**
  * User: ice
  * Date: 11-12-2

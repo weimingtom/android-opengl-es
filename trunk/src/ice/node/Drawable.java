@@ -328,6 +328,10 @@ public abstract class Drawable {
         this.colors = colors;
     }
 
+    public Animation getAnimation() {
+        return animation;
+    }
+
     private boolean depthTest;
     private boolean switchDepthTestStates;
 

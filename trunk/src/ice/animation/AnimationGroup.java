@@ -18,11 +18,11 @@ public class AnimationGroup extends Animation {
         interpolator = null;
     }
 
-    public void addAnimation(Animation animation) {
-        addAnimation(animation, 0L);
+    public void add(Animation animation) {
+        add(animation, 0L);
     }
 
-    public void addAnimation(Animation animation, long offsetTime) {
+    public void add(Animation animation, long offsetTime) {
         children.add(animation);
         childrenOffsetTime.add(offsetTime);
         duration = Math.max(duration, offsetTime + animation.duration);

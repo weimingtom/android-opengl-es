@@ -1,6 +1,7 @@
 package ice.node.widget;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.PointF;
 import ice.graphic.Texture;
 import ice.node.mesh.Grid;
@@ -45,6 +46,11 @@ public class TextureGrid extends Grid {
         if (bitmap != null) {
             setBitmap(bitmap);
         }
+    }
+
+    public TextureGrid(Bitmap bitmap, Point pos) {
+        this(bitmap);
+        setPos(pos.x,pos.y);
     }
 
     public void setBitmap(int bitmap) {
