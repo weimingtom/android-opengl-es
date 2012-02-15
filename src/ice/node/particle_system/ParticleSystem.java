@@ -2,7 +2,7 @@ package ice.node.particle_system;
 
 import android.view.animation.AnimationUtils;
 import ice.graphic.Texture;
-import ice.node.Drawable;
+import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
 import java.nio.ByteBuffer;
@@ -17,7 +17,7 @@ import static javax.microedition.khronos.opengles.GL11.*;
  * Date: 11-11-25
  * Time: 上午10:32
  */
-public abstract class ParticleSystem extends Drawable {
+public abstract class ParticleSystem extends Overlay {
 
     public ParticleSystem(int maxParticleNum, Texture texture) {
         this.maxParticleNum = maxParticleNum;

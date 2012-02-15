@@ -9,7 +9,7 @@ import android.view.Display;
 import android.view.KeyEvent;
 import ice.graphic.GlRenderer;
 import ice.graphic.projection.PerspectiveProjection;
-import ice.node.Drawable;
+import ice.node.Overlay;
 import ice.res.Res;
 
 import java.lang.ref.SoftReference;
@@ -36,7 +36,7 @@ public abstract class Game extends Activity implements App {
 
         EngineContext.build(this);
         Res.built(this);
-        Drawable.resetId();
+        Overlay.resetId();
 
         providerStack = new Stack<Class<? extends SceneProvider>>();
         providerCache = new HashMap<Class<? extends SceneProvider>, SoftReference<SceneProvider>>();

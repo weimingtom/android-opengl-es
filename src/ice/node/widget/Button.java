@@ -2,7 +2,7 @@ package ice.node.widget;
 
 import android.graphics.Bitmap;
 import android.view.MotionEvent;
-import ice.node.Drawable;
+import ice.node.Overlay;
 import ice.res.Res;
 
 /**
@@ -110,7 +110,7 @@ public class Button extends TextureGrid {
     public class ClickHandler implements OnTouchListener {
 
         @Override
-        public boolean onTouch(Drawable drawable, MotionEvent event) {
+        public boolean onTouch(Overlay overlay, MotionEvent event) {
             if (!isVisible() || disabled) return false;
 
             int action = event.getAction();

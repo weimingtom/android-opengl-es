@@ -1,15 +1,15 @@
 package ice.engine;
 
 
-import ice.node.Drawable;
-import ice.node.DrawableParent;
+import ice.node.Overlay;
+import ice.node.OverlayParent;
 
 /**
  * User: ice
  * Date: 11-11-14
  * Time: 上午10:41
  */
-public class Scene extends DrawableParent<Drawable> {
+public class Scene extends OverlayParent<Overlay> {
 
 
 

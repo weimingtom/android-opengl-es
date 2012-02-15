@@ -14,13 +14,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Date: 11-11-14
  * Time: 下午12:00
  */
-public class DrawableParent<T extends Drawable> extends Drawable {
+public class OverlayParent<T extends Overlay> extends Overlay {
 
-    public DrawableParent() {
+    public OverlayParent() {
         this(false);
     }
 
-    public DrawableParent(boolean simpleMode) {
+    public OverlayParent(boolean simpleMode) {
         if (simpleMode) {
             children = new ArrayList<T>();
         }
@@ -34,13 +34,13 @@ public class DrawableParent<T extends Drawable> extends Drawable {
     @Override
     protected void onDraw(GL11 gl) {
 
-        for (Drawable drawable : children) {
+        for (Overlay overlay : children) {
 
-            if (drawable.isRemovable()) {
-                children.remove(drawable);
+            if (overlay.isRemovable()) {
+                children.remove(overlay);
             }
             else {
-                drawable.draw(gl);
+                overlay.draw(gl);
             }
         }
     }
@@ -60,7 +60,7 @@ public class DrawableParent<T extends Drawable> extends Drawable {
 
     public void addChildren(Collection<? extends T> children) {
 
-        for (Drawable child : children) {
+        for (Overlay child : children) {
             if (child == null) throw new NullPointerException();
             child.setParent(this);
         }
@@ -68,12 +68,12 @@ public class DrawableParent<T extends Drawable> extends Drawable {
         this.children.addAll(children);
     }
 
-    public boolean containsChild(Drawable child) {
+    public boolean containsChild(Overlay child) {
         return children.contains(child);
     }
 
-    public int indexOf(Drawable drawable) {
-        return children.indexOf(drawable);
+    public int indexOf(Overlay overlay) {
+        return children.indexOf(overlay);
     }
 
     public void remove(T child) {
@@ -90,9 +90,9 @@ public class DrawableParent<T extends Drawable> extends Drawable {
     private void setupTouchDispatcher() {
         OnTouchListener TouchEventDispatcher = new OnTouchListener() {
             @Override
-            public boolean onTouch(Drawable drawable, MotionEvent event) {
+            public boolean onTouch(Overlay drawable, MotionEvent event) {
 
-                for (Drawable child : children) {
+                for (Overlay child : children) {
                     if (onDispatchTouch(child, event))
                         return true;
                 }
@@ -103,7 +103,7 @@ public class DrawableParent<T extends Drawable> extends Drawable {
         setOnTouchListener(TouchEventDispatcher);
     }
 
-    protected boolean onDispatchTouch(Drawable child, MotionEvent event) {
+    protected boolean onDispatchTouch(Overlay child, MotionEvent event) {
         return child.onTouch(event);
     }
 

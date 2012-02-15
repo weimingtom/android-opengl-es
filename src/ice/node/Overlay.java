@@ -19,10 +19,10 @@ import static javax.microedition.khronos.opengles.GL10.GL_DEPTH_TEST;
  * Date: 11-11-14
  * Time: 上午10:40
  */
-public abstract class Drawable {
+public abstract class Overlay {
 
     public interface OnTouchListener {
-        boolean onTouch(Drawable drawable, MotionEvent event);
+        boolean onTouch(Overlay overlay, MotionEvent event);
     }
 
     private static long maxId;
@@ -41,11 +41,11 @@ public abstract class Drawable {
         maxId = 0;
     }
 
-    public Drawable() {
+    public Overlay() {
         this(0, 0, 0);
     }
 
-    protected Drawable(float posX, float posY, float posZ) {
+    protected Overlay(float posX, float posY, float posZ) {
         setPos(posX, posY, posZ);
         visible = true;
         id = requestId();
@@ -226,9 +226,9 @@ public abstract class Drawable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Drawable drawable = (Drawable) o;
+        Overlay overlay = (Overlay) o;
 
-        if (id != drawable.id) return false;
+        if (id != overlay.id) return false;
 
         return true;
     }
@@ -307,7 +307,7 @@ public abstract class Drawable {
         return absolute;
     }
 
-    protected void setParent(DrawableParent parent) {
+    protected void setParent(OverlayParent parent) {
         this.parent = parent;
     }
 
@@ -356,7 +356,7 @@ public abstract class Drawable {
     /**
      * 用于获取绝对位置
      */
-    private DrawableParent parent;
+    private OverlayParent parent;
 
     private Animation animation;
 

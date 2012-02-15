@@ -4,7 +4,7 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 import ice.graphic.GlRenderer;
-import ice.node.DrawableParent;
+import ice.node.OverlayParent;
 
 /**
  * User: ice
@@ -34,7 +34,7 @@ public class GameView extends GLSurfaceView implements AppView {
     @Override
     public void showScene(Scene scene) {
 
-        DrawableParent<Scene> drawableRoot = renderer.getDrawDispatcher();
+        OverlayParent<Scene> drawableRoot = renderer.getDrawDispatcher();
 
         drawableRoot.addChild(scene);
     }
@@ -42,7 +42,7 @@ public class GameView extends GLSurfaceView implements AppView {
     @Override
     public void switchScene(Scene newScene) {
 
-        DrawableParent<Scene> root = renderer.getDrawDispatcher();
+        OverlayParent<Scene> root = renderer.getDrawDispatcher();
 
         Scene oldScene = root.top();
 
@@ -54,7 +54,7 @@ public class GameView extends GLSurfaceView implements AppView {
     public boolean onTouchEvent(MotionEvent event) {
 
         if (renderer != null) {
-            DrawableParent<Scene> drawDispatcher = renderer.getDrawDispatcher();
+            OverlayParent<Scene> drawDispatcher = renderer.getDrawDispatcher();
             Scene topScene = drawDispatcher.top();
 
             if (topScene != null)

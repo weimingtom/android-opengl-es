@@ -2,7 +2,7 @@ package ice.node.mesh;
 
 import ice.graphic.Texture;
 import ice.model.vertex.VertexData;
-import ice.node.Drawable;
+import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -13,7 +13,7 @@ import static javax.microedition.khronos.opengles.GL11.*;
  * Date: 11-11-14
  * Time: 下午2:35
  */
-public class Mesh extends Drawable {
+public class Mesh extends Overlay {
 
     private static final String TAG = Mesh.class.getSimpleName();
 

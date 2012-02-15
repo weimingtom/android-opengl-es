@@ -9,8 +9,8 @@ import ice.engine.EngineContext;
 import ice.engine.Scene;
 import ice.graphic.projection.PerspectiveProjection;
 import ice.graphic.projection.Projection;
-import ice.node.Drawable;
-import ice.node.DrawableParent;
+import ice.node.Overlay;
+import ice.node.OverlayParent;
 import ice.practical.Fps;
 import ice.util.GlUtil;
 
@@ -33,7 +33,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     public GlRenderer(Projection projection) {
         this.projection = projection;
 
-        drawDispatcher = new DrawableParent<Scene>();
+        drawDispatcher = new OverlayParent<Scene>();
 
         fps = new Fps();
     }
@@ -113,7 +113,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    public DrawableParent<Scene> getDrawDispatcher() {
+    public OverlayParent<Scene> getDrawDispatcher() {
         return drawDispatcher;
     }
 
@@ -161,9 +161,9 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    private Drawable coordinateAndFps() {
+    private Overlay coordinateAndFps() {
 
-        Drawable coordinate = new Drawable() {
+        Overlay coordinate = new Overlay() {
 
             @Override
             protected void onDraw(GL11 gl) {
@@ -188,11 +188,11 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
     private boolean inited;
 
-    private Drawable fps;
-    private Drawable coordinate_and_fps;
+    private Overlay fps;
+    private Overlay coordinate_and_fps;
     private boolean debugMode = true;
     private int frames;
     private long lastTime;
     private Projection projection;
-    private DrawableParent<Scene> drawDispatcher;
+    private OverlayParent<Scene> drawDispatcher;
 }

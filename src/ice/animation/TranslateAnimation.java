@@ -1,7 +1,6 @@
 package ice.animation;
 
-import android.graphics.Point;
-import ice.node.Drawable;
+import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -25,8 +24,8 @@ public class TranslateAnimation extends Animation {
     }
 
     @Override
-    protected void applyFillAfter(Drawable drawable) {
-        drawable.setPos(drawable.getPosX() + toXDelta, drawable.getPosY() + toYDelta);
+    protected void applyFillAfter(Overlay overlay) {
+        overlay.setPos(overlay.getPosX() + toXDelta, overlay.getPosY() + toYDelta);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package ice.animation;
 
-import ice.node.Drawable;
+import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -28,8 +28,8 @@ public class RotateAnimation extends Animation {
     }
 
     @Override
-    protected void applyFillAfter(Drawable drawable) {
-        drawable.setRotate(toAngle, axleX, axleY, axleZ);
+    protected void applyFillAfter(Overlay overlay) {
+        overlay.setRotate(toAngle, axleX, axleY, axleZ);
     }
 
     @Override
