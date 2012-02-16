@@ -152,7 +152,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
         if (currentTime - lastTime > 1000)
 
         {
-            System.out.println("fps  " + frames);
+            //System.out.println("fps  " + frames);
             frames = 0;
             lastTime = currentTime;
 
