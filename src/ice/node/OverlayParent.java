@@ -78,6 +78,7 @@ public class OverlayParent extends Overlay {
     }
 
     private void setupTouchDispatcher() {
+
         OnTouchListener TouchEventDispatcher = new OnTouchListener() {
             @Override
             public boolean onTouch(Overlay drawable, MotionEvent event) {
@@ -94,7 +95,7 @@ public class OverlayParent extends Overlay {
     }
 
     protected boolean onDispatchTouch(Overlay child, MotionEvent event) {
-        return child.onTouch(event);
+        return child.onTouchEvent(event);
     }
 
     protected List<Overlay> children;
