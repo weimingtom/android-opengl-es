@@ -46,9 +46,9 @@ public abstract class Overlay {
     }
 
     protected Overlay(float posX, float posY, float posZ) {
-        setPos(posX, posY, posZ);
         visible = true;
         id = requestId();
+        setPos(posX, posY, posZ);
     }
 
     public void draw(GL11 gl) {
@@ -94,15 +94,6 @@ public abstract class Overlay {
     private void restoreColor(GL11 gl) {
         gl.glColor4f(1, 1, 1, 1); //TODO 先这样吧
     }
-
-    public float getHeight() {
-        return height;
-    }
-
-    public float getWidth() {
-        return width;
-    }
-
 
     private boolean ensureDepthTestSwitch(GL11 gl, boolean depthTestStates) {
 
@@ -168,11 +159,8 @@ public abstract class Overlay {
         return removable;
     }
 
-    public boolean hitTest(int x, int y) {
-        return x >= posX
-                && x <= posX + width
-                && y <= posY
-                && y >= posY - height;
+    public boolean hitTest(float x, float y) {
+        return false;
     }
 
     public final boolean onTouchEvent(MotionEvent event) {
@@ -182,6 +170,7 @@ public abstract class Overlay {
         boolean handled = false;
 
         event.setLocation(originalX - posX, EngineContext.getAppHeight() - originalY - posY);
+
         try {
             handled = onTouch(event);
         }
@@ -348,10 +337,8 @@ public abstract class Overlay {
     private float axleX = 1, axleY = 1, axleZ = 1;
     private float[] colors;
 
-    //private int width, height;
     protected boolean visible;
     protected boolean removable;
-    protected float width, height;
 
     /**
      * 用于获取绝对位置

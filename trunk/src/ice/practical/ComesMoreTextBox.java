@@ -9,10 +9,10 @@ import javax.microedition.khronos.opengles.GL11;
  * Date: 12-2-4
  * Time: 下午6:17
  */
-public class ComesMoreTextBox extends OverlayParent<ComesMoreText> {
+public class ComesMoreTextBox extends OverlayParent {
 
     public ComesMoreTextBox(int maxWidth, int eachLineHeight, long lineDuring) {
-        this.width = maxWidth;
+        this.maxWidth = maxWidth;
         this.eachLineHeight = eachLineHeight;
         this.lineDuring = lineDuring;
     }
@@ -26,9 +26,9 @@ public class ComesMoreTextBox extends OverlayParent<ComesMoreText> {
         ComesMoreText[] textLines = new ComesMoreText[lines.length];
 
         for (int i = 0; i < lines.length; i++) {
-            textLines[i] = new ComesMoreText((int) width, eachLineHeight, lineDuring);
+            textLines[i] = new ComesMoreText(maxWidth, eachLineHeight, lineDuring);
             textLines[i].setText(lines[i]);
-            textLines[i].setPos(0, getHeight() - i * (linesMargin + eachLineHeight));
+            textLines[i].setPos(0, -i * (linesMargin + eachLineHeight));
             textLines[i].setVisible(false);
         }
 
@@ -47,7 +47,7 @@ public class ComesMoreTextBox extends OverlayParent<ComesMoreText> {
 
                 if (i == activeLineIndex) {
 
-                    ComesMoreText comesMoreText = children.get(i);
+                    ComesMoreText comesMoreText = (ComesMoreText) children.get(i);
 
                     if (!comesMoreText.isVisible())
                         comesMoreText.setVisible(true);
@@ -69,6 +69,8 @@ public class ComesMoreTextBox extends OverlayParent<ComesMoreText> {
     private long lineDuring;
 
     private int eachLineHeight;
+
+    private int maxWidth;
 
     private int activeLineIndex;
 }

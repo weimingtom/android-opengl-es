@@ -14,7 +14,6 @@ public class Fps extends TextOverlay {
 
     public Fps() {
         super(100, 30);
-        setPos(0, height);
     }
 
     @Override

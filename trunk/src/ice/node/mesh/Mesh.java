@@ -26,7 +26,6 @@ public class Mesh extends Overlay {
     public Mesh(VertexData vertexData, Texture texture) {
         this.vertexData = vertexData;
         bindTexture(texture);
-        callFace = true;
     }
 
     @Override
@@ -86,7 +85,7 @@ public class Mesh extends Overlay {
         return texture;
     }
 
-    private boolean callFace;
+    private boolean callFace = true;
     protected Texture texture;
 
     protected VertexData vertexData;
