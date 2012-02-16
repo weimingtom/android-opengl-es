@@ -17,7 +17,7 @@ import static javax.microedition.khronos.opengles.GL11.*;
 /**
  * 在GL2.0以下版本如果硬件支持GL_APPLE_texture_2D_limited_npot，就无需考虑纹理宽高 POT的问题.
  */
-public class Texture implements GlRes {
+public class Texture implements GlRes { //TODO 考虑下纹理的重用！（如每张牌的背面都是相同的纹理）
 
     private static final int MAX_TEXTURE_SIZE = 1024;
 
