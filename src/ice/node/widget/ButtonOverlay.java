@@ -10,17 +10,17 @@ import ice.res.Res;
  * Date: 11-12-2
  * Time: 下午12:09
  */
-public class Button extends TextureGrid {
+public class ButtonOverlay extends BitmapOverlay {
 
     public interface OnClickListener {
-        void onClick(Button btn);
+        void onClick(ButtonOverlay btn);
     }
 
-    public Button(int tileNormalId, int tilePressedId) {
+    public ButtonOverlay(int tileNormalId, int tilePressedId) {
         this(tileNormalId, tilePressedId, 0);
     }
 
-    public Button(int tileNormalId, int tilePressedId, int lockedId) {
+    public ButtonOverlay(int tileNormalId, int tilePressedId, int lockedId) {
         this(
                 Res.getBitmap(tileNormalId),
                 Res.getBitmap(tilePressedId),
@@ -28,16 +28,16 @@ public class Button extends TextureGrid {
         );
     }
 
-    public Button(Bitmap tileNormal, Bitmap tilePressed) {
+    public ButtonOverlay(Bitmap tileNormal, Bitmap tilePressed) {
         this(tileNormal, tilePressed, null);
     }
 
-    public Button(float width, float height) {
+    public ButtonOverlay(float width, float height) {
         super(width, height);
         setOnTouchListener(new ClickHandler());
     }
 
-    public Button(Bitmap tileNormal, Bitmap tilePressed, Bitmap locked) {
+    public ButtonOverlay(Bitmap tileNormal, Bitmap tilePressed, Bitmap locked) {
         super(tileNormal.getWidth(), tileNormal.getHeight());
 
         setBitmaps(tileNormal, tilePressed, locked);

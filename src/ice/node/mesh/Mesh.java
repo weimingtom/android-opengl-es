@@ -1,6 +1,6 @@
 package ice.node.mesh;
 
-import ice.graphic.Texture;
+import ice.graphic.texture.Texture;
 import ice.model.vertex.VertexData;
 import ice.node.Overlay;
 
@@ -14,8 +14,6 @@ import static javax.microedition.khronos.opengles.GL11.*;
  * Time: 下午2:35
  */
 public class Mesh extends Overlay {
-
-    private static final String TAG = Mesh.class.getSimpleName();
 
     public Mesh() {
         this(null);
@@ -45,7 +43,9 @@ public class Mesh extends Overlay {
         Texture theTexture = texture;
         boolean useTexture = (theTexture != null);
 
-        if (useTexture) theTexture.attach(gl);
+        if (useTexture) {
+            theTexture.attach(gl);
+        }
 
         vertexData.attach(gl);
 
@@ -90,4 +90,6 @@ public class Mesh extends Overlay {
     protected Texture texture;
 
     protected VertexData vertexData;
+
+
 }

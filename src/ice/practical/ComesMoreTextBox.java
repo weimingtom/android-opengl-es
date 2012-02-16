@@ -1,7 +1,6 @@
 package ice.practical;
 
 import ice.node.OverlayParent;
-import ice.node.widget.ComesMoreText;
 
 import javax.microedition.khronos.opengles.GL11;
 

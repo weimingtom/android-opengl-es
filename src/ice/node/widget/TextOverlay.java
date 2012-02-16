@@ -12,9 +12,9 @@ import javax.microedition.khronos.opengles.GL11;
  * Date: 12-2-6
  * Time: 上午10:19
  */
-public class TextGrid extends TextureGrid {
+public class TextOverlay extends BitmapOverlay {
 
-    public TextGrid(float width, float height) {
+    public TextOverlay(float width, float height) {
         super(width, height);
 
         painter = new Paint(Paint.ANTI_ALIAS_FLAG);

@@ -1,7 +1,7 @@
 package ice.node.particle_system;
 
 import android.view.animation.AnimationUtils;
-import ice.graphic.Texture;
+import ice.graphic.texture.Texture;
 import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
