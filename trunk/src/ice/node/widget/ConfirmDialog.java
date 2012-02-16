@@ -9,16 +9,21 @@ public abstract class ConfirmDialog extends Scene {
         onSetupComponent();
     }
 
+    protected ConfirmDialog(int width, int height) {
+        super(width, height);
+        onSetupComponent();
+    }
+
     protected abstract void onSetupComponent();
 
-    public ButtonOverlay getConfirmButtonOverlay() {
-        return confirmButtonOverlay;
+    public ButtonOverlay getConfirmButton() {
+        return confirmButton;
     }
 
-    public ButtonOverlay getCancelButtonOverlay() {
-        return cancelButtonOverlay;
+    public ButtonOverlay getCancelButton() {
+        return cancelButton;
     }
 
-    protected ButtonOverlay confirmButtonOverlay;
-    protected ButtonOverlay cancelButtonOverlay;
+    protected ButtonOverlay confirmButton;
+    protected ButtonOverlay cancelButton;
 }
