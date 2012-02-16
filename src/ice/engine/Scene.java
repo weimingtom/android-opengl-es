@@ -10,4 +10,23 @@ import ice.node.OverlayParent;
  */
 public class Scene extends OverlayParent {
 
+    public Scene() {
+        this(EngineContext.getAppWidth(), EngineContext.getAppHeight());
+    }
+
+    public Scene(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    private int width, height;
 }
