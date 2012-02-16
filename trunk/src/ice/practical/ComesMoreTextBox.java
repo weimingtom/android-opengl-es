@@ -23,6 +23,8 @@ public class ComesMoreTextBox extends OverlayParent {
 
 
     public void setTexts(String[] lines, int linesMargin) {
+        clear();
+
         ComesMoreText[] textLines = new ComesMoreText[lines.length];
 
         for (int i = 0; i < lines.length; i++) {

@@ -70,6 +70,10 @@ public class OverlayParent extends Overlay {
         children.remove(child);
     }
 
+    public void clear() {
+        children.clear();
+    }
+
     public Overlay top() {
         if (children.size() == 0)
             return null;
