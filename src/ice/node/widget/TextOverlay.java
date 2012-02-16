@@ -40,6 +40,10 @@ public class TextOverlay extends BitmapOverlay {
         setText(text, color, size, false);
     }
 
+    public void setText(String text, int color, boolean alignCenter) {
+        setText(text, color, (int) height, alignCenter);
+    }
+
     public void setText(String text, int color, int size, boolean alignCenter) {
         setTextTexture(text, color, size, alignCenter);
         this.text = text;
