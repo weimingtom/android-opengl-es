@@ -1,5 +1,6 @@
 package ice.node.mesh;
 
+import ice.model.Point3F;
 import ice.model.vertex.*;
 
 /**
@@ -181,10 +182,14 @@ public class Grid extends Mesh {
 
     @Override
     public boolean hitTest(float x, float y) {
-        return x >= posX
-                && x <= posX + width
-                && y >= posY
-                && y <= posY + height;
+        Point3F absolutePos = getAbsolutePos();
+        float offsetX = x - absolutePos.x;
+        float offsetY = y - absolutePos.y;
+
+        return offsetX >= 0
+                && offsetX <= width
+                && offsetY >= 0
+                && offsetY <= height;
     }
 
     private int stepX, stepY;

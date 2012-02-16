@@ -53,6 +53,8 @@ public class GameView extends GLSurfaceView implements AppView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
+        event.setLocation(event.getX(), EngineContext.getAppHeight() - event.getY());
+
         if (renderer != null) {
             OverlayParent drawDispatcher = renderer.getDrawDispatcher();
             Scene topScene = (Scene) drawDispatcher.top();

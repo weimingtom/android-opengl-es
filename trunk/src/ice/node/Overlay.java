@@ -4,7 +4,6 @@ package ice.node;
 import android.view.MotionEvent;
 import android.view.animation.AnimationUtils;
 import ice.animation.Animation;
-import ice.engine.EngineContext;
 import ice.graphic.Camera;
 import ice.model.Point3F;
 import ice.util.GlUtil;
@@ -163,29 +162,13 @@ public abstract class Overlay {
         return false;
     }
 
-    public final boolean onTouchEvent(MotionEvent event) {
-        float originalX = event.getX();
-        float originalY = event.getY();
+    public boolean onTouchEvent(MotionEvent event) {
 
-        boolean handled = false;
-
-        event.setLocation(originalX - posX, EngineContext.getAppHeight() - originalY - posY);
-
-        try {
-            handled = onTouch(event);
-        }
-        finally {
-            event.setLocation(originalX, originalY);
-        }
-
-        return handled;
-    }
-
-    protected boolean onTouch(MotionEvent event) {
         return onTouchListener == null
                 ? false
                 : onTouchListener.onTouch(this, event);
     }
+
 
     public void setPos(float posX, float posY) {
         this.posX = posX;
