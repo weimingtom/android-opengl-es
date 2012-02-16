@@ -10,9 +10,9 @@ import javax.microedition.khronos.opengles.GL11;
  * Date: 12-2-4
  * Time: 下午6:21
  */
-public class ColorBlock extends Grid {
+public class ColorOverlay extends Grid {
 
-    public ColorBlock(int color, float width, float height) {
+    public ColorOverlay(int color, float width, float height) {
         super(width, height);
         this.color = color;
     }

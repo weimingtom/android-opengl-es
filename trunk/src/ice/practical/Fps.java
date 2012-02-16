@@ -1,7 +1,7 @@
 package ice.practical;
 
 import android.graphics.Color;
-import ice.node.widget.TextGrid;
+import ice.node.widget.TextOverlay;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -10,7 +10,7 @@ import javax.microedition.khronos.opengles.GL11;
  * Date: 12-2-10
  * Time: 下午5:25
  */
-public class Fps extends TextGrid {
+public class Fps extends TextOverlay {
 
     public Fps() {
         super(100, 30);

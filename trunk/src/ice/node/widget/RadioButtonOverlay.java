@@ -7,21 +7,21 @@ import android.graphics.Bitmap;
  * Date: 12-1-12
  * Time: 下午4:33
  */
-public class RadioButton extends Button {
+public class RadioButtonOverlay extends ButtonOverlay {
 
     public interface OnToggledListener {
-        void onToggled(RadioButton radioButton);
+        void onToggled(RadioButtonOverlay radioButton);
     }
 
-    public RadioButton(float width, float height) {
+    public RadioButtonOverlay(float width, float height) {
         super(width, height);
     }
 
-    public RadioButton(int tileNormalId, int tilePressedId, int lockedId) {
+    public RadioButtonOverlay(int tileNormalId, int tilePressedId, int lockedId) {
         super(tileNormalId, tilePressedId, lockedId);
     }
 
-    public RadioButton(Bitmap normal, Bitmap pressed, Bitmap disable) {
+    public RadioButtonOverlay(Bitmap normal, Bitmap pressed, Bitmap disable) {
         super(normal, pressed, disable);
     }
 
@@ -30,7 +30,7 @@ public class RadioButton extends Button {
     protected void onGetTouchFocus() {
         super.onGetTouchFocus();
 
-        RadioButton toggled = parent.getToggled();
+        RadioButtonOverlay toggled = parent.getToggled();
 
         if (toggled == null) {
 

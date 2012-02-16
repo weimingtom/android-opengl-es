@@ -1,10 +1,11 @@
-package ice.graphic;
+package ice.graphic.texture;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.opengl.GLUtils;
 import android.util.Log;
+import ice.graphic.GlRes;
 import ice.res.Res;
 
 import javax.microedition.khronos.opengles.GL11;
@@ -102,11 +103,20 @@ public class Texture implements GlRes {
             gl.glBindTexture(GL_TEXTURE_2D, buffer[0]);
         }
 
+        if (modifier != null && !modifier.isFinished()) {
+
+            boolean changed = modifier.step(bitmap);
+
+            if (changed) {
+                postSubData(modifier.getXOffset(), modifier.getYOffset(), modifier.getResult());
+            }
+
+        }
+
         if (subProvider != null) {
             GLUtils.texSubImage2D(GL_TEXTURE_2D, 0, xOffset, yOffset, subProvider);
             subProvider = null;
         }
-
 
         blend = bitmap.hasAlpha();
 
@@ -246,6 +256,12 @@ public class Texture implements GlRes {
     public float getMaxV() {
         return maxV;
     }
+
+    public void setModifier(TextureModifier modifier) {
+        this.modifier = modifier;
+    }
+
+    private TextureModifier modifier;
 
     private float maxU, maxV;
 

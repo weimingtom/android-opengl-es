@@ -3,7 +3,7 @@ package ice.node.widget;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.PointF;
-import ice.graphic.Texture;
+import ice.graphic.texture.Texture;
 import ice.node.mesh.Grid;
 import ice.res.Res;
 
@@ -12,27 +12,27 @@ import ice.res.Res;
  * Date: 11-11-30
  * Time: 下午12:31
  */
-public class TextureGrid extends Grid {
+public class BitmapOverlay extends Grid {
 
-    public TextureGrid(int bitmapId) {
+    public BitmapOverlay(int bitmapId) {
         this(Res.getBitmap(bitmapId));
     }
 
-    public TextureGrid(Bitmap bitmap) {
+    public BitmapOverlay(Bitmap bitmap) {
         this(bitmap, new PointF());
     }
 
-    public TextureGrid(Bitmap bitmap, PointF pos) {
+    public BitmapOverlay(Bitmap bitmap, PointF pos) {
         this(bitmap.getWidth(), bitmap.getHeight(), bitmap);
 
         setPos(pos.x, pos.y, 0);
     }
 
-    public TextureGrid(float width, float height) {
+    public BitmapOverlay(float width, float height) {
         this(width, height, 0);
     }
 
-    public TextureGrid(float width, float height, int bitmapId) {
+    public BitmapOverlay(float width, float height, int bitmapId) {
         this(
                 width,
                 height,
@@ -40,7 +40,7 @@ public class TextureGrid extends Grid {
         );
     }
 
-    public TextureGrid(float width, float height, Bitmap bitmap) {
+    public BitmapOverlay(float width, float height, Bitmap bitmap) {
         super(width, height, false);
 
         if (bitmap != null) {
@@ -48,9 +48,9 @@ public class TextureGrid extends Grid {
         }
     }
 
-    public TextureGrid(Bitmap bitmap, Point pos) {
+    public BitmapOverlay(Bitmap bitmap, Point pos) {
         this(bitmap);
-        setPos(pos.x,pos.y);
+        setPos(pos.x, pos.y);
     }
 
     public void setBitmap(int bitmap) {
@@ -71,4 +71,5 @@ public class TextureGrid extends Grid {
 
         return texture.getBitmap();
     }
+
 }

@@ -7,29 +7,29 @@ import java.util.ArrayList;
  * Date: 12-1-13
  * Time: 上午9:33
  */
-public class RadioGroup extends ArrayList<RadioButton> {
+public class RadioGroup extends ArrayList<RadioButtonOverlay> {
 
-    public RadioGroup(RadioButton... radioButtons) {
+    public RadioGroup(RadioButtonOverlay... radioButtons) {
 
-        for (RadioButton radioButton : radioButtons) {
+        for (RadioButtonOverlay radioButton : radioButtons) {
             radioButton.setParent(this);
             add(radioButton);
         }
     }
 
-    public void setToggled(RadioButton toggled) {
+    public void setToggled(RadioButtonOverlay toggled) {
         this.toggled = toggled;
     }
 
-    public RadioButton getToggled() {
+    public RadioButtonOverlay getToggled() {
         return toggled;
     }
 
-    public void setOnToggledListener(RadioButton.OnToggledListener onToggledListener) {
-        for (RadioButton radioButton : this) {
+    public void setOnToggledListener(RadioButtonOverlay.OnToggledListener onToggledListener) {
+        for (RadioButtonOverlay radioButton : this) {
             radioButton.setOnToggledListener(onToggledListener);
         }
     }
 
-    private RadioButton toggled;
+    private RadioButtonOverlay toggled;
 }

@@ -9,6 +9,7 @@ import ice.engine.EngineContext;
 import ice.engine.Scene;
 import ice.graphic.projection.PerspectiveProjection;
 import ice.graphic.projection.Projection;
+import ice.graphic.texture.Texture;
 import ice.node.Overlay;
 import ice.node.OverlayParent;
 import ice.practical.Fps;

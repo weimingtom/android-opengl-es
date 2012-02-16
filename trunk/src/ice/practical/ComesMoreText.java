@@ -1,9 +1,10 @@
-package ice.node.widget;
+package ice.practical;
 
 import android.view.animation.AnimationUtils;
 import ice.animation.Interpolator.AccelerateDecelerateInterpolator;
 import ice.animation.Interpolator.Interpolator;
 import ice.model.Point3F;
+import ice.node.widget.TextOverlay;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -14,7 +15,7 @@ import static javax.microedition.khronos.opengles.GL11.GL_SCISSOR_TEST;
  * Date: 12-2-6
  * Time: 上午11:47
  */
-public class ComesMoreText extends TextGrid {
+public class ComesMoreText extends TextOverlay {
 
     private static Interpolator interpolator = new AccelerateDecelerateInterpolator();
 

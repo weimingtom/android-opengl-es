@@ -11,14 +11,14 @@ public abstract class ConfirmDialog extends Scene {
 
     protected abstract void onSetupComponent();
 
-    public Button getConfirmButton() {
-        return confirmButton;
+    public ButtonOverlay getConfirmButtonOverlay() {
+        return confirmButtonOverlay;
     }
 
-    public Button getCancelButton() {
-        return cancelButton;
+    public ButtonOverlay getCancelButtonOverlay() {
+        return cancelButtonOverlay;
     }
 
-    protected Button confirmButton;
-    protected Button cancelButton;
+    protected ButtonOverlay confirmButtonOverlay;
+    protected ButtonOverlay cancelButtonOverlay;
 }

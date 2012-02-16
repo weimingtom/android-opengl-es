@@ -1,6 +1,8 @@
-package ice.node.particle_system;
+package ice.practical;
 
-import ice.graphic.Texture;
+import ice.graphic.texture.Texture;
+import ice.node.particle_system.Particle;
+import ice.node.particle_system.PointParticleSystem;
 
 import java.util.Random;
 
