@@ -45,7 +45,7 @@ public class ComesMoreText extends TextOverlay {
 
             Point3F absolutePos = getAbsolutePos();
 
-            gl.glScissor((int) absolutePos.x, (int) (absolutePos.y - height), currentScissor, (int) height);
+            gl.glScissor((int) absolutePos.x, (int) (absolutePos.y), currentScissor, (int) height);
         }
 
         super.onDraw(gl);
