@@ -40,7 +40,7 @@ public abstract class Animation {
                 startTime = currentTime;
             }
 
-//            else {   //打开 fill after 会卡哦
+//            else {   //如果不注释 打开fill after时 会卡哦
 //                return;
 //            }
 
@@ -137,6 +137,6 @@ public abstract class Animation {
 
     private boolean cancel;
 
-    protected Interpolator interpolator;
+    private Interpolator interpolator;
     private Listener listener;
 }

@@ -15,7 +15,6 @@ public class AnimationGroup extends Animation {
         super(0);
         children = new ArrayList<Animation>(6);
         childrenOffsetTime = new ArrayList<Long>(6);
-        interpolator = null;
     }
 
     public void add(Animation animation) {
