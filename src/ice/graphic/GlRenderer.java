@@ -6,7 +6,6 @@ import android.opengl.GLU;
 import android.util.Log;
 import ice.engine.App;
 import ice.engine.EngineContext;
-import ice.engine.Scene;
 import ice.graphic.projection.PerspectiveProjection;
 import ice.graphic.projection.Projection;
 import ice.graphic.texture.Texture;
@@ -34,7 +33,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     public GlRenderer(Projection projection) {
         this.projection = projection;
 
-        drawDispatcher = new OverlayParent<Scene>();
+        drawDispatcher = new OverlayParent();
 
         fps = new Fps();
     }
@@ -114,7 +113,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    public OverlayParent<Scene> getDrawDispatcher() {
+    public OverlayParent getDrawDispatcher() {
         return drawDispatcher;
     }
 
@@ -195,5 +194,5 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     private int frames;
     private long lastTime;
     private Projection projection;
-    private OverlayParent<Scene> drawDispatcher;
+    private OverlayParent drawDispatcher;
 }

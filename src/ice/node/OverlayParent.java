@@ -3,7 +3,6 @@ package ice.node;
 import android.view.MotionEvent;
 
 import javax.microedition.khronos.opengles.GL11;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -14,19 +13,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Date: 11-11-14
  * Time: 下午12:00
  */
-public class OverlayParent<T extends Overlay> extends Overlay {
+public class OverlayParent extends Overlay {
 
     public OverlayParent() {
-        this(false);
-    }
-
-    public OverlayParent(boolean simpleMode) {
-        if (simpleMode) {
-            children = new ArrayList<T>();
-        }
-        else {
-            children = new CopyOnWriteArrayList<T>();
-        }
+        children = new CopyOnWriteArrayList<Overlay>();
 
         setupTouchDispatcher();
     }
@@ -45,20 +35,20 @@ public class OverlayParent<T extends Overlay> extends Overlay {
         }
     }
 
-    public void addChild(T child) {
+    public void addChild(Overlay child) {
         addChildren(child);
     }
 
-    public void addChild(int index, T child) {
+    public void addChild(int index, Overlay child) {
         children.add(index, child);
     }
 
-    public void addChildren(T... children) {
+    public void addChildren(Overlay... children) {
         addChildren(Arrays.asList(children));
     }
 
 
-    public void addChildren(Collection<? extends T> children) {
+    public void addChildren(Collection<? extends Overlay> children) {
 
         for (Overlay child : children) {
             if (child == null) throw new NullPointerException();
@@ -76,11 +66,11 @@ public class OverlayParent<T extends Overlay> extends Overlay {
         return children.indexOf(overlay);
     }
 
-    public void remove(T child) {
+    public void remove(Overlay child) {
         children.remove(child);
     }
 
-    public T top() {
+    public Overlay top() {
         if (children.size() == 0)
             return null;
 
@@ -107,5 +97,5 @@ public class OverlayParent<T extends Overlay> extends Overlay {
         return child.onTouch(event);
     }
 
-    protected List<T> children;
+    protected List<Overlay> children;
 }

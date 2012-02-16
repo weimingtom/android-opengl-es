@@ -1,7 +1,6 @@
 package ice.engine;
 
 
-import ice.node.Overlay;
 import ice.node.OverlayParent;
 
 /**
@@ -9,17 +8,6 @@ import ice.node.OverlayParent;
  * Date: 11-11-14
  * Time: 上午10:41
  */
-public class Scene extends OverlayParent<Overlay> {
+public class Scene extends OverlayParent {
 
-
-
-    @Override
-    public float getWidth() {
-        return EngineContext.getAppWidth();
-    }
-
-    @Override
-    public float getHeight() {
-        return EngineContext.getAppHeight();
-    }
 }

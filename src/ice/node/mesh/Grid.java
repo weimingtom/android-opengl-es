@@ -55,8 +55,8 @@ public class Grid extends Mesh {
                 1, 2, 0
         };
 
-        float buttomLeftX = 0;//-(width >> 1);
-        float buttomLeftY = -height;//-(height >> 1);
+        float buttomLeftX = 0;
+        float buttomLeftY = 0;
         float eachSquareWidth = width / stepX;
         float eachSquareHeight = height / stepY;
 
@@ -68,17 +68,17 @@ public class Grid extends Mesh {
 
             float[][] data = new float[][]{
                     {
+                            //左下角
                             buttomLeftX + currentStepX * eachSquareWidth,
                             buttomLeftY + currentStepY * eachSquareHeight,
-
                             0,
                             0,
                             1,
-
                             maxU * currentStepX / (float) stepX,
                             maxV * (stepY - currentStepY) / (float) stepY
                     },
                     {
+                            //右下角
                             buttomLeftX + (currentStepX + 1) * eachSquareWidth,
                             buttomLeftY + currentStepY * eachSquareHeight,
                             0,
@@ -171,5 +171,22 @@ public class Grid extends Mesh {
         return stepY;
     }
 
+    public float getHeight() {
+        return height;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    @Override
+    public boolean hitTest(float x, float y) {
+        return x >= posX
+                && x <= posX + width
+                && y >= posY
+                && y <= posY + height;
+    }
+
     private int stepX, stepY;
+    protected float width, height;
 }
