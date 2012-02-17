@@ -6,6 +6,9 @@ import javax.microedition.khronos.opengles.GL11;
 
 public class RotateAnimation extends Animation {
 
+    public RotateAnimation(long duration, float toAngle) {
+        this(duration, 0, toAngle);
+    }
 
     public RotateAnimation(long duration, float fromAngle, float toAngle) {
         super(duration);

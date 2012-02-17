@@ -6,17 +6,8 @@ import javax.microedition.khronos.opengles.GL11;
 
 public class ScaleAnimation extends Animation {
 
-    public static ScaleAnimation createScaleTo(long duration, float toX, float toY) {
-        return createScaleTo(duration, toX, toY, 1);
-    }
-
-    public static ScaleAnimation createScaleTo(long duration, float toX, float toY, float toZ) {
-
-        ScaleAnimation scaleAnimation = new ScaleAnimation(duration, 1, toX, 1, toY, 1, toZ);
-
-        scaleAnimation.setFillAfter(true);
-
-        return scaleAnimation;
+    public ScaleAnimation(long duration, float toX, float toY) {
+        this(duration, 1, toX, 1, toY, 1, 1);
     }
 
     public ScaleAnimation(long duration, float fromX, float toX, float fromY, float toY) {

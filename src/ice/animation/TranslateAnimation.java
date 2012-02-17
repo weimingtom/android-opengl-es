@@ -6,13 +6,8 @@ import javax.microedition.khronos.opengles.GL11;
 
 public class TranslateAnimation extends Animation {
 
-    public static TranslateAnimation createMoveBy(long duration, float toXDelta, float toYDelta) {
-
-        TranslateAnimation moveBy = new TranslateAnimation(duration, 0, toXDelta, 0, toYDelta);
-
-        moveBy.setFillAfter(true);
-
-        return moveBy;
+    public TranslateAnimation(long duration, float toXDelta, float toYDelta) {
+        this(duration, 0, toXDelta, 0, toYDelta);
     }
 
     public TranslateAnimation(long duration, float fromXDelta, float toXDelta, float fromYDelta, float toYDelta) {
