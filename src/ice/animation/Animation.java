@@ -9,7 +9,6 @@ import javax.microedition.khronos.opengles.GL11;
 
 public abstract class Animation {
 
-
     public interface Listener {
 
         void onAnimationEnd(Overlay overlay);
@@ -128,7 +127,7 @@ public abstract class Animation {
         this.fillAfter = fillAfter;
     }
 
-    private boolean fillAfter;
+    private boolean fillAfter = true;
 
     protected long startTime;
     protected long duration;
