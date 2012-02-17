@@ -72,4 +72,12 @@ public class BitmapOverlay extends Grid {
         return texture.getBitmap();
     }
 
+    @Override
+    public void setTexture(Texture texture) {
+        super.setTexture(texture);
+
+        if (vertexData == null) {
+            setUpVertex(texture.getMaxU(), texture.getMaxV());
+        }
+    }
 }

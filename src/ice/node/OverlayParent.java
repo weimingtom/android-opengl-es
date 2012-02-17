@@ -47,7 +47,6 @@ public class OverlayParent extends Overlay {
         addChildren(Arrays.asList(children));
     }
 
-
     public void addChildren(Collection<? extends Overlay> children) {
 
         for (Overlay child : children) {
@@ -68,6 +67,10 @@ public class OverlayParent extends Overlay {
 
     public void remove(Overlay child) {
         children.remove(child);
+    }
+
+    public void removeAll(Collection<Overlay> children) {
+        this.children.removeAll(children);
     }
 
     public void clear() {
