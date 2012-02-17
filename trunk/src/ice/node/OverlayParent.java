@@ -65,6 +65,10 @@ public class OverlayParent extends Overlay {
         return children.indexOf(overlay);
     }
 
+    public Overlay get(int index) {
+        return children.get(index);
+    }
+
     public void remove(Overlay child) {
         children.remove(child);
     }
@@ -82,6 +86,10 @@ public class OverlayParent extends Overlay {
             return null;
 
         return children.get(children.size() - 1);
+    }
+
+    public int size() {
+        return children.size();
     }
 
     private void setupTouchDispatcher() {
