@@ -25,7 +25,7 @@ public class BitmapOverlay extends Grid {
     public BitmapOverlay(Bitmap bitmap, PointF pos) {
         this(bitmap.getWidth(), bitmap.getHeight(), bitmap);
 
-        setPos(pos.x, pos.y, 0);
+        setPos(pos.x, pos.y);
     }
 
     public BitmapOverlay(float width, float height) {
