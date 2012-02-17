@@ -36,7 +36,7 @@ public class ColorAnimation extends Animation {
     }
 
     @Override
-    protected void onDetach(GL11 gl) {
+    protected void onDetach(Overlay overlay, GL11 gl) {
         // gl.glDisable(GL_BLEND);
 
         gl.glColor4f(1, 1, 1, 1);

@@ -125,7 +125,9 @@ public abstract class Overlay {
 
         this.animation = animation;
         this.animation.start();
-        setVisible(true);
+
+        if (!visible)
+            setVisible(true);
     }
 
     public void cancelAnimation() {
@@ -220,7 +222,7 @@ public abstract class Overlay {
     private void detachAnimation(GL11 gl, Animation theAnimation) {
         if (theAnimation == null) return;
 
-        theAnimation.detach(gl);
+        theAnimation.detach(this, gl);
 
         if (theAnimation.isCompleted()) {
             animation = null;
