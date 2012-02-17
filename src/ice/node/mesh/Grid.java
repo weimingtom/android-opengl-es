@@ -56,8 +56,8 @@ public class Grid extends Mesh {
                 1, 2, 0
         };
 
-        float buttomLeftX = 0;
-        float buttomLeftY = 0;
+        float buttomLeftX = -width / 2;
+        float buttomLeftY = -height / 2;
         float eachSquareWidth = width / stepX;
         float eachSquareHeight = height / stepY;
 
@@ -186,10 +186,13 @@ public class Grid extends Mesh {
         float offsetX = x - absolutePos.x;
         float offsetY = y - absolutePos.y;
 
-        return offsetX >= 0
-                && offsetX <= width
-                && offsetY >= 0
-                && offsetY <= height;
+        float halfWidth = width / 2;
+        float halfHeight = height / 2;
+
+        return offsetX >= -halfWidth
+                && offsetX <= halfWidth
+                && offsetY >= -halfHeight
+                && offsetY <= halfHeight;
     }
 
     private int stepX, stepY;
