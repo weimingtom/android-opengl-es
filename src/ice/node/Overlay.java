@@ -195,6 +195,10 @@ public abstract class Overlay {
         return posZ;
     }
 
+    public void setPosZ(float posZ) {
+        this.posZ = posZ;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
