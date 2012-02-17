@@ -33,11 +33,11 @@ public class TextOverlay extends BitmapOverlay {
     }
 
     public void setText(String text) {
-        setText(text, Color.WHITE, (int) height);
+        setText(text, painter.getColor(), (int) height);
     }
 
     public void setText(String text, int color, int size) {
-        setText(text, color, size, false);
+        setText(text, color, size, alignCenter);
     }
 
     public void setText(String text, int color, boolean alignCenter) {

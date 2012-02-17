@@ -1,5 +1,7 @@
 package ice.animation;
 
+import ice.node.Overlay;
+
 /**
  * User: jason
  * Date: 12-2-10
@@ -16,7 +18,16 @@ public class AlphaAnimation extends ColorAnimation {
     }
 
     public static AlphaAnimation createFadeOut(long duration) {
-        return new AlphaAnimation(duration, 1, 0);
+        AlphaAnimation fadeOut = new AlphaAnimation(duration, 1, 0);
+
+        fadeOut.setListener(new Listener() {
+            @Override
+            public void onAnimationEnd(Overlay overlay) {
+                overlay.setRemovable(true);
+            }
+        });
+
+        return fadeOut;
     }
 
 }
