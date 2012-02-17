@@ -4,16 +4,14 @@ import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AnimationGroup extends Animation {
 
-    List<Animation> children;
-    List<Long> childrenOffsetTime;
-
     public AnimationGroup() {
         super(0);
-        children = new ArrayList<Animation>(6);
+        children = new ArrayList<Animation>();
         childrenOffsetTime = new ArrayList<Long>(6);
     }
 
@@ -27,6 +25,14 @@ public class AnimationGroup extends Animation {
         duration = Math.max(duration, offsetTime + animation.duration);
     }
 
+    @Override
+    public void start() {
+        super.start();
+
+        for (Animation animation : children) {
+            animation.start();
+        }
+    }
 
     @Override
     protected void applyFillAfter(Overlay overlay) {
@@ -41,9 +47,19 @@ public class AnimationGroup extends Animation {
     }
 
     @Override
-    protected void onDetach(GL11 gl) {
-        for (Animation animation : children) {
-            animation.onDetach(gl);
+    protected void onDetach(Overlay overlay, GL11 gl) {
+
+        for (Iterator<Animation> iterator = children.iterator(); iterator.hasNext(); ) {
+
+            Animation animation = iterator.next();
+
+            animation.onDetach(overlay, gl);
+
+            if (animation.isCompleted()) {
+                iterator.remove();
+                animation.onComplete(overlay, gl);
+            }
+
         }
     }
 
@@ -55,5 +71,6 @@ public class AnimationGroup extends Animation {
         }
     }
 
-
+    private List<Animation> children;
+    private List<Long> childrenOffsetTime;
 }

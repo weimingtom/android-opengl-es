@@ -53,8 +53,8 @@ public abstract class Animation {
         onAttach(gl, interpolatedTime);
     }
 
-    public void detach(GL11 gl) {
-        onDetach(gl);
+    public void detach(Overlay overlay, GL11 gl) {
+        onDetach(overlay, gl);
     }
 
 
@@ -80,7 +80,7 @@ public abstract class Animation {
 
     protected abstract void onAttach(GL11 gl, float interpolatedTime);
 
-    protected void onDetach(GL11 gl) {
+    protected void onDetach(Overlay overlay, GL11 gl) {
 
     }
 
