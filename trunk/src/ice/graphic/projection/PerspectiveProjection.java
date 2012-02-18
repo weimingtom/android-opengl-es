@@ -26,7 +26,12 @@ import static javax.microedition.khronos.opengles.GL11.GL_PROJECTION;
  * Time: 下午5:43
  */
 public class PerspectiveProjection implements Projection {
-    public static final float Z_NEAR = 0.1f, DEFAULT_DEPTH = 1000;
+    /**
+     * 参考下这篇文章吧：Learning to Love your Z-buffer （通常 设的接近于0 如0.1,0.001 也没多大意义)
+     */
+    public static final float Z_NEAR = 10f;
+
+    public static final float DEFAULT_DEPTH = 1000;
 
 
     public PerspectiveProjection(GLU glu, float fovy) {
