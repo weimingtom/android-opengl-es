@@ -46,7 +46,11 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         GL11 gl = (GL11) gl10;
 
+        /**设置一次就ok了*/
+        gl.glClearDepthf(1.0f);
         gl.glClearColor(0, 0, 0, 1.0f);
+        /**设置一次就ok了*/
+
         gl.glShadeModel(GL_SMOOTH);
         gl.glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
@@ -97,6 +101,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     protected void onFrame(GL11 gl) {
 
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         gl.glMatrixMode(GL_MODELVIEW);
         gl.glLoadIdentity();
 

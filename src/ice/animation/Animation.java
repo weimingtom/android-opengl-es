@@ -63,17 +63,8 @@ public abstract class Animation {
         if (fillAfter)
             applyFillAfter(overlay);
 
-        if (listener != null) {
-            new Thread() {
-
-                @Override
-                public void run() {
-                    listener.onAnimationEnd(overlay);
-                }
-
-            }.start();
-        }
-
+        if (listener != null)
+            listener.onAnimationEnd(overlay);
     }
 
     protected abstract void applyFillAfter(Overlay overlay);
