@@ -23,6 +23,7 @@ public abstract class Animation {
     }
 
     public void start() {
+        finished = false;
         startTime = AnimationUtils.currentAnimationTimeMillis();
     }
 
@@ -32,20 +33,27 @@ public abstract class Animation {
 
     public void attach(GL11 gl, long currentTime) {
 
-        if (currentTime < startTime) return;
+        boolean over = currentTime - startTime > duration;
 
-        if (currentTime - startTime > duration) {
+        if (over) {
             if (loop) {
                 startTime = currentTime;
             }
-
-//            else {   //如果不注释 打开fill after时 会卡哦
-//                return;
-//            }
-
+            else {
+                finished = true;
+            }
         }
 
-        float normalizedTime = ((float) (currentTime - startTime)) / (float) duration;
+        float normalizedTime = 0;
+
+        if (over) {
+            normalizedTime = 1.0f;
+        }
+        else {
+            if (duration != 0 && currentTime >= startTime) {
+                normalizedTime = ((float) (currentTime - startTime)) / (float) duration;
+            }
+        }
 
         //根据归一化时间调整时间插值
         float interpolatedTime = interpolator.getInterpolation(normalizedTime);
@@ -80,12 +88,7 @@ public abstract class Animation {
     }
 
     public boolean isCompleted() {
-
-        if (AnimationUtils.currentAnimationTimeMillis() - startTime > duration) {
-            return !loop;
-        }
-
-        return false;
+        return finished;
     }
 
 
@@ -117,6 +120,8 @@ public abstract class Animation {
     public void setFillAfter(boolean fillAfter) {
         this.fillAfter = fillAfter;
     }
+
+    private boolean finished;
 
     private boolean fillAfter = true;
 
