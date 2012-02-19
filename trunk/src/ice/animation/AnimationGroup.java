@@ -36,7 +36,9 @@ public class AnimationGroup extends Animation {
 
     @Override
     protected void applyFillAfter(Overlay overlay) {
-
+        for (Animation animation : children) {
+            animation.applyFillAfter(overlay);
+        }
     }
 
     @Override

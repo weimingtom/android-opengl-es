@@ -71,13 +71,13 @@ public abstract class Overlay {
 
         boolean colorChanged = ensureSelfStatus(gl);
 
-        Animation theAnimation = animation;
-
-        attachAnimation(gl, theAnimation);
+        if (animation != null)
+            attachAnimation(gl);
 
         onDraw(gl);
 
-        detachAnimation(gl, theAnimation);
+        if (animation != null)
+            detachAnimation(gl);
 
         if (blendState) gl.glDisable(GL_BLEND);
 
@@ -123,8 +123,8 @@ public abstract class Overlay {
         if (this.animation != null)
             throw new IllegalStateException("Another animation not finished yet !");
 
+        animation.start();
         this.animation = animation;
-        this.animation.start();
 
         if (!visible)
             setVisible(true);
@@ -216,27 +216,21 @@ public abstract class Overlay {
         return (int) (id ^ (id >>> 32));
     }
 
-    private void attachAnimation(GL11 gl, Animation theAnimation) {
-
-        if (theAnimation != null)
-            theAnimation.attach(gl, AnimationUtils.currentAnimationTimeMillis());
-
+    private void attachAnimation(GL11 gl) {
+        animation.attach(gl, AnimationUtils.currentAnimationTimeMillis());
     }
 
-    private void detachAnimation(GL11 gl, Animation theAnimation) {
-        if (theAnimation == null) return;
+    private void detachAnimation(GL11 gl) {
+        animation.detach(this, gl);
 
-        theAnimation.detach(this, gl);
-
-        if (theAnimation.isCompleted()) {
+        if (animation.isCompleted()) {
+            animation.onComplete(this, gl);
             animation = null;
-            theAnimation.onComplete(this, gl);
             return;
         }
 
-        if (theAnimation.isCanceled()) {
+        if (animation.isCanceled())
             animation = null;
-        }
     }
 
     private boolean ensureSelfStatus(GL11 gl) {
@@ -249,7 +243,6 @@ public abstract class Overlay {
 
         if (rotate != 0)
             gl.glRotatef(rotate, axleX, axleY, axleZ);
-
 
         if (colors != null) {
             gl.glColor4f(colors[0], colors[1], colors[2], colors[3]);
