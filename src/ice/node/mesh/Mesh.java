@@ -3,6 +3,7 @@ package ice.node.mesh;
 import ice.graphic.texture.Texture;
 import ice.model.vertex.VertexData;
 import ice.node.Overlay;
+import ice.util.GlUtil;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -15,6 +16,10 @@ import static javax.microedition.khronos.opengles.GL11.*;
  */
 public class Mesh extends Overlay {
 
+    public enum FaceMode {
+        Front, Back, BothSide
+    }
+
     public Mesh() {
         this(null);
     }
@@ -25,26 +30,53 @@ public class Mesh extends Overlay {
 
     public Mesh(VertexData vertexData, Texture texture) {
         this.vertexData = vertexData;
+        faceMode = FaceMode.Front;
         bindTexture(texture);
     }
 
     @Override
     protected void onDraw(GL11 gl) {
 
-        boolean cullBack = callFace;
+        boolean faceModeSwitchTemp = faceModeSwitch;
+        FaceMode faceModeTemp = faceMode;
 
-        if (cullBack) {
-            gl.glFrontFace(GL_CCW);
-            gl.glEnable(GL_CULL_FACE);
-            gl.glCullFace(GL_BACK);
+        boolean cullFaceStatus = false;
+        int faceMode = 0;
+
+        if (faceModeSwitchTemp) {
+
+            cullFaceStatus = gl.glIsEnabled(GL_CULL_FACE);
+            faceMode = GlUtil.getInteger(gl, GL_FRONT_FACE);
+
+            switch (faceModeTemp) {
+
+                case Front:
+                    if (!cullFaceStatus)
+                        gl.glEnable(GL_CULL_FACE);
+                    gl.glFrontFace(GL_CCW);
+                    gl.glCullFace(GL_BACK);
+                    break;
+
+                case Back:
+                    if (!cullFaceStatus)
+                        gl.glEnable(GL_CULL_FACE);
+                    gl.glFrontFace(GL_CW);
+                    gl.glCullFace(GL_BACK);
+                    break;
+
+                case BothSide:
+                    gl.glDisable(GL_CULL_FACE);
+                    break;
+            }
+
         }
+
 
         Texture theTexture = texture;
         boolean useTexture = (theTexture != null);
 
-        if (useTexture) {
+        if (useTexture)
             theTexture.attach(gl);
-        }
 
         vertexData.attach(gl);
 
@@ -54,7 +86,18 @@ public class Mesh extends Overlay {
 
         if (useTexture) theTexture.detach(gl);
 
-        if (cullBack) gl.glDisable(GL_CULL_FACE);
+        if (faceModeSwitchTemp) {
+
+            if (cullFaceStatus) {
+                gl.glEnable(GL_CULL_FACE);
+            }
+            else {
+                gl.glDisable(GL_CULL_FACE);
+            }
+
+            gl.glFrontFace(faceMode);
+        }
+
     }
 
     public void bindTexture(Texture texture) {
@@ -63,10 +106,6 @@ public class Mesh extends Overlay {
 
     public void unbindTexture() {
         texture = null;
-    }
-
-    public void setCallFace(boolean callFace) {
-        this.callFace = callFace;
     }
 
     public VertexData getVertexData() {
@@ -85,7 +124,16 @@ public class Mesh extends Overlay {
         return texture;
     }
 
-    private boolean callFace = true;
+
+    public void enableFaceModeSwitch(FaceMode faceMode) {
+        this.faceMode = faceMode;
+        faceModeSwitch = true;
+    }
+
+    private boolean faceModeSwitch;
+
+    private FaceMode faceMode;
+
     protected Texture texture;
 
     protected VertexData vertexData;

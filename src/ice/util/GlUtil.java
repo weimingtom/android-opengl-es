@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
-import static ice.model.Constants.SIZE_OF_FLOAT;
+import static ice.model.Constants.SIZE_OF_INTEGER;
 import static javax.microedition.khronos.opengles.GL10.GL_EXTENSIONS;
 
 /**
@@ -21,15 +21,18 @@ public class GlUtil {
         return extensions.contains(name);
     }
 
+    public static boolean isEnabled(GL11 gl, int name) {
+        return gl.glIsEnabled(name);
+    }
 
-    public static boolean query(GL11 gl, int name) {
-        ByteBuffer vfb = ByteBuffer.allocateDirect(SIZE_OF_FLOAT);
+    public static int getInteger(GL11 gl, int name) {
+        ByteBuffer vfb = ByteBuffer.allocateDirect(SIZE_OF_INTEGER);
         vfb.order(ByteOrder.nativeOrder());
 
-        IntBuffer currentDepthTest = vfb.asIntBuffer();
+        IntBuffer buffer = vfb.asIntBuffer();
 
-        gl.glGetBooleanv(name, currentDepthTest);
+        gl.glGetIntegerv(name, buffer);
 
-        return currentDepthTest.get(0) != 0;
+        return buffer.get(0);
     }
 }

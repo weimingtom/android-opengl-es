@@ -12,4 +12,6 @@ public class Constants {
     public static final int BYTE_OF_FLOAT = 4;
 
     public static final int SIZE_OF_FLOAT = Float.SIZE;
+
+    public static final int SIZE_OF_INTEGER = Integer.SIZE;
 }
