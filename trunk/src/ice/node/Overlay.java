@@ -96,7 +96,7 @@ public abstract class Overlay {
 
     private boolean ensureDepthTestSwitch(GL11 gl, boolean depthTestStates) {
 
-        boolean storedDepthTest = GlUtil.query(gl, GL_DEPTH_TEST);
+        boolean storedDepthTest = GlUtil.isEnabled(gl, GL_DEPTH_TEST);
 
         if (depthTestStates) {
             gl.glEnable(GL_DEPTH_TEST);

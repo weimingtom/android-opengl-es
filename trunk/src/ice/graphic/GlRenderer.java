@@ -58,6 +58,10 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         Texture.init(textureP_O_T);
 
+        gl.glEnable(GL_CULL_FACE);
+        gl.glFrontFace(GL_CCW);
+        gl.glCullFace(GL_BACK);
+
         onInit(gl);
 
         inited = true;
