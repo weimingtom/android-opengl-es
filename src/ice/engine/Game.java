@@ -85,6 +85,14 @@ public abstract class Game extends Activity implements App {
         topProvider.onPause();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Log.i(TAG, "onStop");
+        topProvider.onStop();
+    }
+
     protected abstract Class<? extends SceneProvider> getEntry();
 
     @Override

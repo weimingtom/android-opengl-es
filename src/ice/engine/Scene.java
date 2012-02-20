@@ -28,5 +28,12 @@ public class Scene extends OverlayParent {
         return height;
     }
 
+
+    protected void onLostFocus() {
+
+    }
+
     private int width, height;
+
+
 }
