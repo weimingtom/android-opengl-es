@@ -115,7 +115,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         if (projection instanceof PerspectiveProjection) { //移动z到窗口
             PerspectiveProjection perspectiveProjection = (PerspectiveProjection) projection;
-            z = -0.1f - perspectiveProjection.getZFarOfWindow();
+            z = -perspectiveProjection.getZFarOfWindow();
         }
 
         gl.glTranslatef(-(app.getWidth() / 2.0f), -(app.getHeight() / 2.0f), z);
