@@ -26,8 +26,8 @@ public class TranslateAnimation extends Animation {
     @Override
     protected void onAttach(GL11 gl, float interpolatedTime) {
 
-        float translateX = fromXDelta;
-        float translateY = fromYDelta;
+        float translateX = 0;
+        float translateY = 0;
 
         if (fromXDelta != toXDelta) {
             translateX = fromXDelta + ((toXDelta - fromXDelta) * interpolatedTime);
@@ -36,7 +36,8 @@ public class TranslateAnimation extends Animation {
             translateY = fromYDelta + ((toYDelta - fromYDelta) * interpolatedTime);
         }
 
-        gl.glTranslatef(translateX, translateY, 0);
+        if (translateX != 0 || translateY != 0)
+            gl.glTranslatef(translateX, translateY, 0);
     }
 
     private float fromXDelta;
