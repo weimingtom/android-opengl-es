@@ -20,22 +20,23 @@ import static javax.microedition.khronos.opengles.GL11.GL_PROJECTION;
  * );
  * 等价.
  * <p/>
+ * 还有个问题值得非常注意！
+ * <p/>
+ * 参考下这篇文章吧：Learning to Love your Z-buffer （通常 设的接近于0 如0.1,0.001 也没多大意义)
+ * <p/>
+ * Z Near 太近容易出现深度测试的问题!!! 这里默认情况下取 ZFarOfWindow*0.5f
  * <p/>
  * User: Jason
  * Date: 11-12-3
  * Time: 下午5:43
  */
 public class PerspectiveProjection implements Projection {
-    /**
-     * 参考下这篇文章吧：Learning to Love your Z-buffer （通常 设的接近于0 如0.1,0.001 也没多大意义)
-     */
-    public static final float Z_NEAR = 10f;
 
-    public static final float DEFAULT_DEPTH = 1000;
+    public static final float DEFAULT_DEPTH = 100;
 
 
     public PerspectiveProjection(GLU glu, float fovy) {
-        this(glu, fovy, Z_NEAR, getZFarOfWindow(fovy) + DEFAULT_DEPTH);
+        this(glu, fovy, getZFarOfWindow(fovy) * 0.5f, getZFarOfWindow(fovy) + DEFAULT_DEPTH);
     }
 
 
