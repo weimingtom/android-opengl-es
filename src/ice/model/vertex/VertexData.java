@@ -1,12 +1,12 @@
 package ice.model.vertex;
 
-import ice.graphic.GlRes;
+import ice.graphic.gl_status.GlStatusController;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-public abstract class VertexData implements GlRes {
+public abstract class VertexData implements GlStatusController {
 
     protected VertexData(int verticesCount, VertexAttributes attributes) {
         this.attributes = attributes;

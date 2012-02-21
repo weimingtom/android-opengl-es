@@ -1,5 +1,6 @@
 package ice.practical;
 
+import ice.graphic.gl_status.DepthController;
 import ice.graphic.texture.Texture;
 import ice.node.particle_system.Particle;
 import ice.node.particle_system.PointParticleSystem;
@@ -37,7 +38,7 @@ public class TestParticleSystem extends PointParticleSystem {
 
     public TestParticleSystem(int maxParticleNum, Texture texture) {
         super(maxParticleNum, texture, false);
-        enableDepthTestSwitch(false);
+        addGlStatusController(new DepthController(false));
     }
 
     @Override

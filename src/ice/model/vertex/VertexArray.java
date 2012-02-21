@@ -1,5 +1,7 @@
 package ice.model.vertex;
 
+import ice.node.Overlay;
+
 import javax.microedition.khronos.opengles.GL11;
 
 import static javax.microedition.khronos.opengles.GL11.*;
@@ -54,11 +56,12 @@ public class VertexArray extends VertexData {
     }
 
     @Override
-    public void detach(GL11 gl) {
+    public boolean detach(GL11 gl, Overlay overlay) {
         gl.glDisableClientState(GL_VERTEX_ARRAY);
+        return true;
     }
 
-    @Override
+
     public void release(GL11 gl) { //TODO 名副其实？
         int numAttributes = attributes.size();
 

@@ -3,11 +3,12 @@ package ice.animation;
 import android.view.animation.AnimationUtils;
 import ice.animation.Interpolator.AccelerateDecelerateInterpolator;
 import ice.animation.Interpolator.Interpolator;
+import ice.graphic.gl_status.GlStatusController;
 import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
 
-public abstract class Animation {
+public abstract class Animation implements GlStatusController {
 
     public interface Listener {
 
@@ -31,7 +32,10 @@ public abstract class Animation {
         cancel = true;
     }
 
-    public void attach(GL11 gl, long currentTime) {
+    @Override
+    public void attach(GL11 gl) {
+
+        long currentTime = AnimationUtils.currentAnimationTimeMillis();
 
         boolean over = currentTime - startTime > duration;
 
@@ -61,8 +65,17 @@ public abstract class Animation {
         onAttach(gl, interpolatedTime);
     }
 
-    public void detach(Overlay overlay, GL11 gl) {
+    @Override
+    public boolean detach(GL11 gl, Overlay overlay) {
+
         onDetach(overlay, gl);
+
+        if (isCompleted()) {
+            onComplete(overlay, gl);
+            return false;
+        }
+
+        return !isCanceled();
     }
 
 
