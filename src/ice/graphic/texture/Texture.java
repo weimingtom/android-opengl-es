@@ -20,7 +20,7 @@ import static javax.microedition.khronos.opengles.GL11.*;
  */
 public class Texture implements GlStatusController { //TODO 考虑下纹理管理
 
-    private static final int MAX_TEXTURE_SIZE = 1024;
+    public static final int MAX_TEXTURE_SIZE = 1024;
 
     private static boolean p_o_tSupported;
 
