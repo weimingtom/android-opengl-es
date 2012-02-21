@@ -1,5 +1,7 @@
 package ice.model.vertex;
 
+import ice.node.Overlay;
+
 import javax.microedition.khronos.opengles.GL11;
 import java.nio.Buffer;
 
@@ -72,9 +74,11 @@ public class VertexBufferObject extends VertexData {
     }
 
     @Override
-    public void detach(GL11 gl) {
+    public boolean detach(GL11 gl, Overlay overlay) {
         gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
+        return true;
     }
+
 
     public void postSubData(int offset, int size, Buffer subData) {
         if (this.subData != null) {
@@ -95,7 +99,6 @@ public class VertexBufferObject extends VertexData {
         upload = true;
     }
 
-    @Override
     public void release(GL11 gl) {
         gl.glDeleteBuffers(vboBuffer.length, vboBuffer, 0);
         upload = false;

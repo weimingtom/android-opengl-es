@@ -82,9 +82,9 @@ public class Mesh extends Overlay {
 
         gl.glDrawArrays(GL_TRIANGLES, 0, vertexData.getVerticesCount());
 
-        vertexData.detach(gl);
+        vertexData.detach(gl, this);
 
-        if (useTexture) theTexture.detach(gl);
+        if (useTexture) theTexture.detach(gl, this);
 
         if (faceModeSwitchTemp) {
 

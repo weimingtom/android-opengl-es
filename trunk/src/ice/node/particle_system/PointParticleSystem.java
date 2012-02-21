@@ -110,7 +110,7 @@ public abstract class PointParticleSystem extends Overlay {
 
         gl.glDrawArrays(GL_POINTS, 0, liveCount / 2);
 
-        texture.detach(gl);
+        texture.detach(gl, this);
 
         gl.glDisableClientState(GL_VERTEX_ARRAY);
         gl.glDisableClientState(GL_COLOR_ARRAY);

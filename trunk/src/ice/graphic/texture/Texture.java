@@ -5,7 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.opengl.GLUtils;
 import android.util.Log;
-import ice.graphic.GlRes;
+import ice.graphic.gl_status.GlStatusController;
+import ice.node.Overlay;
 import ice.res.Res;
 
 import javax.microedition.khronos.opengles.GL11;
@@ -17,7 +18,7 @@ import static javax.microedition.khronos.opengles.GL11.*;
 /**
  * 在GL2.0以下版本如果硬件支持GL_APPLE_texture_2D_limited_npot，就无需考虑纹理宽高 POT的问题.
  */
-public class Texture implements GlRes { //TODO 考虑下纹理的重用！（如每张牌的背面都是相同的纹理）
+public class Texture implements GlStatusController { //TODO 考虑下纹理管理
 
     private static final int MAX_TEXTURE_SIZE = 1024;
 
@@ -96,11 +97,21 @@ public class Texture implements GlRes { //TODO 考虑下纹理的重用！（如
             //gl.glTexEnvi(GL_POINT_SPRITE_OES, GL_COORD_REPLACE_OES, GL_TRUE);
         }
 
-        if (!loaded) {
-            loadAndBind(gl);
+        if (buffer != null) {        //gl.glIsBuffer(buffer[0])
+
+            if (reload) {
+                reload = false;
+                rebind(gl);
+            }
+            else {
+                gl.glBindTexture(GL_TEXTURE_2D, buffer[0]);
+            }
+
         }
         else {
-            gl.glBindTexture(GL_TEXTURE_2D, buffer[0]);
+            buffer = new int[1];
+            gl.glGenTextures(buffer.length, buffer, 0);
+            rebind(gl);
         }
 
         if (modifier != null && !modifier.isFinished()) {
@@ -118,55 +129,43 @@ public class Texture implements GlRes { //TODO 考虑下纹理的重用！（如
             subProvider = null;
         }
 
-        blend = bitmap.hasAlpha();
-
-        if (blend) {
-            gl.glEnable(GL_BLEND);
-            gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            //gl.glBlendFunc(GL_ONE, GL_ONE);
-        }
-
         attachStatues = true;
     }
 
+
     @Override
-    public void detach(GL11 gl) {
+    public boolean detach(GL11 gl, Overlay overlay) {
         if (!attachStatues)
             throw new IllegalStateException("Texture resource not attached before !");
 
         gl.glDisable(GL_TEXTURE_2D);
 
-        if (blend)
-            gl.glDisable(GL_BLEND);
-
         if (!coordSupliedBySystem)
             gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
         attachStatues = false;
+
+        return true;
     }
 
-    private void loadAndBind(GL11 gl) {
-        buffer = new int[1];
-        gl.glGenTextures(buffer.length, buffer, 0);
+    private void rebind(GL11 gl) {
         gl.glBindTexture(GL_TEXTURE_2D, buffer[0]);
         bindTextureParams(gl, params);
         GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
-        loaded = true;
     }
 
-    @Override
     public void release(GL11 gl) {
-        if (!loaded) return;
-
         gl.glDeleteTextures(buffer.length, buffer, 0);
     }
 
     public void postSubData(int xoffset, int yoffset, Bitmap subPixel) {
-        if (subPixel == bitmap) throw new IllegalArgumentException("subdata error !");
-
-        if (this.subProvider != null) {
-            System.out.println("Warning ! Texture subdata ignored !");
-            return;
+        while (this.subProvider != null) {
+            try {
+                wait(2);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         this.xOffset = xoffset;
@@ -185,11 +184,25 @@ public class Texture implements GlRes { //TODO 考虑下纹理的重用！（如
         }
     }
 
-    public synchronized Bitmap setBitmap(Bitmap bitmap) {
+    public Bitmap setBitmap(Bitmap bitmap) {
+        if (bitmap == null)
+            throw new IllegalArgumentException("bitmap null !");
 
-        this.bitmap = tryAdjust(bitmap);
-        loaded = false;
-        buffer = new int[1];
+        Bitmap newBitmap = tryAdjust(bitmap);
+
+        if (this.bitmap != null) {
+
+            if (this.bitmap.getWidth() != newBitmap.getWidth() || this.bitmap.getHeight() != newBitmap.getHeight()) {
+                this.bitmap = newBitmap;
+                reload = true;
+            }
+            else {
+                postSubData(0, 0, newBitmap);
+            }
+
+        }
+
+        this.bitmap = newBitmap;
 
         return this.bitmap;
     }
@@ -261,16 +274,15 @@ public class Texture implements GlRes { //TODO 考虑下纹理的重用！（如
         this.modifier = modifier;
     }
 
+    private boolean reload;
+
     private TextureModifier modifier;
 
     private float maxU, maxV;
 
-    private boolean blend;
-
     private boolean coordSupliedBySystem;
     private int xOffset, yOffset;
     private int[] buffer;
-    private boolean loaded;
     private Bitmap bitmap;
     private Bitmap subProvider;
     private Params params;
