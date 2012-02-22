@@ -18,7 +18,6 @@ public abstract class SceneProvider {
 
     protected void onPause() {
         Log.i(tag, "onPause");
-        getScene().onLostFocus();
     }
 
     protected void onStop() {

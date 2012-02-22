@@ -6,6 +6,7 @@ import android.opengl.GLU;
 import android.util.Log;
 import ice.engine.App;
 import ice.engine.EngineContext;
+import ice.engine.Scene;
 import ice.graphic.projection.PerspectiveProjection;
 import ice.graphic.projection.Projection;
 import ice.graphic.texture.Texture;
@@ -33,7 +34,15 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     public GlRenderer(Projection projection) {
         this.projection = projection;
 
-        drawDispatcher = new OverlayParent();
+        drawDispatcher = new OverlayParent() {
+            @Override
+            protected void onRemoveChild(Overlay overlay, GL11 gl) {
+                Scene scene = (Scene) overlay;
+                scene.onLostFocus(gl);
+
+                super.onRemoveChild(overlay, gl);
+            }
+        };
 
         fps = new Fps();
     }

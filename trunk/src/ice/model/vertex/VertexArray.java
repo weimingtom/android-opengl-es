@@ -62,30 +62,8 @@ public class VertexArray extends VertexData {
     }
 
 
-    public void release(GL11 gl) { //TODO 名副其实？
-        int numAttributes = attributes.size();
-
-        for (int i = 0; i < numAttributes; i++) {
-
-            VertexAttribute attribute = attributes.get(i);
-            switch (attribute.getUsage()) {
-                case Position:
-                    break; // no-op, we also need a position bound in gles
-                case Color:
-                    gl.glDisableClientState(GL_COLOR_ARRAY);
-                    break;
-                case Normal:
-                    gl.glDisableClientState(GL_NORMAL_ARRAY);
-                    break;
-                case TextureCoordinates:
-                    gl.glClientActiveTexture(GL_TEXTURE_2D);
-                    gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-                    break;
-            }
-        }
-
-        srcData.position(0);
-        srcData.limit(srcData.capacity());
+    @Override
+    public void release(GL11 gl) {
     }
 
 }

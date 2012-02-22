@@ -20,11 +20,6 @@ public class Grid extends Mesh {
                 ),
 
                 new VertexAttribute(
-                        VertexAttribute.Usage.Normal,
-                        3
-                ),
-
-                new VertexAttribute(
                         VertexAttribute.Usage.TextureCoordinates,
                         2
                 )
@@ -48,7 +43,7 @@ public class Grid extends Mesh {
         }
 
 
-        float[] vertices = new float[verticesCount * (2 + 2 + 3)];
+        float[] vertices = new float[verticesCount * (2 + 2)];
 
 
         int[] indexes = new int[]{
@@ -72,9 +67,6 @@ public class Grid extends Mesh {
                             //左下角
                             buttomLeftX + currentStepX * eachSquareWidth,
                             buttomLeftY + currentStepY * eachSquareHeight,
-                            0,
-                            0,
-                            1,
                             maxU * currentStepX / (float) stepX,
                             maxV * (stepY - currentStepY) / (float) stepY
                     },
@@ -82,44 +74,32 @@ public class Grid extends Mesh {
                             //右下角
                             buttomLeftX + (currentStepX + 1) * eachSquareWidth,
                             buttomLeftY + currentStepY * eachSquareHeight,
-                            0,
-                            0,
-                            1,
                             maxU * (currentStepX + 1) / (float) stepX,
                             maxV * (stepY - currentStepY) / (float) stepY
                     },
                     {
                             buttomLeftX + (currentStepX + 1) * eachSquareWidth,
                             buttomLeftY + (currentStepY + 1) * eachSquareHeight,
-                            0,
-                            0,
-                            1,
                             maxU * (currentStepX + 1) / (float) stepX,
                             maxV * (stepY - currentStepY - 1) / (float) stepY
                     },
                     {
                             buttomLeftX + currentStepX * eachSquareWidth,
                             buttomLeftY + (currentStepY + 1) * eachSquareHeight,
-                            0,
-                            0,
-                            1,
                             maxU * currentStepX / (float) stepX,
                             maxV * (stepY - currentStepY - 1) / (float) stepY
                     }
 
             };
 
-            for (int j = 0, index = 0; j < indexes.length; j++) {
-                index = indexes[j];
+            for (int j = 0; j < indexes.length; j++) {
+                int index = indexes[j];
+
                 vertices[elementIndex++] = data[index][0];   //x
                 vertices[elementIndex++] = data[index][1];   //y
 
-                vertices[elementIndex++] = data[index][2];  //noramlX
-                vertices[elementIndex++] = data[index][3];  //noramlY
-                vertices[elementIndex++] = data[index][4];  //noramlX
-
-                vertices[elementIndex++] = data[index][5];  //texX
-                vertices[elementIndex++] = data[index][6];  //texY
+                vertices[elementIndex++] = data[index][2];  //texX
+                vertices[elementIndex++] = data[index][3];  //texY
             }
 
         }

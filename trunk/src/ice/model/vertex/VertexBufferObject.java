@@ -99,6 +99,7 @@ public class VertexBufferObject extends VertexData {
         upload = true;
     }
 
+    @Override
     public void release(GL11 gl) {
         gl.glDeleteBuffers(vboBuffer.length, vboBuffer, 0);
         upload = false;
