@@ -1,9 +1,8 @@
 package ice.node.widget;
 
 import android.graphics.Color;
+import ice.graphic.gl_status.ColorController;
 import ice.node.mesh.Grid;
-
-import javax.microedition.khronos.opengles.GL11;
 
 /**
  * User: Jason
@@ -14,23 +13,16 @@ public class ColorOverlay extends Grid {
 
     public ColorOverlay(int color, float width, float height) {
         super(width, height);
-        this.color = color;
-    }
 
-    @Override
-    protected void onDraw(GL11 gl) {
-
-        gl.glColor4f(
-                Color.red(color) / 255f,
-                Color.green(color) / 255f,
-                Color.blue(color) / 255f,
-                1
+        controller = new ColorController(
+                Color.red(color) / (float) 255,
+                Color.green(color) / (float) 255,
+                Color.blue(color) / (float) 255,
+                Color.alpha(color) / (float) 255
         );
 
-        super.onDraw(gl);
-
-        gl.glColor4f(1, 1, 1, 1);
+        addGlStatusController(controller);
     }
 
-    private int color;
+    private ColorController controller;
 }

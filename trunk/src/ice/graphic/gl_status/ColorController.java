@@ -25,7 +25,6 @@ public class ColorController implements GlStatusController {
             gl.glColor4f(colors[0], colors[1], colors[2], colors[3]);
     }
 
-
     @Override
     public boolean detach(GL11 gl, Overlay overlay) {
         if (colors != null)   //TODO 先这样吧
