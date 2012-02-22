@@ -45,7 +45,7 @@ public abstract class Overlay {
         this(0, 0, 0);
     }
 
-    protected Overlay(float posX, float posY, float posZ) {
+    public Overlay(float posX, float posY, float posZ) {
         visible = true;
         id = requestId();
 
@@ -53,6 +53,14 @@ public abstract class Overlay {
         statusControllers.add(new MatrixController());
 
         setPos(posX, posY, posZ);
+    }
+
+    protected void onComeIntoUse(GL11 gl) {
+
+    }
+
+    protected void onOutdated(GL11 gl) {
+
     }
 
     public void draw(GL11 gl) {

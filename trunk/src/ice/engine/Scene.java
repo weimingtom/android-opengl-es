@@ -3,8 +3,6 @@ package ice.engine;
 
 import ice.node.OverlayParent;
 
-import javax.microedition.khronos.opengles.GL11;
-
 /**
  * User: ice
  * Date: 11-11-14
@@ -28,11 +26,6 @@ public class Scene extends OverlayParent {
 
     public int getHeight() {
         return height;
-    }
-
-
-    public void onLostFocus(GL11 gl) {
-
     }
 
     private int width, height;

@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.opengl.GLUtils;
 import android.util.Log;
-import ice.engine.Scene;
 import ice.graphic.GlRes;
 import ice.graphic.gl_status.GlStatusController;
 import ice.node.Overlay;
@@ -13,7 +12,6 @@ import ice.res.Res;
 
 import javax.microedition.khronos.opengles.GL11;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static javax.microedition.khronos.opengles.GL11.*;
@@ -27,14 +25,7 @@ public class Texture implements GlStatusController, GlRes { //TODO 考虑下纹�
 
     private static boolean p_o_tSupported;
 
-    private static Map<Scene, List<Texture>> sceneTextureMap;
-
-    private static final String TAG;
-
-    static {
-        TAG = Texture.class.getSimpleName();
-        sceneTextureMap = new HashMap<Scene, List<Texture>>();
-    }
+    private static final String TAG = Texture.class.getSimpleName();
 
     public static void init(boolean p_o_tSupported) {
         Texture.p_o_tSupported = p_o_tSupported;
@@ -168,7 +159,8 @@ public class Texture implements GlStatusController, GlRes { //TODO 考虑下纹�
 
     @Override
     public void release(GL11 gl) {
-        gl.glDeleteTextures(buffer.length, buffer, 0);
+        if (buffer != null && gl.glIsBuffer(buffer[0]))
+            gl.glDeleteTextures(buffer.length, buffer, 0);
     }
 
     public void postSubData(int xoffset, int yoffset, Bitmap subPixel) {

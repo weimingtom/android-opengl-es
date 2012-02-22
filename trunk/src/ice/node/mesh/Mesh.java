@@ -82,6 +82,15 @@ public class Mesh extends Overlay {
         cullFaceController.setFaceMode(faceMode);
     }
 
+    @Override
+    protected void onOutdated(GL11 gl) {
+        if (texture != null)
+            texture.release(gl);
+
+        if (vertexData != null)
+            vertexData.release(gl);
+    }
+
     private CullFaceController cullFaceController;
 
     protected Texture texture;
