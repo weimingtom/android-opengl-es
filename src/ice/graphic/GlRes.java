@@ -12,6 +12,4 @@ public interface GlRes {
 
     void release(GL11 gl);
 
-    //boolean isInCache();
-
 }
