@@ -36,6 +36,10 @@ public class TextOverlay extends BitmapOverlay {
         setText(text, painter.getColor(), (int) height);
     }
 
+    public void setText(String text, int color) {
+        setText(text, color, (int) height);
+    }
+
     public void setText(String text, int color, int size) {
         setText(text, color, size, alignCenter);
     }

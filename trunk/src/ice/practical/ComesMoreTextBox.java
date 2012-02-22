@@ -1,5 +1,6 @@
 package ice.practical;
 
+import android.graphics.Color;
 import ice.node.OverlayParent;
 
 import javax.microedition.khronos.opengles.GL11;
@@ -29,7 +30,7 @@ public class ComesMoreTextBox extends OverlayParent {
 
         for (int i = 0; i < lines.length; i++) {
             textLines[i] = new ComesMoreText(maxWidth, eachLineHeight, lineDuring);
-            textLines[i].setText(lines[i]);
+            textLines[i].setText(lines[i], Color.WHITE);
             textLines[i].setPos(0, -i * (linesMargin + eachLineHeight));
             textLines[i].setVisible(false);
         }
