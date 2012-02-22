@@ -77,14 +77,18 @@ public class Texture implements GlStatusController, GlRes {
         this(Res.getBitmap(bitmapId));
     }
 
+
     public Texture(Bitmap bitmap) {
+        this(bitmap, Params.LINEAR_CLAMP_TO_EDGE);
+    }
+
+    public Texture(Bitmap bitmap, Params params) {
         maxU = 1;
         maxV = 1;
         setBitmap(bitmap);
-        params = Params.LINEAR_CLAMP_TO_EDGE;
-
-
+        this.params = params;
     }
+
 
     @Override
     public void attach(GL11 gl) {
@@ -266,7 +270,10 @@ public class Texture implements GlStatusController, GlRes {
     }
 
     public void setParams(Params params) {
-        this.params = params;
+        if (this.params != params) {
+            this.params = params;
+            reload = true;
+        }
     }
 
     public float getMaxU() {
