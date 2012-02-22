@@ -13,6 +13,10 @@ import static javax.microedition.khronos.opengles.GL10.GL_SCISSOR_TEST;
  */
 public class ScissorController implements GlStatusController {
 
+    public ScissorController() {
+
+    }
+
     public ScissorController(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -23,15 +27,23 @@ public class ScissorController implements GlStatusController {
     @Override
     public void attach(GL11 gl) {
         //originalScissor = GlUtil.isEnabled(gl, GL_SCISSOR_TEST);
-
-        gl.glEnable(GL_SCISSOR_TEST);
-        gl.glScissor(x, y, width, height);
+        if (width > 0 || height > 0) {
+            gl.glEnable(GL_SCISSOR_TEST);
+            gl.glScissor(x, y, width, height);
+        }
     }
 
     @Override
     public boolean detach(GL11 gl, Overlay overlay) {
         gl.glDisable(GL_SCISSOR_TEST);
         return true;
+    }
+
+    public void set(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     private int x, y, width, height;

@@ -43,14 +43,14 @@ public class ComesMoreTextBox extends OverlayParent {
     @Override
     protected void onDraw(GL11 gl) {
 
-        int size = children.size();
+        int size = size();
 
         if (activeLineIndex < size) {
             for (int i = 0; i < size; i++) {
 
                 if (i == activeLineIndex) {
 
-                    ComesMoreText comesMoreText = (ComesMoreText) children.get(i);
+                    ComesMoreText comesMoreText = (ComesMoreText) get(i);
 
                     if (!comesMoreText.isVisible())
                         comesMoreText.setVisible(true);
