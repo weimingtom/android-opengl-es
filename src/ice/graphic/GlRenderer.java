@@ -34,16 +34,7 @@ public class GlRenderer implements GLSurfaceView.Renderer {
     public GlRenderer(Projection projection) {
         this.projection = projection;
 
-        drawDispatcher = new OverlayParent() {
-            @Override
-            protected void onRemoveChild(Overlay overlay, GL11 gl) {
-                Scene scene = (Scene) overlay;
-                scene.onLostFocus(gl);
-
-                super.onRemoveChild(overlay, gl);
-            }
-        };
-
+        drawDispatcher = new OverlayParent();
         fps = new Fps();
     }
 
@@ -135,6 +126,22 @@ public class GlRenderer implements GLSurfaceView.Renderer {
         return drawDispatcher;
     }
 
+//    public void showScene(Scene scene) {
+//        drawDispatcher.addChild(scene);
+//        newScene = scene;
+//    }
+//
+//    public void switchScene(Scene newScene) {
+//
+//        OverlayParent root = renderer.getDrawDispatcher();
+//
+//        Scene oldScene = (Scene) root.top();
+//
+//        root.addChild(newScene);
+//        root.remove(oldScene);
+//    }
+
+
     public void waitUntilInited() {
         if (!inited) {
             synchronized (this) {
@@ -203,6 +210,9 @@ public class GlRenderer implements GLSurfaceView.Renderer {
 
         return coordinate;
     }
+
+    private Scene newScene;
+    private Scene oldScene;
 
     private boolean inited;
 
