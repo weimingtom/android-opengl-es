@@ -247,7 +247,7 @@ public abstract class Overlay {
 
     private List<GlStatusController> removeBuffer;
 
-    private List<GlStatusController> statusControllers;
+    protected List<GlStatusController> statusControllers;
 
     private OnTouchListener onTouchListener;
 
