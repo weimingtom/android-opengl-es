@@ -161,13 +161,9 @@ public class Texture implements GlStatusController, GlRes { //TODO 考虑下纹�
     }
 
     private void rebind(GL11 gl) {
-        bitmap.prepareToDraw();
-
         gl.glBindTexture(GL_TEXTURE_2D, buffer[0]);
         bindTextureParams(gl, params);
         GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
-
-        bitmap.recycle();
     }
 
     @Override
