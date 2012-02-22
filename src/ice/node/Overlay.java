@@ -11,6 +11,7 @@ import ice.model.Point3F;
 
 import javax.microedition.khronos.opengles.GL11;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -55,22 +56,36 @@ public abstract class Overlay {
     }
 
     public void draw(GL11 gl) {
+
+        ensureStatusControllers();
+
         if (!visible) return;
 
-        for (GlStatusController controller : statusControllers) {
+        for (GlStatusController controller : statusControllers)
             controller.attach(gl);
-        }
 
         onDraw(gl);
 
-        for (GlStatusController controller : statusControllers) {
+        for (Iterator<GlStatusController> iterator = statusControllers.iterator(); iterator.hasNext(); ) {
+            GlStatusController controller = iterator.next();
+
             boolean effectMoreFrame = controller.detach(gl, this);
 
-            if (!effectMoreFrame) removeGlStatusController(controller);
+            if (!effectMoreFrame) iterator.remove();
         }
 
-        if (invalidControllers != null && invalidControllers.size() > 0)
-            statusControllers.removeAll(invalidControllers);
+    }
+
+    private void ensureStatusControllers() {
+        if (removeBuffer != null && removeBuffer.size() > 0) {
+            statusControllers.removeAll(removeBuffer);
+            removeBuffer.clear();
+        }
+
+        if (addBuffer != null && addBuffer.size() > 0) {
+            statusControllers.addAll(addBuffer);
+            addBuffer.clear();
+        }
     }
 
     protected abstract void onDraw(GL11 gl);
@@ -81,15 +96,12 @@ public abstract class Overlay {
             this.animation = animation;
         }
         else {
-            if (statusControllers.contains(this.animation)) {
+            if (statusControllers.contains(this.animation))
                 throw new IllegalStateException("Another animation not finished yet !");
-            }
-            else {
-                this.animation = animation;
-            }
+
+            this.animation = animation;
         }
 
-        animation.start();
         addGlStatusController(animation);
 
         if (!visible)
@@ -212,25 +224,17 @@ public abstract class Overlay {
     }
 
     public void addGlStatusController(GlStatusController controller) {
-        statusControllers.add(controller);
+        if (addBuffer == null)
+            addBuffer = new ArrayList<GlStatusController>(3);
+
+        addBuffer.add(controller);
     }
 
     public void removeGlStatusController(GlStatusController controller) {
+        if (removeBuffer == null)
+            removeBuffer = new ArrayList<GlStatusController>(3);
 
-        if (getMatrixController().equals(controller)) {
-            try {
-                throw new IllegalAccessException("MatrixController can not remove !");
-            }
-            catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            if (invalidControllers == null)
-                invalidControllers = new ArrayList<GlStatusController>(3);
-
-            invalidControllers.add(controller);
-        }
+        removeBuffer.add(controller);
     }
 
     public MatrixController getMatrixController() {
@@ -239,7 +243,9 @@ public abstract class Overlay {
 
     private Animation animation;
 
-    private List<GlStatusController> invalidControllers;
+    private List<GlStatusController> addBuffer;
+
+    private List<GlStatusController> removeBuffer;
 
     private List<GlStatusController> statusControllers;
 
