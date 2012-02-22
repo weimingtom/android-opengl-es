@@ -5,12 +5,15 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.opengl.GLUtils;
 import android.util.Log;
+import ice.engine.Scene;
+import ice.graphic.GlRes;
 import ice.graphic.gl_status.GlStatusController;
 import ice.node.Overlay;
 import ice.res.Res;
 
 import javax.microedition.khronos.opengles.GL11;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static javax.microedition.khronos.opengles.GL11.*;
@@ -18,13 +21,20 @@ import static javax.microedition.khronos.opengles.GL11.*;
 /**
  * 在GL2.0以下版本如果硬件支持GL_APPLE_texture_2D_limited_npot，就无需考虑纹理宽高 POT的问题.
  */
-public class Texture implements GlStatusController { //TODO 考虑下纹理管理
+public class Texture implements GlStatusController, GlRes { //TODO 考虑下纹理管理
 
     public static final int MAX_TEXTURE_SIZE = 1024;
 
     private static boolean p_o_tSupported;
 
-    private static final String TAG = Texture.class.getSimpleName();
+    private static Map<Scene, List<Texture>> sceneTextureMap;
+
+    private static final String TAG;
+
+    static {
+        TAG = Texture.class.getSimpleName();
+        sceneTextureMap = new HashMap<Scene, List<Texture>>();
+    }
 
     public static void init(boolean p_o_tSupported) {
         Texture.p_o_tSupported = p_o_tSupported;
@@ -81,6 +91,8 @@ public class Texture implements GlStatusController { //TODO 考虑下纹理管�
         maxV = 1;
         setBitmap(bitmap);
         params = Params.LINEAR_CLAMP_TO_EDGE;
+
+
     }
 
     @Override
@@ -149,11 +161,16 @@ public class Texture implements GlStatusController { //TODO 考虑下纹理管�
     }
 
     private void rebind(GL11 gl) {
+        bitmap.prepareToDraw();
+
         gl.glBindTexture(GL_TEXTURE_2D, buffer[0]);
         bindTextureParams(gl, params);
         GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
+
+        bitmap.recycle();
     }
 
+    @Override
     public void release(GL11 gl) {
         gl.glDeleteTextures(buffer.length, buffer, 0);
     }
@@ -161,7 +178,7 @@ public class Texture implements GlStatusController { //TODO 考虑下纹理管�
     public void postSubData(int xoffset, int yoffset, Bitmap subPixel) {
         while (this.subProvider != null) {
             try {
-                wait(2);
+                Thread.sleep(1);
             }
             catch (InterruptedException e) {
                 e.printStackTrace();

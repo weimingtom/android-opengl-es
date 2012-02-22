@@ -27,12 +27,16 @@ public class OverlayParent extends Overlay {
         for (Overlay overlay : children) {
 
             if (overlay.isRemovable()) {
-                children.remove(overlay);
+                onRemoveChild(overlay, gl);
             }
             else {
                 overlay.draw(gl);
             }
         }
+    }
+
+    protected void onRemoveChild(Overlay overlay, GL11 gl) {
+        children.remove(overlay);
     }
 
     public void addChild(Overlay child) {
