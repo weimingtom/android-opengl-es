@@ -86,13 +86,17 @@ public abstract class Overlay {
 
     private void ensureStatusControllers() {
         if (removeBuffer != null && removeBuffer.size() > 0) {
-            statusControllers.removeAll(removeBuffer);
-            removeBuffer.clear();
+            synchronized (this) {
+                statusControllers.removeAll(removeBuffer);
+                removeBuffer.clear();
+            }
         }
 
         if (addBuffer != null && addBuffer.size() > 0) {
-            statusControllers.addAll(addBuffer);
-            addBuffer.clear();
+            synchronized (this) {
+                statusControllers.addAll(addBuffer);
+                addBuffer.clear();
+            }
         }
     }
 
@@ -231,14 +235,14 @@ public abstract class Overlay {
         return animation;
     }
 
-    public void addGlStatusController(GlStatusController controller) {
+    public synchronized void addGlStatusController(GlStatusController controller) {
         if (addBuffer == null)
             addBuffer = new ArrayList<GlStatusController>(3);
 
         addBuffer.add(controller);
     }
 
-    public void removeGlStatusController(GlStatusController controller) {
+    public synchronized void removeGlStatusController(GlStatusController controller) {
         if (removeBuffer == null)
             removeBuffer = new ArrayList<GlStatusController>(3);
 
