@@ -145,5 +145,5 @@ public class OverlayParent extends Overlay {
     private List<Overlay> addBuffer;
     private List<Overlay> removeBuffer;
 
-    protected List<Overlay> children;
+    private List<Overlay> children;
 }
