@@ -159,8 +159,10 @@ public class Texture implements GlStatusController, GlRes { //TODO 考虑下纹�
 
     @Override
     public void release(GL11 gl) {
-        if (buffer != null && gl.glIsBuffer(buffer[0]))
+        if (buffer != null && gl.glIsBuffer(buffer[0])) {
             gl.glDeleteTextures(buffer.length, buffer, 0);
+            buffer = null;
+        }
     }
 
     public void postSubData(int xoffset, int yoffset, Bitmap subPixel) {
