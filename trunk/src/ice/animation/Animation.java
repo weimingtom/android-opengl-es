@@ -23,7 +23,7 @@ public abstract class Animation implements GlStatusController {
         startTime = NOT_STARTED;
     }
 
-    public void start() {
+    protected void start() {
         finished = false;
         startTime = AnimationUtils.currentAnimationTimeMillis();
     }
@@ -34,6 +34,9 @@ public abstract class Animation implements GlStatusController {
 
     @Override
     public void attach(GL11 gl) {
+
+        if (startTime == 0)
+            start();
 
         long currentTime = AnimationUtils.currentAnimationTimeMillis();
 

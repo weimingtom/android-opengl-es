@@ -26,7 +26,7 @@ public class AnimationGroup extends Animation {
     }
 
     @Override
-    public void start() {
+    protected void start() {
         super.start();
 
         for (Animation animation : children) {
