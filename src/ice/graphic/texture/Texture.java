@@ -77,7 +77,6 @@ public class Texture implements GlStatusController, GlRes {
         this(Res.getBitmap(bitmapId));
     }
 
-
     public Texture(Bitmap bitmap) {
         this(bitmap, Params.LINEAR_CLAMP_TO_EDGE);
     }
@@ -88,7 +87,6 @@ public class Texture implements GlStatusController, GlRes {
         setBitmap(bitmap);
         this.params = params;
     }
-
 
     @Override
     public void attach(GL11 gl) {
@@ -138,7 +136,6 @@ public class Texture implements GlStatusController, GlRes {
 
         attachStatues = true;
     }
-
 
     @Override
     public boolean detach(GL11 gl, Overlay overlay) {

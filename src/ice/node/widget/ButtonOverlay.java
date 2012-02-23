@@ -2,6 +2,7 @@ package ice.node.widget;
 
 import android.graphics.Bitmap;
 import android.view.MotionEvent;
+import ice.graphic.texture.Texture;
 import ice.node.Overlay;
 import ice.res.Res;
 
@@ -11,6 +12,7 @@ import ice.res.Res;
  * Time: 下午12:09
  */
 public class ButtonOverlay extends BitmapOverlay {
+
 
     public interface OnClickListener {
         void onClick(ButtonOverlay btn);
@@ -32,17 +34,17 @@ public class ButtonOverlay extends BitmapOverlay {
         this(tileNormal, tilePressed, null);
     }
 
+    public ButtonOverlay(Bitmap tileNormal, Bitmap tilePressed, Bitmap locked) {
+        this((float) tileNormal.getWidth(), (float) tileNormal.getHeight());
+
+        setBitmaps(tileNormal, tilePressed, locked);
+    }
+
     public ButtonOverlay(float width, float height) {
         super(width, height);
         setOnTouchListener(new ClickHandler());
     }
 
-    public ButtonOverlay(Bitmap tileNormal, Bitmap tilePressed, Bitmap locked) {
-        super(tileNormal.getWidth(), tileNormal.getHeight());
-
-        setBitmaps(tileNormal, tilePressed, locked);
-        setOnTouchListener(new ClickHandler());
-    }
 
     public void setBitmaps(int iconNormal, int iconPressed, int locked) {
         setBitmaps(
@@ -54,12 +56,14 @@ public class ButtonOverlay extends BitmapOverlay {
 
     public void setBitmaps(Bitmap iconNormal, Bitmap iconPressed, Bitmap locked) {
 
-        this.iconNormal = setBitmap(iconNormal);
+        setBitmap(iconNormal);
 
-        this.iconPressed = getTexture().tryAdjust(iconPressed);
+        Texture texture = getTexture();
 
+        this.iconNormal = texture.getBitmap();
+        this.iconPressed = texture.tryAdjust(iconPressed);
         if (locked != null)
-            this.locked = getTexture().tryAdjust(locked);
+            this.locked = texture.tryAdjust(locked);
     }
 
     protected void onClick() {
@@ -97,7 +101,7 @@ public class ButtonOverlay extends BitmapOverlay {
 
         if (this.lock != lock) {
             this.lock = lock;
-            texture.setBitmap(lock ? locked : iconNormal);
+            setBitmap(lock ? locked : iconNormal);
         }
     }
 

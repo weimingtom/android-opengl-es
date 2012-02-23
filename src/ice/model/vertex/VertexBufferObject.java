@@ -4,6 +4,9 @@ import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
 import java.nio.Buffer;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 
 import static javax.microedition.khronos.opengles.GL11.*;
 
@@ -12,18 +15,32 @@ import static javax.microedition.khronos.opengles.GL11.*;
  * Date: 11-11-21
  * Time: 下午12:04
  */
-public class VertexBufferObject extends VertexData {
-
+public class VertexBufferObject implements VertexData {
 
     public VertexBufferObject(int verticesCount, VertexAttributes attributes) {
-        super(verticesCount, attributes);
+        this.attributes = attributes;
+
+        srcData = ByteBuffer.allocateDirect(attributes.vertexSize * verticesCount);
+        srcData.order(ByteOrder.nativeOrder());
+
         vboBuffer = new int[1];
     }
 
+    public void setVertices(float[] vertices) {
+        FloatBuffer floatBuffer = srcData.asFloatBuffer();
+        floatBuffer.put(vertices);
+
+        srcData.position(0);
+        srcData.limit(srcData.capacity());
+    }
+
+    public FloatBuffer viewData() {
+        return srcData.asFloatBuffer();
+    }
 
     @Override
     public void attach(GL11 gl) {
-        if (!upload) {
+        if (!uploaded) {
             upload(gl);
         }
         else {
@@ -74,11 +91,15 @@ public class VertexBufferObject extends VertexData {
     }
 
     @Override
+    public void onDrawVertex(GL11 gl) {
+        gl.glDrawArrays(GL_TRIANGLES, 0, getVerticesCount());
+    }
+
+    @Override
     public boolean detach(GL11 gl, Overlay overlay) {
         gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
         return true;
     }
-
 
     public void postSubData(int offset, int size, Buffer subData) {
         if (this.subData != null) {
@@ -96,17 +117,23 @@ public class VertexBufferObject extends VertexData {
         gl.glBindBuffer(GL_ARRAY_BUFFER, vboBuffer[0]);
         gl.glBufferData(GL_ARRAY_BUFFER, srcData.capacity(), srcData, GL_STATIC_DRAW);
 
-        upload = true;
+        uploaded = true;
     }
 
     @Override
     public void release(GL11 gl) {
         gl.glDeleteBuffers(vboBuffer.length, vboBuffer, 0);
-        upload = false;
+        uploaded = false;
     }
 
+    private int getVerticesCount() {
+        return srcData.capacity() / attributes.vertexSize;
+    }
 
-    private boolean upload;
+    private ByteBuffer srcData;
+    private VertexAttributes attributes;
+
+    private boolean uploaded;
     private int[] vboBuffer;
     private Buffer subData;
     private int subDataOffset, subDataSize;

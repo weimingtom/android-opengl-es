@@ -1,4 +1,4 @@
-package ice.node.mesh;
+package ice.node.widget;
 
 import ice.graphic.gl_status.CullFaceController;
 import ice.graphic.texture.Texture;
@@ -8,7 +8,6 @@ import ice.node.Overlay;
 import javax.microedition.khronos.opengles.GL11;
 
 import static ice.graphic.gl_status.CullFaceController.FaceMode;
-import static javax.microedition.khronos.opengles.GL11.GL_TRIANGLES;
 
 /**
  * User: ice
@@ -27,7 +26,7 @@ public class Mesh extends Overlay {
 
     public Mesh(VertexData vertexData, Texture texture) {
         this.vertexData = vertexData;
-        bindTexture(texture);
+        this.texture = texture;
 
         cullFaceController = new CullFaceController(FaceMode.Front);
     }
@@ -45,21 +44,13 @@ public class Mesh extends Overlay {
 
         vertexData.attach(gl);
 
-        gl.glDrawArrays(GL_TRIANGLES, 0, vertexData.getVerticesCount());
+        vertexData.onDrawVertex(gl);
 
         vertexData.detach(gl, this);
 
         if (useTexture) theTexture.detach(gl, this);
 
         cullFaceController.detach(gl, this);
-    }
-
-    public void bindTexture(Texture texture) {
-        this.texture = texture;
-    }
-
-    public void unbindTexture() {
-        texture = null;
     }
 
     public VertexData getVertexData() {
@@ -92,10 +83,6 @@ public class Mesh extends Overlay {
     }
 
     private CullFaceController cullFaceController;
-
-    protected Texture texture;
-
-    protected VertexData vertexData;
-
-
+    private Texture texture;
+    private VertexData vertexData;
 }
