@@ -28,7 +28,8 @@ public class Grid extends Mesh {
         int squareNum = stepX * stepY;
         int verticesCount = squareNum * 2 * 3;
 
-        VertexData vertexData = null;
+        VertexData vertexData;
+
         if (vboMode) {
             vertexData = new VertexBufferObject(
                     verticesCount,
@@ -78,12 +79,14 @@ public class Grid extends Mesh {
                             maxV * (stepY - currentStepY) / (float) stepY
                     },
                     {
+                            //右上角
                             buttomLeftX + (currentStepX + 1) * eachSquareWidth,
                             buttomLeftY + (currentStepY + 1) * eachSquareHeight,
                             maxU * (currentStepX + 1) / (float) stepX,
                             maxV * (stepY - currentStepY - 1) / (float) stepY
                     },
                     {
+                            //左上角
                             buttomLeftX + currentStepX * eachSquareWidth,
                             buttomLeftY + (currentStepY + 1) * eachSquareHeight,
                             maxU * currentStepX / (float) stepX,
@@ -128,11 +131,9 @@ public class Grid extends Mesh {
         setUpVertex(maxU, maxV, true);
     }
 
-
     public void setUpVertex(float maxU, float maxV, boolean vboMode) {
         setUpVertex(1, 1, maxU, maxV, true);
     }
-
 
     public void setUpVertex(int stepX, int stepY, float maxU, float maxV, boolean vboMode) {
 

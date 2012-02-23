@@ -9,12 +9,9 @@ import static javax.microedition.khronos.opengles.GL11.*;
 
 public class VertexArray extends VertexData {
 
-    private static final String TAG = VertexArray.class.getSimpleName();
-
     public VertexArray(int verticesCount, VertexAttributes attributes) {
         super(verticesCount, attributes);
     }
-
 
     @Override
     public void attach(GL11 gl) {
@@ -61,9 +58,7 @@ public class VertexArray extends VertexData {
         return true;
     }
 
-
     @Override
     public void release(GL11 gl) {
     }
-
 }
