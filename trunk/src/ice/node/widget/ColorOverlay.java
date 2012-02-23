@@ -2,7 +2,6 @@ package ice.node.widget;
 
 import android.graphics.Color;
 import ice.graphic.gl_status.ColorController;
-import ice.node.mesh.Grid;
 
 /**
  * User: Jason

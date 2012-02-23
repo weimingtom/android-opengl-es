@@ -3,12 +3,11 @@ package ice.practical;
 import android.view.animation.AnimationUtils;
 import ice.animation.Interpolator.AccelerateDecelerateInterpolator;
 import ice.animation.Interpolator.Interpolator;
+import ice.graphic.gl_status.ScissorController;
 import ice.model.Point3F;
 import ice.node.widget.TextOverlay;
 
 import javax.microedition.khronos.opengles.GL11;
-
-import static javax.microedition.khronos.opengles.GL11.GL_SCISSOR_TEST;
 
 /**
  * User: jason
@@ -22,6 +21,8 @@ public class ComesMoreText extends TextOverlay {
     public ComesMoreText(int width, int height, long during) {
         super(width, height);
         this.during = during;
+
+        addGlStatusController(controller = new ScissorController());
     }
 
     @Override
@@ -37,7 +38,6 @@ public class ComesMoreText extends TextOverlay {
         finished = sub > during;
 
         if (!finished) {
-            gl.glEnable(GL_SCISSOR_TEST);
 
             float interpolatedTime = interpolator.getInterpolation(sub / (float) during);
 
@@ -45,18 +45,22 @@ public class ComesMoreText extends TextOverlay {
 
             Point3F absolutePos = getAbsolutePos();
 
-            gl.glScissor((int) (absolutePos.x - width / 2), (int) (absolutePos.y - height / 2), currentScissor, (int) height);
+            float height = getHeight();
+
+            controller.set((int) (absolutePos.x - getWidth() / 2), (int) (absolutePos.y - height / 2), currentScissor, (int) height);
+        }
+        else {
+            removeGlStatusController(controller);
         }
 
         super.onDraw(gl);
-
-        if (!finished)
-            gl.glDisable(GL_SCISSOR_TEST);
     }
 
     public boolean isFinished() {
         return finished;
     }
+
+    private ScissorController controller;
 
     private long during;
     private long startStamp;

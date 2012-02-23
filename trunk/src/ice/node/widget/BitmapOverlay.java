@@ -1,10 +1,8 @@
 package ice.node.widget;
 
 import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.graphics.PointF;
 import ice.graphic.texture.Texture;
-import ice.node.mesh.Grid;
+import ice.model.vertex.Rectangle;
 import ice.res.Res;
 
 /**
@@ -19,65 +17,43 @@ public class BitmapOverlay extends Grid {
     }
 
     public BitmapOverlay(Bitmap bitmap) {
-        this(bitmap, new PointF());
-    }
+        this(bitmap.getWidth(), bitmap.getHeight());
 
-    public BitmapOverlay(Bitmap bitmap, PointF pos) {
-        this(bitmap.getWidth(), bitmap.getHeight(), bitmap);
-
-        setPos(pos.x, pos.y);
+        setBitmap(bitmap);
     }
 
     public BitmapOverlay(float width, float height) {
-        this(width, height, 0);
-    }
-
-    public BitmapOverlay(float width, float height, int bitmapId) {
-        this(
-                width,
-                height,
-                bitmapId == 0 ? null : Res.getBitmap(bitmapId)
-        );
-    }
-
-    public BitmapOverlay(float width, float height, Bitmap bitmap) {
-        super(width, height, false);
-
-        if (bitmap != null) {
-            setBitmap(bitmap);
-        }
-    }
-
-    public BitmapOverlay(Bitmap bitmap, Point pos) {
-        this(bitmap);
-        setPos(pos.x, pos.y);
+        super(width, height);
     }
 
     public void setBitmap(int bitmap) {
         setBitmap(Res.getBitmap(bitmap));
     }
 
-    public Bitmap setBitmap(Bitmap bitmap) {
-        if (texture != null) {
-            texture.setBitmap(bitmap);
+    public void setBitmap(Bitmap bitmap) {
+        if (bitmap == null) throw new IllegalArgumentException("bitmap null !");
+
+        Texture texture = getTexture();
+        Rectangle vertexData = (Rectangle) getVertexData();
+
+        if (texture == null) {
+            texture = new Texture(bitmap);
         }
         else {
-            bindTexture(new Texture(bitmap));
+            texture.setBitmap(bitmap);
         }
 
-        if (vertexData == null) {
-            setUpVertex(texture.getMaxU(), texture.getMaxV());
-        }
+        vertexData.setTextureCoord(texture.getMaxU(), texture.getMaxV());
 
-        return texture.getBitmap();
+        setTexture(texture);
     }
 
-    @Override
-    public void setTexture(Texture texture) {
-        super.setTexture(texture);
-
-        if (vertexData == null) {
-            setUpVertex(texture.getMaxU(), texture.getMaxV());
-        }
+    public float getWidth() {
+        return ((Rectangle) getVertexData()).getWidth();
     }
+
+    public float getHeight() {
+        return ((Rectangle) getVertexData()).getHeight();
+    }
+
 }

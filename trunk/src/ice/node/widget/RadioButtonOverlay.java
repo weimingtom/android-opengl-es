@@ -48,7 +48,7 @@ public class RadioButtonOverlay extends ButtonOverlay {
 
         if (toggled != this) {
 
-            toggled.texture.setBitmap(toggled.iconNormal);
+            toggled.setBitmap(toggled.iconNormal);
 
             if (lock) {
                 parent.setToggled(null);
