@@ -129,7 +129,11 @@ public abstract class Game extends Activity implements App {
 
     @Override
     public synchronized void intent(Class<? extends SceneProvider> to) {
+        intent(to, null);
+    }
 
+    @Override
+    public void intent(Class<? extends SceneProvider> to, Object msg) {
         topProvider.onPause();
 
         SceneProvider toProvider = findFromCache(to);

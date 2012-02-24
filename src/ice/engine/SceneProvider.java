@@ -24,6 +24,10 @@ public abstract class SceneProvider {
         Log.i(tag, "onStop");
     }
 
+    protected void setIntentMsg(Object msg) {
+        this.intentMsg = msg;
+    }
+
     protected abstract Scene getScene();
 
     protected boolean isEntry() {
@@ -34,5 +38,6 @@ public abstract class SceneProvider {
         return false;
     }
 
+    protected Object intentMsg;
     private final String tag;
 }
