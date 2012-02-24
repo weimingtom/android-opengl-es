@@ -1,5 +1,6 @@
 package ice.graphic.gl_status;
 
+import android.graphics.Color;
 import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
@@ -11,31 +12,44 @@ import javax.microedition.khronos.opengles.GL11;
  */
 public class ColorController implements GlStatusController {
 
-    public ColorController(float r, float g, float b, float a) {
-        this.colors = new float[]{r, g, b, a};
+    public ColorController() {
+        this(1, 1, 1, 1);
     }
 
-    public ColorController(float[] colors) {
-        this.colors = colors;
+    public ColorController(float r, float g, float b, float a) {
+        this.color = new float[]{r, g, b, a};
+    }
+
+    public ColorController(float[] color) {
+        this.color = color;
     }
 
     @Override
     public void attach(GL11 gl) {
-        if (colors != null)
-            gl.glColor4f(colors[0], colors[1], colors[2], colors[3]);
+        if (color != null)
+            gl.glColor4f(color[0], color[1], color[2], color[3]);
     }
 
     @Override
     public boolean detach(GL11 gl, Overlay overlay) {
-        if (colors != null)   //TODO 先这样吧
+        if (color != null)   //TODO 先这样吧
             gl.glColor4f(1, 1, 1, 1);
 
         return true;
     }
 
-    public void setColors(float[] colors) {
-        this.colors = colors;
+    public void setColor(float[] color) {
+        this.color = color;
     }
 
-    private float[] colors;
+    public void setColor(int color) {
+        this.color = new float[]{
+                Color.red(color),
+                Color.green(color),
+                Color.blue(color),
+                Color.alpha(color)
+        };
+    }
+
+    private float[] color;
 }

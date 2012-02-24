@@ -155,7 +155,8 @@ public class Texture implements GlStatusController, GlRes {
     private void rebind(GL11 gl) {
         gl.glBindTexture(GL_TEXTURE_2D, buffer[0]);
         bindTextureParams(gl, params);
-        GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
+        GLUtils.texImage2D(GL_TEXTURE_2D, 0, GLUtils.getInternalFormat(bitmap), bitmap, 0);
+        //GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
     }
 
     @Override

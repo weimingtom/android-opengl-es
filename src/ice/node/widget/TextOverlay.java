@@ -1,6 +1,7 @@
 package ice.node.widget;
 
 import android.graphics.*;
+import ice.graphic.gl_status.ColorController;
 import ice.util.TextDrawer;
 
 /**
@@ -16,54 +17,51 @@ public class TextOverlay extends BitmapOverlay {
         super(width, height);
 
         painter = new Paint(Paint.ANTI_ALIAS_FLAG);
+        painter.setColor(Color.WHITE);
+
+        addGlStatusController(colorController = new ColorController());
+    }
+
+    public void setColor(int color) {
+        colorController.setColor(color);
     }
 
 
     public void setText(String text) {
-        setText(text, painter.getColor(), (int) getHeight());
+        setText(text, (int) getHeight());
     }
 
-    public void setText(String text, int color) {
-        setText(text, color, (int) getHeight());
+    public void setText(String text, int size) {
+        setText(text, size, alignCenter);
     }
 
-    public void setText(String text, int color, int size) {
-        setText(text, color, size, alignCenter);
+    public void setText(String text, boolean alignCenter) {
+        setText(text, (int) getHeight(), alignCenter);
     }
 
-    public void setText(String text, int color, boolean alignCenter) {
-        setText(text, color, (int) getHeight(), alignCenter);
-    }
-
-    public void setText(String text, int color, int size, boolean alignCenter) {
-        setTextTexture(text, color, size, alignCenter);
-        this.text = text;
-    }
-
-    public void setTextTexture(String text, int color, int size, boolean alignCenter) {
+    public void setText(String text, int size, boolean alignCenter) {
         if (text.equals(this.text)) return;
+
+        this.text = text;
 
         this.alignCenter = alignCenter;
 
-        setBitmap(createTextTexture(text, color, size));
+        setBitmap(createTextTexture(text, size));
     }
 
-    private Bitmap createTextTexture(String text, int color, int size) {
-        Bitmap textTexture = Bitmap.createBitmap((int) getWidth(), (int) getHeight(), Bitmap.Config.ARGB_8888);
 
-        writeText(textTexture, text, color, size);
+    private Bitmap createTextTexture(String text, int size) {
+        Bitmap textTexture = Bitmap.createBitmap((int) getWidth(), (int) getHeight(), Bitmap.Config.ARGB_4444);
+
+        writeText(textTexture, text, size);
 
         return textTexture;
     }
 
-    private void writeText(Bitmap textTexture, String text, int color, int size) {
+    private void writeText(Bitmap textTexture, String text, int size) {
         Canvas canvas = new Canvas(textTexture);
 
-        painter.setColor(color);
-
         Rect region = new Rect(0, 0, (int) getWidth(), size);
-
-        canvas.drawColor(Color.argb(0, 0, 0, 0));
 
         realWidth = TextDrawer.drawTextInLine(canvas, painter, text, region, alignCenter);
     }
@@ -72,6 +70,7 @@ public class TextOverlay extends BitmapOverlay {
         return realWidth;
     }
 
+    private ColorController colorController;
     private Paint painter;
     private String text;
     private float realWidth;

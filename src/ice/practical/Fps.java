@@ -15,6 +15,8 @@ public class Fps extends TextOverlay {
     public Fps() {
         super(100, 30);
         setPos(getWidth() / 2, getHeight() / 2);
+
+        setColor(Color.BLUE);
     }
 
     @Override
@@ -23,7 +25,7 @@ public class Fps extends TextOverlay {
         fps++;
 
         if (System.currentTimeMillis() - lastUpdate > 1000) {
-            setText("fps : " + fps, Color.BLUE, (int) getHeight());
+            setText("fps : " + fps, (int) getHeight());
             fps = 0;
             lastUpdate = System.currentTimeMillis();
         }
