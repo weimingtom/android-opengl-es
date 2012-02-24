@@ -15,4 +15,6 @@ public interface App {
     void exit();
 
     void intent(Class<? extends SceneProvider> to);
+
+    void intent(Class<? extends SceneProvider> toClass, Object msg);
 }
