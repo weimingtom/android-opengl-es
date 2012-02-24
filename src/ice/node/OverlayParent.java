@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * User: ice
@@ -15,10 +16,11 @@ import java.util.List;
  */
 public class OverlayParent extends Overlay {
 
+
     public OverlayParent() {
         children = new ArrayList<Overlay>();
-        addBuffer = new ArrayList<Overlay>();
-        removeBuffer = new ArrayList<Overlay>();
+        addBuffer = new CopyOnWriteArrayList<Overlay>();
+        removeBuffer = new CopyOnWriteArrayList<Overlay>();
 
         setupTouchDispatcher();
     }
@@ -27,13 +29,11 @@ public class OverlayParent extends Overlay {
     protected void onDraw(GL11 gl) {
 
         if (addBuffer.size() > 0) {
-            synchronized (this) {
-                for (Overlay newOverlay : addBuffer)
-                    newOverlay.onComeIntoUse(gl);
+            for (Overlay newOverlay : addBuffer)
+                newOverlay.onComeIntoUse(gl);
 
-                children.addAll(addBuffer);
-                addBuffer.clear();
-            }
+            children.addAll(addBuffer);
+            addBuffer.clear();
         }
 
 
@@ -48,14 +48,13 @@ public class OverlayParent extends Overlay {
         }
 
         if (removeBuffer.size() > 0) {
-            synchronized (this) {
-                for (Overlay newOverlay : removeBuffer)
-                    newOverlay.onOutdated(gl);
+            for (Overlay newOverlay : removeBuffer)
+                newOverlay.onOutdated(gl);
 
-                children.removeAll(removeBuffer);
-                removeBuffer.clear();
-            }
+            children.removeAll(removeBuffer);
+            removeBuffer.clear();
         }
+
     }
 
     public void addChild(Overlay child) {
@@ -73,9 +72,7 @@ public class OverlayParent extends Overlay {
             child.setParent(this);
         }
 
-        synchronized (this) {
-            addBuffer.addAll(children);
-        }
+        addBuffer.addAll(children);
     }
 
     public boolean containsChild(Overlay child) {
@@ -86,15 +83,16 @@ public class OverlayParent extends Overlay {
         return children.get(index);
     }
 
-    public synchronized void remove(Overlay child) {
+    public void remove(Overlay child) {
         removeBuffer.add(child);
     }
 
-    public synchronized void remove(Collection<Overlay> children) {
+    public void remove(Collection<Overlay> children) {
         removeBuffer.addAll(children);
     }
 
     public void clear() {
+        addBuffer.clear();
         children.clear();
     }
 
@@ -141,6 +139,8 @@ public class OverlayParent extends Overlay {
     protected boolean onDispatchTouch(Overlay child, MotionEvent event) {
         return child.onTouchEvent(event);
     }
+
+    private boolean duringOnDraw;
 
     private List<Overlay> addBuffer;
     private List<Overlay> removeBuffer;
