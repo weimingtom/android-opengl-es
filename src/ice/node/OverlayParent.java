@@ -87,6 +87,10 @@ public class OverlayParent extends Overlay {
         removeBuffer.add(child);
     }
 
+    public void remove(Overlay... children) {
+        remove(Arrays.asList(children));
+    }
+
     public void remove(Collection<Overlay> children) {
         removeBuffer.addAll(children);
     }
