@@ -139,6 +139,7 @@ public abstract class Game extends Activity implements App {
         SceneProvider toProvider = findFromCache(to);
         if (toProvider == null) {
             toProvider = buildInstance(to);
+            toProvider.setIntentMsg(msg);
             toProvider.onCreate();
         }
 
