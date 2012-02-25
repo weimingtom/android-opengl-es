@@ -1,12 +1,10 @@
 package ice.graphic;
 
-import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.util.Log;
 import ice.engine.App;
 import ice.engine.EngineContext;
-import ice.engine.Scene;
 import ice.graphic.projection.PerspectiveProjection;
 import ice.graphic.projection.Projection;
 import ice.graphic.texture.Texture;
@@ -132,37 +130,10 @@ public class GlRenderer implements GLSurfaceView.Renderer {
             throw new IllegalStateException(GLU.gluErrorString(errorCode));
     }
 
-    private Overlay coordinateAndFps() {
-
-        Overlay coordinate = new Overlay() {
-
-            @Override
-            protected void onDraw(GL11 gl) {
-                int appWidth = EngineContext.getAppWidth();
-                int appHeight = EngineContext.getAppHeight();
-
-                gl.glEnable(GL_POINT_SMOOTH);
-
-                RectF rect = new RectF(0, 0, appWidth, appHeight);
-                Primitives.drawRect(gl, rect);
-
-                Primitives.drawCircle(gl, 0, 0, appHeight / 2, 0, 50, true);
-
-                gl.glPointSize(10);
-                Primitives.drawPoint(gl, 0, 0);
-                gl.glPointSize(1);
-            }
-        };
-
-        return coordinate;
-    }
-
-    private Scene newScene;
-    private Scene oldScene;
-
+    //    private Scene newScene;
+//    private Scene oldScene;
     private boolean inited;
     private Overlay fps;
-    private long lastTime;
     private Projection projection;
     private OverlayParent drawDispatcher;
 }
