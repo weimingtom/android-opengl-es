@@ -35,14 +35,12 @@ public class CullFaceController implements GlStatusController {
                 if (!originalCullFace)
                     gl.glEnable(GL_CULL_FACE);
                 gl.glFrontFace(GL_CCW);
-                gl.glCullFace(GL_BACK);
                 break;
 
             case Back:
                 if (!originalCullFace)
                     gl.glEnable(GL_CULL_FACE);
                 gl.glFrontFace(GL_CW);
-                gl.glCullFace(GL_BACK);
                 break;
 
             case BothSide:
@@ -67,16 +65,7 @@ public class CullFaceController implements GlStatusController {
         return true;
     }
 
-    public FaceMode getFaceMode() {
-        return faceMode;
-    }
-
-    public void setFaceMode(FaceMode faceMode) {
-        this.faceMode = faceMode;
-    }
-
     private boolean originalCullFace;
     private int originalFaceMode;
-
     private FaceMode faceMode;
 }

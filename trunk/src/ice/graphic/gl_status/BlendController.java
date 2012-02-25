@@ -14,12 +14,10 @@ import static javax.microedition.khronos.opengles.GL11.*;
  */
 public class BlendController implements GlStatusController {
 
-
     /**
      * 关闭混合
      */
     public BlendController() {
-
     }
 
     /**
@@ -65,10 +63,7 @@ public class BlendController implements GlStatusController {
     }
 
     private boolean blend;
-
     private boolean originalBlend;
-
     private int factorS, factorD;
-
     private int originalFactorS, originalFactorD;
 }

@@ -11,26 +11,35 @@ import javax.microedition.khronos.opengles.GL11;
  */
 public class MatrixController implements GlStatusController {
 
-
     @Override
     public void attach(GL11 gl) {
-        gl.glPushMatrix();
+        boolean posChanged = posX != 0 || posY != 0 || posZ != 0;
 
-        if (posX != 0 || posY != 0 || posZ != 0)
-            gl.glTranslatef(posX, posY, posZ);
+        boolean scaleChanged = scaleX != 1 || scaleY != 1 || scaleZ != 1;
 
-        if (scaleX != 1 || scaleY != 1 || scaleZ != 1)
-            gl.glScalef(scaleX, scaleY, scaleZ);
+        boolean rotateChanged = rotate != 0;
 
-        if (rotate != 0)
-            gl.glRotatef(rotate, axleX, axleY, axleZ);
+        matrixChange = posChanged || scaleChanged || rotateChanged;
+
+        if (matrixChange) {
+            gl.glPushMatrix();
+
+            if (posChanged)
+                gl.glTranslatef(posX, posY, posZ);
+
+            if (scaleChanged)
+                gl.glScalef(scaleX, scaleY, scaleZ);
+
+            if (rotateChanged)
+                gl.glRotatef(rotate, axleX, axleY, axleZ);
+        }
+
     }
 
     @Override
     public boolean detach(GL11 gl, Overlay overlay) {
-
-        gl.glPopMatrix();
-
+        if (matrixChange)
+            gl.glPopMatrix();
         return true;
     }
 
@@ -62,7 +71,6 @@ public class MatrixController implements GlStatusController {
         this.posZ = posZ;
     }
 
-
     public void setScale(float scaleX, float scaleY, float scaleZ) {
         this.scaleX = scaleX;
         this.scaleY = scaleY;
@@ -76,7 +84,9 @@ public class MatrixController implements GlStatusController {
         this.axleZ = axleZ;
     }
 
-    protected float posX, posY, posZ;
+    private boolean matrixChange;
+
+    private float posX, posY, posZ;
     private float scaleX = 1, scaleY = 1, scaleZ = 1;
     private float rotate;
     private float axleX = 1, axleY = 1, axleZ = 1;

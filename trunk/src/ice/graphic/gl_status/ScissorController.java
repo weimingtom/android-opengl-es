@@ -14,7 +14,6 @@ import static javax.microedition.khronos.opengles.GL10.GL_SCISSOR_TEST;
 public class ScissorController implements GlStatusController {
 
     public ScissorController() {
-
     }
 
     public ScissorController(int x, int y, int width, int height) {
