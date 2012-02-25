@@ -1,13 +1,10 @@
 package ice.node.widget;
 
-import ice.graphic.gl_status.CullFaceController;
 import ice.graphic.texture.Texture;
 import ice.model.vertex.VertexData;
 import ice.node.Overlay;
 
 import javax.microedition.khronos.opengles.GL11;
-
-import static ice.graphic.gl_status.CullFaceController.FaceMode;
 
 /**
  * User: ice
@@ -27,15 +24,10 @@ public class Mesh extends Overlay {
     public Mesh(VertexData vertexData, Texture texture) {
         this.vertexData = vertexData;
         this.texture = texture;
-
-        cullFaceController = new CullFaceController(FaceMode.Front);
     }
 
     @Override
     protected void onDraw(GL11 gl) {
-
-        cullFaceController.attach(gl);
-
         Texture theTexture = texture;
         boolean useTexture = (theTexture != null);
 
@@ -49,8 +41,6 @@ public class Mesh extends Overlay {
         vertexData.detach(gl, this);
 
         if (useTexture) theTexture.detach(gl, this);
-
-        cullFaceController.detach(gl, this);
     }
 
     public VertexData getVertexData() {
@@ -69,10 +59,6 @@ public class Mesh extends Overlay {
         return texture;
     }
 
-    public void setFaceMode(FaceMode faceMode) {
-        cullFaceController.setFaceMode(faceMode);
-    }
-
     @Override
     protected void onOutdated(GL11 gl) {
         if (texture != null)
@@ -82,7 +68,6 @@ public class Mesh extends Overlay {
             vertexData.release(gl);
     }
 
-    private CullFaceController cullFaceController;
     private Texture texture;
     private VertexData vertexData;
 }

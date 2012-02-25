@@ -13,6 +13,7 @@ import javax.microedition.khronos.opengles.GL11;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * User: ice
@@ -86,17 +87,13 @@ public abstract class Overlay {
 
     private void ensureStatusControllers() {
         if (removeBuffer != null && removeBuffer.size() > 0) {
-            synchronized (this) {
-                statusControllers.removeAll(removeBuffer);
-                removeBuffer.clear();
-            }
+            statusControllers.removeAll(removeBuffer);
+            removeBuffer.clear();
         }
 
         if (addBuffer != null && addBuffer.size() > 0) {
-            synchronized (this) {
-                statusControllers.addAll(addBuffer);
-                addBuffer.clear();
-            }
+            statusControllers.addAll(addBuffer);
+            addBuffer.clear();
         }
     }
 
@@ -235,16 +232,16 @@ public abstract class Overlay {
         return animation;
     }
 
-    public synchronized void addGlStatusController(GlStatusController controller) {
+    public void addGlStatusController(GlStatusController controller) {
         if (addBuffer == null)
-            addBuffer = new ArrayList<GlStatusController>(3);
+            addBuffer = new CopyOnWriteArrayList<GlStatusController>();
 
         addBuffer.add(controller);
     }
 
-    public synchronized void removeGlStatusController(GlStatusController controller) {
+    public void removeGlStatusController(GlStatusController controller) {
         if (removeBuffer == null)
-            removeBuffer = new ArrayList<GlStatusController>(3);
+            removeBuffer = new CopyOnWriteArrayList<GlStatusController>();
 
         removeBuffer.add(controller);
     }
