@@ -41,8 +41,7 @@ public abstract class Game extends Activity implements App {
         providerStack = new Stack<Class<? extends SceneProvider>>();
         providerCache = new HashMap<Class<? extends SceneProvider>, SoftReference<SceneProvider>>();
 
-        gameView = createRenderer();
-        setContentView(gameView);
+        setContentView(gameView = buildGameView());
 
         Class<? extends SceneProvider> entryProvider = getEntry();//启动时，保证是主界面的入口
         providerStack.push(entryProvider);
@@ -126,7 +125,6 @@ public abstract class Game extends Activity implements App {
 
     }
 
-
     @Override
     public synchronized void intent(Class<? extends SceneProvider> to) {
         intent(to, null);
@@ -163,14 +161,19 @@ public abstract class Game extends Activity implements App {
         finish();
     }
 
-    protected GameView createRenderer() {
-        PerspectiveProjection projection = new PerspectiveProjection(new GLU(), 60);
+    protected GameView buildGameView() {
 
-        GlRenderer glRenderer = new GlRenderer(projection);
+        return new GameView(this) {
 
-        return new GameView(this, glRenderer);
+            @Override
+            protected GlRenderer onCreateGlRenderer() {
+
+                PerspectiveProjection projection = new PerspectiveProjection(new GLU(), 60);
+
+                return new GlRenderer(projection);
+            }
+        };
     }
-
 
     private SceneProvider buildInstance(Class<? extends SceneProvider> providerClass) {
 
