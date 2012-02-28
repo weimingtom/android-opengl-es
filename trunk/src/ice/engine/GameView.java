@@ -11,24 +11,20 @@ import ice.node.OverlayParent;
  * Date: 12-1-6
  * Time: 下午3:23
  */
-public class GameView extends GLSurfaceView implements AppView {
+public abstract class GameView extends GLSurfaceView implements AppView {
 
-    public GameView(Context context, GlRenderer glRenderer) {
+    public GameView(Context context) {
         super(context);
 
-        this.renderer = glRenderer;
-
-        setRenderer(renderer);
+        setRenderer(
+                this.renderer = onCreateGlRenderer()
+        );
     }
+
+    protected abstract GlRenderer onCreateGlRenderer();
 
     public GlRenderer getRenderer() {
         return renderer;
-    }
-
-    @Override
-    public void setRenderer(Renderer renderer) {
-        if (renderer instanceof GlRenderer)
-            super.setRenderer(renderer);
     }
 
     @Override
