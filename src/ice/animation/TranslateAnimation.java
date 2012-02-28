@@ -40,9 +40,9 @@ public class TranslateAnimation extends Animation {
             gl.glTranslatef(translateX, translateY, 0);
     }
 
-    private float fromXDelta;
-    private float toXDelta;
-    private float fromYDelta;
-    private float toYDelta;
+    protected float fromXDelta;
+    protected float toXDelta;
+    protected float fromYDelta;
+    protected float toYDelta;
 
 }
