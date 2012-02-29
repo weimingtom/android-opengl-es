@@ -14,8 +14,12 @@ public class Grid extends Mesh {
         this.width = width;
         this.height = height;
 
-        Rectangle rectangle = new Rectangle(width, height);
-        setVertexData(rectangle);
+        setVertexData(new Rectangle(width, height));
+    }
+
+    public void setBounds(float width, float height) {
+        Rectangle rectangle = (Rectangle) getVertexData();
+        rectangle.setVertexCoord(width, height);
     }
 
     public void setTextureCoord(float uRight, float vBottom) {
