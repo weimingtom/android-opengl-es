@@ -41,6 +41,11 @@ public class OverlayParent extends Overlay {
         addChildren(child);
     }
 
+    public void addChild(int index, Overlay child) {
+        child.setParent(this);
+        children.add(index, child);
+    }
+
     public void addChildren(Overlay... children) {
         addChildren(Arrays.asList(children));
     }
