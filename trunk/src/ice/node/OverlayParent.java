@@ -117,5 +117,9 @@ public class OverlayParent extends Overlay {
         return child.onTouchEvent(event);
     }
 
+    public List<Overlay> getChildren() {
+        return children;
+    }
+
     private List<Overlay> children;
 }
