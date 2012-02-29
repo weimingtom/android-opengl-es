@@ -3,7 +3,6 @@ package ice.node;
 import android.view.MotionEvent;
 
 import javax.microedition.khronos.opengles.GL11;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -18,9 +17,7 @@ public class OverlayParent extends Overlay {
 
 
     public OverlayParent() {
-        children = new ArrayList<Overlay>();
-        addBuffer = new CopyOnWriteArrayList<Overlay>();
-        removeBuffer = new CopyOnWriteArrayList<Overlay>();
+        children = new CopyOnWriteArrayList<Overlay>();
 
         setupTouchDispatcher();
     }
@@ -28,33 +25,16 @@ public class OverlayParent extends Overlay {
     @Override
     protected void onDraw(GL11 gl) {
 
-        if (addBuffer.size() > 0) {
-            for (Overlay newOverlay : addBuffer)
-                newOverlay.onComeIntoUse(gl);
-
-            children.addAll(addBuffer);
-            addBuffer.clear();
-        }
-
-
         for (Overlay overlay : children) {
 
             if (overlay.isRemovable()) {
-                removeBuffer.add(overlay);
+                overlay.onOutdated(gl);
+                remove(overlay);
                 continue;
             }
 
             overlay.draw(gl);
         }
-
-        if (removeBuffer.size() > 0) {
-            for (Overlay newOverlay : removeBuffer)
-                newOverlay.onOutdated(gl);
-
-            children.removeAll(removeBuffer);
-            removeBuffer.clear();
-        }
-
     }
 
     public void addChild(Overlay child) {
@@ -72,11 +52,11 @@ public class OverlayParent extends Overlay {
             child.setParent(this);
         }
 
-        addBuffer.addAll(children);
+        this.children.addAll(children);
     }
 
     public boolean containsChild(Overlay child) {
-        return children.contains(child) || addBuffer.contains(child);
+        return children.contains(child);
     }
 
     public Overlay get(int index) {
@@ -84,7 +64,7 @@ public class OverlayParent extends Overlay {
     }
 
     public void remove(Overlay child) {
-        removeBuffer.add(child);
+        children.remove(child);
     }
 
     public void remove(Overlay... children) {
@@ -92,11 +72,10 @@ public class OverlayParent extends Overlay {
     }
 
     public void remove(Collection<Overlay> children) {
-        removeBuffer.addAll(children);
+        this.children.removeAll(children);
     }
 
     public void clear() {
-        addBuffer.clear();
         children.clear();
     }
 
@@ -105,12 +84,6 @@ public class OverlayParent extends Overlay {
             return null;
 
         return children.get(children.size() - 1);
-    }
-
-    @Override
-    protected void onComeIntoUse(GL11 gl) {
-        for (Overlay child : children)
-            child.onComeIntoUse(gl);
     }
 
     @Override
@@ -143,11 +116,6 @@ public class OverlayParent extends Overlay {
     protected boolean onDispatchTouch(Overlay child, MotionEvent event) {
         return child.onTouchEvent(event);
     }
-
-    private boolean duringOnDraw;
-
-    private List<Overlay> addBuffer;
-    private List<Overlay> removeBuffer;
 
     private List<Overlay> children;
 }
