@@ -7,7 +7,14 @@ import javax.microedition.khronos.opengles.GL11;
 public class TranslateAnimation extends Animation {
 
     public TranslateAnimation(long duration, float toXDelta, float toYDelta) {
-        this(duration, 0, toXDelta, 0, toYDelta);
+        this(duration, toXDelta, toYDelta, 0);
+    }
+
+    public TranslateAnimation(long duration, float toXDelta, float toYDelta, float toZDelta) {
+        super(duration);
+        this.toXDelta = toXDelta;
+        this.toYDelta = toYDelta;
+        this.toZDelta = toZDelta;
     }
 
     public TranslateAnimation(long duration, float fromXDelta, float toXDelta, float fromYDelta, float toYDelta) {
@@ -20,7 +27,13 @@ public class TranslateAnimation extends Animation {
 
     @Override
     protected void applyFillAfter(Overlay overlay) {
-        overlay.setPos(overlay.getPosX() + toXDelta, overlay.getPosY() + toYDelta);
+        if (toXDelta != 0 || toYDelta != 0 || toZDelta != 0) {
+            overlay.setPos(
+                    overlay.getPosX() + toXDelta,
+                    overlay.getPosY() + toYDelta,
+                    overlay.getPosZ() + toZDelta
+            );
+        }
     }
 
     @Override
@@ -28,21 +41,23 @@ public class TranslateAnimation extends Animation {
 
         float translateX = 0;
         float translateY = 0;
+        float translateZ = 0;
 
-        if (fromXDelta != toXDelta) {
+        if (fromXDelta != toXDelta)
             translateX = fromXDelta + ((toXDelta - fromXDelta) * interpolatedTime);
-        }
-        if (fromYDelta != toYDelta) {
-            translateY = fromYDelta + ((toYDelta - fromYDelta) * interpolatedTime);
-        }
 
-        if (translateX != 0 || translateY != 0)
-            gl.glTranslatef(translateX, translateY, 0);
+        if (fromYDelta != toYDelta)
+            translateY = fromYDelta + ((toYDelta - fromYDelta) * interpolatedTime);
+
+
+        if (fromZDelta != toZDelta)
+            translateZ = fromZDelta + ((toZDelta - fromZDelta) * interpolatedTime);
+
+        if (translateX != 0 || translateY != 0 || translateZ != 0)
+            gl.glTranslatef(translateX, translateY, translateZ);
     }
 
-    protected float fromXDelta;
-    protected float toXDelta;
-    protected float fromYDelta;
-    protected float toYDelta;
-
+    private float fromXDelta, toXDelta;
+    private float fromYDelta, toYDelta;
+    private float fromZDelta, toZDelta;
 }
