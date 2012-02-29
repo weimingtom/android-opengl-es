@@ -56,10 +56,6 @@ public abstract class Overlay {
         setPos(posX, posY, posZ);
     }
 
-    protected void onComeIntoUse(GL11 gl) {
-
-    }
-
     protected void onOutdated(GL11 gl) {
 
     }
@@ -262,8 +258,8 @@ public abstract class Overlay {
 
     private Camera camera;   //TODO
 
-    protected boolean visible;
-    protected boolean removable;
+    private boolean visible;
+    private boolean removable;
 
     /**
      * 用于获取绝对位置
