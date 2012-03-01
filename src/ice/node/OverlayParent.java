@@ -76,7 +76,7 @@ public class OverlayParent extends Overlay {
         remove(Arrays.asList(children));
     }
 
-    public void remove(Collection<Overlay> children) {
+    public void remove(Collection<? extends Overlay> children) {
         this.children.removeAll(children);
     }
 
