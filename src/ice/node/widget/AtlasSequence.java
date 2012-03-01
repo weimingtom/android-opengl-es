@@ -32,7 +32,7 @@ public class AtlasSequence extends OverlayParent {
             for (int i = 0; i < size; i++) {
                 AtlasOverlay atlasOverlay = (AtlasOverlay) get(i);
                 atlasOverlay.setAtlasIndex(sequence[i], atlasTexture);
-                atlasOverlay.setPos(mostRight - i * (eachWidth / 2 + margin), 0);
+                atlasOverlay.setPos(mostRight - i * (eachWidth + margin), 0);
                 atlasOverlay.setVisible(true);
             }
 
