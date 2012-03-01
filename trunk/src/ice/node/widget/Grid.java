@@ -1,5 +1,6 @@
 package ice.node.widget;
 
+import ice.graphic.texture.Texture;
 import ice.model.Point3F;
 import ice.model.vertex.Rectangle;
 
@@ -37,6 +38,12 @@ public class Grid extends Mesh {
 
     public float getHeight() {
         return height;
+    }
+
+    @Override
+    public void setTexture(Texture texture) {
+        super.setTexture(texture);
+        setTextureCoord(texture.getMaxU(), texture.getMaxV());
     }
 
     @Override
