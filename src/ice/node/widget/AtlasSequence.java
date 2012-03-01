@@ -50,6 +50,7 @@ public class AtlasSequence extends OverlayParent {
             for (int i = 0; i < sequence.length; i++) {
                 AtlasOverlay atlasOverlay = (AtlasOverlay) get(i);
                 atlasOverlay.setAtlasIndex(sequence[i], atlasTexture);
+                atlasOverlay.setVisible(true);
             }
         }
         else {
@@ -59,7 +60,9 @@ public class AtlasSequence extends OverlayParent {
     }
 
     public void resetSequence() {
-
+        for (int i = 0; i < size(); i++) {
+            get(i).setVisible(false);
+        }
     }
 
     private Texture atlasTexture;
