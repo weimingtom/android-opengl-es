@@ -17,21 +17,35 @@ import static javax.microedition.khronos.opengles.GL10.*;
  */
 public class Rectangle implements VertexData {
 
-    private static final ByteBuffer INDICES;
+    private static final ByteBuffer CCW_INDICES;
+    private static final ByteBuffer CW_INDICES;
 
     static {
-        INDICES = ByteBuffer.allocateDirect(6);
+        CCW_INDICES = ByteBuffer.allocateDirect(6);
+        CW_INDICES = ByteBuffer.allocateDirect(6);
 
-        INDICES.put(
+        CCW_INDICES.put(
                 new byte[]{
                         0, 1, 2,
                         2, 3, 0
                 }
         );
+
+        CW_INDICES.put(
+                new byte[]{
+                        0, 3, 2,
+                        2, 1, 0
+                }
+        );
     }
 
     public Rectangle(float width, float height) {
+        this(width, height, true);
+    }
+
+    public Rectangle(float width, float height, boolean ccw) {
         setVertexCoord(width, height);
+        this.ccw = ccw;
     }
 
     @Override
@@ -50,8 +64,10 @@ public class Rectangle implements VertexData {
 
     @Override
     public void onDrawVertex(GL11 gl) {
-        INDICES.position(0);
-        gl.glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, INDICES);
+        ByteBuffer indices = ccw ? CCW_INDICES : CW_INDICES;
+
+        indices.position(0);
+        gl.glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, indices);
     }
 
     @Override
@@ -115,7 +131,7 @@ public class Rectangle implements VertexData {
         return Math.abs(vertexCoord.get(1)) * 2;
     }
 
-
+    private boolean ccw;
     private FloatBuffer vertexCoord;
     private FloatBuffer textureCoord;
 }
