@@ -12,10 +12,14 @@ import ice.model.vertex.Rectangle;
 public class Grid extends Mesh {
 
     public Grid(float width, float height) {
+        this(width, height, true);
+    }
+
+    public Grid(float width, float height, boolean ccw) {
         this.width = width;
         this.height = height;
 
-        setVertexData(new Rectangle(width, height));
+        setVertexData(new Rectangle(width, height, ccw));
     }
 
     public void setBounds(float width, float height) {
