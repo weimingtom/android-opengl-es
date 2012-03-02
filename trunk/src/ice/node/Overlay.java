@@ -256,6 +256,10 @@ public abstract class Overlay {
 
     private OnTouchListener onTouchListener;
 
+    public OverlayParent getParent() {
+        return parent;
+    }
+
     private Camera camera;   //TODO
 
     private boolean visible;
